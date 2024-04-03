@@ -19,3 +19,6 @@ Idea aggiuntiva:
 	- meteo -> livelli qualità meteorologiche
 	- gps per qualita aria
 	
+Sensori aggiujtivi:
+        - cella fotovoltaica 
+	- batteria ricaricabile (per la notte)
