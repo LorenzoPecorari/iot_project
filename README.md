@@ -1,24 +1,21 @@
-# IOT AS - PROGETTO
+# IOT AS - PROJECT
 
-Idea base: 
-	- rilevatore di inquinamento dell'aria, acustico e luminoso
-        - predizione per i giorni successivi
-	
-Inquinamento:
-	- aria -> co, noX, o3, pmX, so2
-        - acustico -> dB
-	- luminoso -> uv + lumen (notturno principalmente)
+* Main idea
+	- environmental conditions detector (air quality + temperature)
+	- mainly for classrooms
+	- leds for indicating levels of quality
+	- window and fan interactions for mitigating conditions
+	- master-slave approach -> central mcu + "helper" mcus
 
-Sensori:
-	- fotoresistore -> luce (compreso nel kit)
-        - modulo-sensore rilevazione uv
-	- aria-polveri sottili-gas
-        - sonoro
-	
-Idea aggiuntiva:
-	- meteo -> livelli qualità meteorologiche
-	- gps per qualita aria
-	
-Sensori aggiujtivi:
-        - cella fotovoltaica 
-	- batteria ricaricabile (per la notte)
+* Sensors and external hw
+	- air quality module
+	- microphone
+	- leds
+	- (computer) fan
+	- servomotor
+	- battery (or batteries)
+
+* Communication
+	- wifi
+	- ESP-NOW for communications between esp cards (maybe)
+
