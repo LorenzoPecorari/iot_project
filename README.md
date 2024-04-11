@@ -24,7 +24,7 @@ Central device is connected to continuous power supply while Helpers have a batt
 	- air quality module
 	- microphone
 	- leds
-	- (computer) fan
+	- fan
 	- servomotor
 	- battery (or batteries)
 
