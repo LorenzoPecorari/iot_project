@@ -1,4 +1,4 @@
-# IOT AS PROJECT - "WHAT'S THE MOOD?"
+# INTERNET-OF-THINGS ALGORITHMS AND SERVICES PROJECT - "WHAT'S THE MOOD?"
 
 # Students that work to this project:
 - Michele Nicoletti, id 1886646, nicoletti.1886646@studenti.uniroma1.it, https://www.linkedin.com/in/michele-nicoletti-55066b2b0
