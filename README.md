@@ -13,12 +13,13 @@ These devices have to sample some parameters of the environment as CO2, humidity
 - a servomotor for operning/closing a window;
 - a fan that simulates a conditioner.
 
-Heleper(s) will send the sampled information to Central device that have to makes some caluclations on them; after that, this last one will send data to the cloud via Internet. Communications between the MCUs are done through the protocol "ESP-NOW".
+Heleper(s) will send the sampled information to Central device that have to makes some caluclations on them; after that, this last one will send data to the AWS cloud via Internet. Communications between the MCUs are done through the protocol "ESP-NOW".
 
 Devices will mainly work from 8am to 8pm, a time period where lectures are usually done. In this period, MCUs will follow a dynamic awake/asleep schedule: the sleep time is about 10 minutes, after which Central checks if there are some noises and Helpers ask to it if they have to start to sample data. If no noises are detected, all devices go back to sleep; although they start to act as usual.
 
-Central device is connected to continuous power supply while Helpers have a battery.
+The data sent from Central to the cloud will be provided by a remote terminal which can be accessed for knowing the quality of the air and other information
 
+Central device is connected to continuous power supply while Helpers have a battery.
 
 # Sensors and external hw
 	- air quality module
