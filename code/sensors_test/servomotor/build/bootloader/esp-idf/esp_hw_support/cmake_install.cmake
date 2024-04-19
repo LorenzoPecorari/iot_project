@@ -39,6 +39,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/utente/Scrivania/univ/iot_as/progetto/IoT---group-project/air/build/bootloader/esp-idf/esp_hw_support/port/esp32s3/cmake_install.cmake")
+  include("/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/servomotor/build/bootloader/esp-idf/esp_hw_support/port/esp32s3/cmake_install.cmake")
 endif()
 

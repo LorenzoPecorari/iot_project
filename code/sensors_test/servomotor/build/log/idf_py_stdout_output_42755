@@ -1,0 +1,602 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2810,len:0x178c
+load:0x403c8700,len:0x4
+load:0x403c8704,len:0xcb8
+load:0x403cb700,len:0x2d9c
+entry 0x403c8914
+[0;32mI (27) boot: ESP-IDF v5.3-dev-2265-gfdb7a43752 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Apr 19 2024 20:04:50[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (32) boot: chip revision: v0.1[0m
+[0;32mI (35) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (40) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (45) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (50) boot: Enabling RNG early entropy source...[0m
+[0;32mI (55) boot: Partition Table:[0m
+[0;32mI (59) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (66) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (73) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (81) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (88) boot: End of partition table[0m
+[0;32mI (92) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0cc6ch ( 52332) map[0m
+[0;32mI (110) esp_image: segment 1: paddr=0001cc94 vaddr=3fc91900 size=02914h ( 10516) load[0m
+[0;32mI (113) esp_image: segment 2: paddr=0001f5b0 vaddr=40374000 size=00a68h (  2664) load[0m
+[0;32mI (118) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=18b94h (101268) map[0m
+[0;32mI (144) esp_image: segment 4: paddr=00038bbc vaddr=40374a68 size=0ce78h ( 52856) load[0m
+[0;32mI (162) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (162) boot: Disabling RNG early entropy source...[0m
+[0;32mI (173) cpu_start: Multicore app[0m
+[0;32mI (183) cpu_start: Pro cpu start user code[0m
+[0;32mI (183) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (183) app_init: Application information:[0m
+[0;32mI (186) app_init: Project name:     air[0m
+[0;32mI (191) app_init: App version:      12ca643-dirty[0m
+[0;32mI (196) app_init: Compile time:     Apr 19 2024 20:04:45[0m
+[0;32mI (202) app_init: ELF file SHA256:  17495ebf7...[0m
+[0;32mI (207) app_init: ESP-IDF:          v5.3-dev-2265-gfdb7a43752[0m
+[0;32mI (214) app_init: Min chip rev:     v0.0[0m
+[0;32mI (218) app_init: Max chip rev:     v0.99 [0m
+[0;32mI (223) app_init: Chip rev:         v0.1[0m
+[0;32mI (228) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (235) heap_init: At 3FC94AF8 len 00054C18 (339 KiB): RAM[0m
+[0;32mI (241) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (247) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (253) heap_init: At 600FE010 len 00001FD8 (7 KiB): RTCRAM[0m
+[0;32mI (261) spi_flash: detected chip: gd[0m
+[0;32mI (264) spi_flash: flash io: dio[0m
+[0;33mW (268) spi_flash: Detected size(8192k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (281) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (288) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (295) main_task: Started on CPU0[0m
+[0;32mI (315) main_task: Calling app_main()[0m
+clockwise direction - Period to work: 1000
+first delay done
+Position: 0
+second delay done
+Period to work: 1111
+first delay done
+Position: 15
+second delay done
+Period to work: 1222
+first delay done
+Position: 30
+second delay done
+Period to work: 1333
+first delay done
+Position: 45
+second delay done
+Period to work: 1444
+first delay done
+Position: 60
+second delay done
+Period to work: 1555
+first delay done
+Position: 75
+second delay done
+Period to work: 1666
+first delay done
+Position: 90
+second delay done
+Period to work: 1777
+first delay done
+Position: 105
+second delay done
+Period to work: 1888
+first delay done
+Position: 120
+second delay done
+Period to work: 2000
+first delay done
+Position: 135
+second delay done
+Period to work: 2111
+first delay done
+Position: 150
+second delay done
+Period to work: 2222
+first delay done
+Position: 165
+second delay done
+Period to work: 2333
+first delay done
+Position: 180
+second delay done
+Period to work: 2444
+first delay done
+Position: 195
+second delay done
+Period to work: 2555
+first delay done
+Position: 210
+second delay done
+Period to work: 2666
+first delay done
+Position: 225
+second delay done
+Period to work: 2777
+first delay done
+Position: 240
+second delay done
+Period to work: 2888
+first delay done
+Position: 255
+second delay done
+Period to work: 3000
+first delay done
+Position: 270
+second delay done
+Period to work: 3111
+first delay done
+Position: 285
+second delay done
+Period to work: 3222
+first delay done
+Position: 300
+second delay done
+Period to work: 3333
+first delay done
+Position: 315
+second delay done
+Period to work: 3444
+first delay done
+Position: 330
+second delay done
+Period to work: 3555
+first delay done
+Position: 345
+second delay done
+Period to work: 3666
+first delay done
+Position: 360
+second delay done
+Period to work: 3777
+first delay done
+Position: 375
+second delay done
+Period to work: 3888
+first delay done
+Position: 390
+second delay done
+Period to work: 4000
+first delay done
+Position: 405
+second delay done
+Period to work: 4111
+first delay done
+Position: 420
+second delay done
+Period to work: 4222
+first delay done
+Position: 435
+second delay done
+Period to work: 4333
+first delay done
+Position: 450
+second delay done
+Period to work: 4444
+first delay done
+Position: 465
+second delay done
+Period to work: 4555
+first delay done
+Position: 480
+second delay done
+Period to work: 4666
+first delay done
+Position: 495
+second delay done
+Period to work: 4777
+first delay done
+Position: 510
+second delay done
+Period to work: 4888
+first delay done
+Position: 525
+second delay done
+Period to work: 5000
+first delay done
+Position: 540
+second delay done
+Period to work: 5111
+first delay done
+Position: 555
+second delay done
+Period to work: 5222
+first delay done
+Position: 570
+second delay done
+Period to work: 5333
+first delay done
+Position: 585
+second delay done
+Period to work: 5444
+first delay done
+Position: 600
+second delay done
+Period to work: 5555
+first delay done
+Position: 615
+second delay done
+Period to work: 5666
+first delay done
+Position: 630
+second delay done
+Period to work: 5777
+first delay done
+Position: 645
+second delay done
+Period to work: 5888
+first delay done
+Position: 660
+second delay done
+Period to work: 6000
+first delay done
+Position: 675
+second delay done
+Period to work: 6111
+first delay done
+Position: 690
+second delay done
+Period to work: 6222
+first delay done
+Position: 705
+second delay done
+Period to work: 6333
+first delay done
+Position: 720
+second delay done
+Period to work: 6444
+first delay done
+Position: 735
+second delay done
+Period to work: 6555
+first delay done
+Position: 750
+second delay done
+Period to work: 6666
+first delay done
+Position: 765
+second delay done
+Period to work: 6777
+first delay done
+Position: 780
+second delay done
+Period to work: 6888
+first delay done
+Position: 795
+second delay done
+Period to work: 7000
+first delay done
+Position: 810
+second delay done
+Period to work: 7111
+first delay done
+Position: 825
+second delay done
+Period to work: 7222
+first delay done
+Position: 840
+second delay done
+Period to work: 7333
+first delay done
+Position: 855
+second delay done
+Period to work: 7444
+first delay done
+Position: 870
+second delay done
+Period to work: 7555
+first delay done
+Position: 885
+second delay done
+Period to work: 7666
+first delay done
+Position: 900
+second delay done
+Period to work: 7777
+first delay done
+Position: 915
+second delay done
+Period to work: 7888
+first delay done
+Position: 930
+second delay done
+Period to work: 8000
+first delay done
+Position: 945
+second delay done
+Period to work: 8111
+first delay done
+Position: 960
+second delay done
+Period to work: 8222
+first delay done
+Position: 975
+second delay done
+Period to work: 8333
+first delay done
+Position: 990
+second delay done
+Period to work: 8444
+first delay done
+Position: 1005
+second delay done
+Period to work: 8555
+first delay done
+Position: 1020
+second delay done
+Period to work: 8666
+first delay done
+Position: 1035
+second delay done
+Period to work: 8777
+first delay done
+Position: 1050
+second delay done
+Period to work: 8888
+first delay done
+Position: 1065
+second delay done
+Period to work: 9000
+first delay done
+Position: 1080
+second delay done
+Period to work: 9111
+first delay done
+Position: 1095
+second delay done
+Period to work: 9222
+first delay done
+Position: 1110
+second delay done
+Period to work: 9333
+first delay done
+Position: 1125
+second delay done
+Period to work: 9444
+first delay done
+Position: 1140
+second delay done
+Period to work: 9555
+first delay done
+Position: 1155
+second delay done
+Period to work: 9666
+first delay done
+Position: 1170
+second delay done
+Period to work: 9777
+first delay done
+Position: 1185
+second delay done
+Period to work: 9888
+first delay done
+Position: 1200
+second delay done
+Period to work: 10000
+first delay done
+Position: 1215
+second delay done
+Period to work: 10111
+first delay done
+Position: 1230
+second delay done
+Period to work: 10222
+first delay done
+Position: 1245
+second delay done
+Period to work: 10333
+first delay done
+Position: 1260
+second delay done
+Period to work: 10444
+first delay done
+Position: 1275
+second delay done
+Period to work: 10555
+first delay done
+Position: 1290
+second delay done
+Period to work: 10666
+first delay done
+Position: 1305
+second delay done
+Period to work: 10777
+first delay done
+Position: 1320
+second delay done
+Period to work: 10888
+first delay done
+Position: 1335
+second delay done
+Period to work: 11000
+first delay done
+Position: 1350
+second delay done
+Period to work: 11111
+first delay done
+Position: 1365
+second delay done
+Period to work: 11222
+first delay done
+Position: 1380
+second delay done
+Period to work: 11333
+first delay done
+Position: 1395
+second delay done
+Period to work: 11444
+first delay done
+Position: 1410
+second delay done
+Period to work: 11555
+first delay done
+Position: 1425
+second delay done
+Period to work: 11666
+first delay done
+Position: 1440
+second delay done
+Period to work: 11777
+first delay done
+Position: 1455
+second delay done
+Period to work: 11888
+first delay done
+Position: 1470
+second delay done
+Period to work: 12000
+first delay done
+Position: 1485
+second delay done
+Period to work: 12111
+first delay done
+Position: 1500
+second delay done
+Period to work: 12222
+first delay done
+Position: 1515
+second delay done
+Period to work: 12333
+first delay done
+Position: 1530
+second delay done
+Period to work: 12444
+first delay done
+Position: 1545
+second delay done
+Period to work: 12555
+first delay done
+Position: 1560
+second delay done
+Period to work: 12666
+first delay done
+Position: 1575
+second delay done
+Period to work: 12777
+first delay done
+Position: 1590
+second delay done
+Period to work: 12888
+first delay done
+Position: 1605
+second delay done
+Period to work: 13000
+first delay done
+Position: 1620
+second delay done
+Period to work: 13111
+first delay done
+Position: 1635
+second delay done
+Period to work: 13222
+first delay done
+Position: 1650
+second delay done
+Period to work: 13333
+first delay done
+Position: 1665
+second delay done
+Period to work: 13444
+first delay done
+Position: 1680
+second delay done
+Period to work: 13555
+first delay done
+Position: 1695
+second delay done
+Period to work: 13666
+first delay done
+Position: 1710
+second delay done
+Period to work: 13777
+first delay done
+Position: 1725
+second delay done
+Period to work: 13888
+first delay done
+Position: 1740
+second delay done
+Period to work: 14000
+first delay done
+Position: 1755
+second delay done
+Period to work: 14111
+first delay done
+Position: 1770
+second delay done
+Period to work: 14222
+first delay done
+Position: 1785
+second delay done
+Period to work: 14333
+first delay done
+Position: 1800
+second delay done
+Period to work: 14444
+first delay done
+Position: 1815
+second delay done
+Period to work: 14555
+first delay done
+Position: 1830
+second delay done
+Period to work: 14666
+first delay done
+Position: 1845
+second delay done
+Period to work: 14777
+first delay done
+Position: 1860
+second delay done
+Period to work: 14888
+first delay done
+Position: 1875
+second delay done
+Period to work: 15000
+first delay done
+Position: 1890
+second delay done
+Period to work: 15111
+first delay done
+Position: 1905
+second delay done
+Period to work: 15222
+first delay done
+Position: 1920
+second delay done
+Period to work: 15333
+first delay done
+Position: 1935
+second delay done
+Period to work: 15444
+first delay done
+Position: 1950
+second delay done
+Period to work: 15555
+first delay done
+Position: 1965
+second delay done
+Period to work: 15666
+first delay done
+Position: 1980
+second delay done
+Period to work: 15777
+first delay done
+Position: 1995
+second delay done
+counterclockwise direction - Period to work: 15888
+[0;31mE (7165) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[0;31mE (7165) task_wdt:  - IDLE0 (CPU 0)[0m
+[0;31mE (7165) task_wdt: Tasks currently running:[0m
+[0;31mE (7165) task_wdt: CPU 0: main[0m
+[0;31mE (7165) task_wdt: CPU 1: IDLE1[0m
+[0;31mE (7165) task_wdt: Print CPU 0 (current core) backtrace[0m
+
+
+Backtrace: 0x4200A6A7:0x3FC92910 0x4200AAC4:0x3FC92930 0x40377009:0x3FC92960 0x40041A76:0x3FC975F0 0x42008A88:0x3FC97610 0x42008B4E:0x3FC97630 0x4201838F:0x3FC97650 0x4037A18D:0x3FC97680
+

@@ -1,4 +1,4 @@
-/* * Data converted from /home/utente/Scrivania/univ/iot_as/progetto/IoT---group-project/air/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/fan/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 #if !defined (__APPLE__) && !defined (__linux__)
