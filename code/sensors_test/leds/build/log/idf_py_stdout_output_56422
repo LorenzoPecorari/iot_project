@@ -1,0 +1,337 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce3810,len:0x178c
+load:0x403c9700,len:0x4
+load:0x403c9704,len:0xcbc
+load:0x403cc700,len:0x2da0
+entry 0x403c9914
+[0;32mI (27) boot: ESP-IDF v5.2.1-dirty 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Apr 21 2024 12:37:25[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (30) boot: chip revision: v0.2[0m
+[0;32mI (34) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (39) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (44) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (48) boot: Enabling RNG early entropy source...[0m
+[0;32mI (54) boot: Partition Table:[0m
+[0;32mI (57) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (65) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (72) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (80) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (87) boot: End of partition table[0m
+[0;32mI (91) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0ce04h ( 52740) map[0m
+[0;32mI (109) esp_image: segment 1: paddr=0001ce2c vaddr=3fc91d00 size=028c0h ( 10432) load[0m
+[0;32mI (112) esp_image: segment 2: paddr=0001f6f4 vaddr=40374000 size=00924h (  2340) load[0m
+[0;32mI (117) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=18a84h (100996) map[0m
+[0;32mI (143) esp_image: segment 4: paddr=00038aac vaddr=40374924 size=0d3ach ( 54188) load[0m
+[0;32mI (161) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (161) boot: Disabling RNG early entropy source...[0m
+[0;32mI (173) cpu_start: Multicore app[0m
+[0;32mI (182) cpu_start: Pro cpu start user code[0m
+[0;32mI (182) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (182) cpu_start: Application information:[0m
+[0;32mI (185) cpu_start: Project name:     air[0m
+[0;32mI (190) cpu_start: App version:      67531fd-dirty[0m
+[0;32mI (195) cpu_start: Compile time:     Apr 21 2024 12:37:16[0m
+[0;32mI (201) cpu_start: ELF file SHA256:  62df4f670...[0m
+[0;32mI (207) cpu_start: ESP-IDF:          v5.2.1-dirty[0m
+[0;32mI (212) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (217) cpu_start: Max chip rev:     v0.99 [0m
+[0;32mI (222) cpu_start: Chip rev:         v0.2[0m
+[0;32mI (226) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (234) heap_init: At 3FC94E90 len 00054880 (338 KiB): RAM[0m
+[0;32mI (240) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (246) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (252) heap_init: At 600FE010 len 00001FD8 (7 KiB): RTCRAM[0m
+[0;32mI (259) spi_flash: detected chip: gd[0m
+[0;32mI (263) spi_flash: flash io: dio[0m
+[0;33mW (266) spi_flash: Detected size(8192k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (280) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (286) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (294) main_task: Started on CPU0[0m
+[0;32mI (304) main_task: Calling app_main()[0m
+[0;32mI (304) LEDS_TEST: Changing active pin[0m
+[0;32mI (304) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (5314) LEDS_TEST: Changing active pin[0m
+[0;32mI (5314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (10314) LEDS_TEST: Changing active pin[0m
+[0;32mI (10314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (15314) LEDS_TEST: Changing active pin[0m
+[0;32mI (15314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (20314) LEDS_TEST: Changing active pin[0m
+[0;32mI (20314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (25314) LEDS_TEST: Changing active pin[0m
+[0;32mI (25314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (30314) LEDS_TEST: Changing active pin[0m
+[0;32mI (30314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (35314) LEDS_TEST: Changing active pin[0m
+[0;32mI (35314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (40314) LEDS_TEST: Changing active pin[0m
+[0;32mI (40314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (45314) LEDS_TEST: Changing active pin[0m
+[0;32mI (45314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (50314) LEDS_TEST: Changing active pin[0m
+[0;32mI (50314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (55314) LEDS_TEST: Changing active pin[0m
+[0;32mI (55314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (60314) LEDS_TEST: Changing active pin[0m
+[0;32mI (60314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (65314) LEDS_TEST: Changing active pin[0m
+[0;32mI (65314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (70314) LEDS_TEST: Changing active pin[0m
+[0;32mI (70314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (75314) LEDS_TEST: Changing active pin[0m
+[0;32mI (75314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (80314) LEDS_TEST: Changing active pin[0m
+[0;32mI (80314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (85314) LEDS_TEST: Changing active pin[0m
+[0;32mI (85314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (90314) LEDS_TEST: Changing active pin[0m
+[0;32mI (90314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (95314) LEDS_TEST: Changing active pin[0m
+[0;32mI (95314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (100314) LEDS_TEST: Changing active pin[0m
+[0;32mI (100314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (105314) LEDS_TEST: Changing active pin[0m
+[0;32mI (105314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (110314) LEDS_TEST: Changing active pin[0m
+[0;32mI (110314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (115314) LEDS_TEST: Changing active pin[0m
+[0;32mI (115314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (120314) LEDS_TEST: Changing active pin[0m
+[0;32mI (120314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (125314) LEDS_TEST: Changing active pin[0m
+[0;32mI (125314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (130314) LEDS_TEST: Changing active pin[0m
+[0;32mI (130314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (135314) LEDS_TEST: Changing active pin[0m
+[0;32mI (135314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (140314) LEDS_TEST: Changing active pin[0m
+[0;32mI (140314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (145314) LEDS_TEST: Changing active pin[0m
+[0;32mI (145314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (150314) LEDS_TEST: Changing active pin[0m
+[0;32mI (150314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (155314) LEDS_TEST: Changing active pin[0m
+[0;32mI (155314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (160314) LEDS_TEST: Changing active pin[0m
+[0;32mI (160314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (165314) LEDS_TEST: Changing active pin[0m
+[0;32mI (165314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (170314) LEDS_TEST: Changing active pin[0m
+[0;32mI (170314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (175314) LEDS_TEST: Changing active pin[0m
+[0;32mI (175314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (180314) LEDS_TEST: Changing active pin[0m
+[0;32mI (180314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (185314) LEDS_TEST: Changing active pin[0m
+[0;32mI (185314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (190314) LEDS_TEST: Changing active pin[0m
+[0;32mI (190314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (195314) LEDS_TEST: Changing active pin[0m
+[0;32mI (195314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (200314) LEDS_TEST: Changing active pin[0m
+[0;32mI (200314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (205314) LEDS_TEST: Changing active pin[0m
+[0;32mI (205314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (210314) LEDS_TEST: Changing active pin[0m
+[0;32mI (210314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (215314) LEDS_TEST: Changing active pin[0m
+[0;32mI (215314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (220314) LEDS_TEST: Changing active pin[0m
+[0;32mI (220314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (225314) LEDS_TEST: Changing active pin[0m
+[0;32mI (225314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (230314) LEDS_TEST: Changing active pin[0m
+[0;32mI (230314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (235314) LEDS_TEST: Changing active pin[0m
+[0;32mI (235314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (240314) LEDS_TEST: Changing active pin[0m
+[0;32mI (240314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (245314) LEDS_TEST: Changing active pin[0m
+[0;32mI (245314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (250314) LEDS_TEST: Changing active pin[0m
+[0;32mI (250314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (255314) LEDS_TEST: Changing active pin[0m
+[0;32mI (255314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (260314) LEDS_TEST: Changing active pin[0m
+[0;32mI (260314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (265314) LEDS_TEST: Changing active pin[0m
+[0;32mI (265314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (270314) LEDS_TEST: Changing active pin[0m
+[0;32mI (270314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (275314) LEDS_TEST: Changing active pin[0m
+[0;32mI (275314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (280314) LEDS_TEST: Changing active pin[0m
+[0;32mI (280314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (285314) LEDS_TEST: Changing active pin[0m
+[0;32mI (285314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (290314) LEDS_TEST: Changing active pin[0m
+[0;32mI (290314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (295314) LEDS_TEST: Changing active pin[0m
+[0;32mI (295314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (300314) LEDS_TEST: Changing active pin[0m
+[0;32mI (300314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (305314) LEDS_TEST: Changing active pin[0m
+[0;32mI (305314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (310314) LEDS_TEST: Changing active pin[0m
+[0;32mI (310314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (315314) LEDS_TEST: Changing active pin[0m
+[0;32mI (315314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (320314) LEDS_TEST: Changing active pin[0m
+[0;32mI (320314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (325314) LEDS_TEST: Changing active pin[0m
+[0;32mI (325314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (330314) LEDS_TEST: Changing active pin[0m
+[0;32mI (330314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (335314) LEDS_TEST: Changing active pin[0m
+[0;32mI (335314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (340314) LEDS_TEST: Changing active pin[0m
+[0;32mI (340314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (345314) LEDS_TEST: Changing active pin[0m
+[0;32mI (345314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (350314) LEDS_TEST: Changing active pin[0m
+[0;32mI (350314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (355314) LEDS_TEST: Changing active pin[0m
+[0;32mI (355314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (360314) LEDS_TEST: Changing active pin[0m
+[0;32mI (360314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (365314) LEDS_TEST: Changing active pin[0m
+[0;32mI (365314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (370314) LEDS_TEST: Changing active pin[0m
+[0;32mI (370314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (375314) LEDS_TEST: Changing active pin[0m
+[0;32mI (375314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (380314) LEDS_TEST: Changing active pin[0m
+[0;32mI (380314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (385314) LEDS_TEST: Changing active pin[0m
+[0;32mI (385314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (390314) LEDS_TEST: Changing active pin[0m
+[0;32mI (390314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (395314) LEDS_TEST: Changing active pin[0m
+[0;32mI (395314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (400314) LEDS_TEST: Changing active pin[0m
+[0;32mI (400314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (405314) LEDS_TEST: Changing active pin[0m
+[0;32mI (405314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (410314) LEDS_TEST: Changing active pin[0m
+[0;32mI (410314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (415314) LEDS_TEST: Changing active pin[0m
+[0;32mI (415314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (420314) LEDS_TEST: Changing active pin[0m
+[0;32mI (420314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (425314) LEDS_TEST: Changing active pin[0m
+[0;32mI (425314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (430314) LEDS_TEST: Changing active pin[0m
+[0;32mI (430314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (435314) LEDS_TEST: Changing active pin[0m
+[0;32mI (435314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (440314) LEDS_TEST: Changing active pin[0m
+[0;32mI (440314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (445314) LEDS_TEST: Changing active pin[0m
+[0;32mI (445314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (450314) LEDS_TEST: Changing active pin[0m
+[0;32mI (450314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (455314) LEDS_TEST: Changing active pin[0m
+[0;32mI (455314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (460314) LEDS_TEST: Changing active pin[0m
+[0;32mI (460314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (465314) LEDS_TEST: Changing active pin[0m
+[0;32mI (465314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (470314) LEDS_TEST: Changing active pin[0m
+[0;32mI (470314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (475314) LEDS_TEST: Changing active pin[0m
+[0;32mI (475314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (480314) LEDS_TEST: Changing active pin[0m
+[0;32mI (480314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (485314) LEDS_TEST: Changing active pin[0m
+[0;32mI (485314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (490314) LEDS_TEST: Changing active pin[0m
+[0;32mI (490314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (495314) LEDS_TEST: Changing active pin[0m
+[0;32mI (495314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (500314) LEDS_TEST: Changing active pin[0m
+[0;32mI (500314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (505314) LEDS_TEST: Changing active pin[0m
+[0;32mI (505314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (510314) LEDS_TEST: Changing active pin[0m
+[0;32mI (510314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (515314) LEDS_TEST: Changing active pin[0m
+[0;32mI (515314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (520314) LEDS_TEST: Changing active pin[0m
+[0;32mI (520314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (525314) LEDS_TEST: Changing active pin[0m
+[0;32mI (525314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (530314) LEDS_TEST: Changing active pin[0m
+[0;32mI (530314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (535314) LEDS_TEST: Changing active pin[0m
+[0;32mI (535314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (540314) LEDS_TEST: Changing active pin[0m
+[0;32mI (540314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (545314) LEDS_TEST: Changing active pin[0m
+[0;32mI (545314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (550314) LEDS_TEST: Changing active pin[0m
+[0;32mI (550314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (555314) LEDS_TEST: Changing active pin[0m
+[0;32mI (555314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (560314) LEDS_TEST: Changing active pin[0m
+[0;32mI (560314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (565314) LEDS_TEST: Changing active pin[0m
+[0;32mI (565314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (570314) LEDS_TEST: Changing active pin[0m
+[0;32mI (570314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (575314) LEDS_TEST: Changing active pin[0m
+[0;32mI (575314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (580314) LEDS_TEST: Changing active pin[0m
+[0;32mI (580314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (585314) LEDS_TEST: Changing active pin[0m
+[0;32mI (585314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (590314) LEDS_TEST: Changing active pin[0m
+[0;32mI (590314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (595314) LEDS_TEST: Changing active pin[0m
+[0;32mI (595314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (600314) LEDS_TEST: Changing active pin[0m
+[0;32mI (600314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (605314) LEDS_TEST: Changing active pin[0m
+[0;32mI (605314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (610314) LEDS_TEST: Changing active pin[0m
+[0;32mI (610314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (615314) LEDS_TEST: Changing active pin[0m
+[0;32mI (615314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (620314) LEDS_TEST: Changing active pin[0m
+[0;32mI (620314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (625314) LEDS_TEST: Changing active pin[0m
+[0;32mI (625314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (630314) LEDS_TEST: Changing active pin[0m
+[0;32mI (630314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (635314) LEDS_TEST: Changing active pin[0m
+[0;32mI (635314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (640314) LEDS_TEST: Changing active pin[0m
+[0;32mI (640314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (645314) LEDS_TEST: Changing active pin[0m
+[0;32mI (645314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (650314) LEDS_TEST: Changing active pin[0m
+[0;32mI (650314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (655314) LEDS_TEST: Changing active pin[0m
+[0;32mI (655314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (660314) LEDS_TEST: Changing active pin[0m
+[0;32mI (660314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (665314) LEDS_TEST: Changing active pin[0m
+[0;32mI (665314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (670314) LEDS_TEST: Changing active pin[0m
+[0;32mI (670314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (675314) LEDS_TEST: Changing active pin[0m
+[0;32mI (675314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (680314) LEDS_TEST: Changing active pin[0m
+[0;32mI (680314) LEDS_TEST: Active pin: YELLOW PIN[0m
+[0;32mI (685314) LEDS_TEST: Changing active pin[0m
+[0;32mI (685314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (690314) LEDS_TEST: Changing active pin[0m
+[0;32mI (690314) LEDS_TEST: Active pin: GREEN PIN[0m
+[0;32mI (695314) LEDS_TEST: Changing active pin[0m
+[0;32mI (695314) LEDS_TEST: Active pin: RED PIN[0m
+[0;32mI (700314) LEDS_TEST: Changing active pin[0m
+[0;32mI (700314) LEDS_TEST: Active pin: YELLOW PIN[0m
