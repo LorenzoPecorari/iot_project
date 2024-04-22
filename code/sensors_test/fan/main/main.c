@@ -15,21 +15,19 @@ HW CONFIG:
     - black = GND -> GND
 */
 
-
 #define FAN_PIN 36
 
 TaskHandle_t taskHandler0 = NULL;
 
-void Hello_world(void* arg){
+void fan_handle(){
     int cnt = 0;
 
     while(1){
-        ESP_LOGI(APP, "Hello from this new project!");
         cnt = !cnt;
         gpio_set_level(FAN_PIN, cnt);
 
-        ESP_LOGI(APP, "Fan: %d!", cnt);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        ESP_LOGI(APP, "Fan: %d", cnt);
+        vTaskDelay(2500 / portTICK_PERIOD_MS);
     }
 } 
 
@@ -37,6 +35,6 @@ void app_main(void){
     esp_rom_gpio_pad_select_gpio(FAN_PIN);
     gpio_set_direction(FAN_PIN, GPIO_MODE_OUTPUT);
     
-    xTaskCreate(Hello_world, "hello_world", 4096, NULL, 10, &taskHandler0);
+    xTaskCreate(fan_handle, "fan_test", 4096, NULL, 10, &taskHandler0);
     
 }
