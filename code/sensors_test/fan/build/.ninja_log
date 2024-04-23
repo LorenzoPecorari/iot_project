@@ -1022,3 +1022,5 @@
 4903	5001	1713905930656309046	/home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/fan/build/.bin_timestamp	a1cad184216f125d
 5001	5030	0	esp-idf/esptool_py/CMakeFiles/app_check_size	57560bc937f4bc44
 5001	5030	0	/home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/fan/build/esp-idf/esptool_py/CMakeFiles/app_check_size	57560bc937f4bc44
+5030	9976	0	CMakeFiles/flash	5cf05b7cbf493d63
+5030	9976	0	/home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/fan/build/CMakeFiles/flash	5cf05b7cbf493d63
