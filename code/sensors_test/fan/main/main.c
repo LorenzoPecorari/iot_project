@@ -1,40 +1,49 @@
-#include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/queue.h"
 #include "driver/gpio.h"
+#include "driver/adc.h"
+#include "esp_system.h"
 
-#include "esp_log.h"
+// Definizione dei pin
+#define PIN_TRANSISTOR GPIO_NUM_2
+#define PIN_POTENZIOMETRO ADC_CHANNEL_6 // Pin ADC 6 corrispondente al GPIO 34 su ESP32-S3
 
-#define APP "FAN_TEST"
+void init() {
+    // Configurazione del pin del transistor
+    // gpio_config_t transistorConfig;
+    // transistorConfig.pin_bit_mask = (1ULL << PIN_TRANSISTOR);
+    // transistorConfig.mode = GPIO_MODE_OUTPUT;
+    // gpio_config(&transistorConfig);
 
-/*
-HW CONFIG:
-    - yellow = fan speed -> 36
-    - red = 12V -> 5V (not enough power)
-    - black = GND -> GND
-*/
+    // // Configurazione del pin del potenziometro come ingresso analogico
+    // adc1_config_width(ADC_WIDTH_BIT_12);
+    // adc1_config_channel_atten(PIN_POTENZIOMETRO, ADC_ATTEN_DB_0);
+    gpio_set_direction(PIN_TRANSISTOR, GPIO_MODE_OUTPUT);
+}
 
-#define FAN_PIN 36
+void controlloTrasistor(void *pvParameter) {
+    while (1) {
+        // Accendi il transistor
+        gpio_set_level(PIN_TRANSISTOR, 1);
+        printf("Pin %d\n", gpio_get_level(PIN_TRANSISTOR));
+        // Leggi il potenziale in uscita
+        // uint32_t potenzialeUscita = adc1_get_raw(PIN_POTENZIOMETRO);
+        vTaskDelay(5000/portTICK_PERIOD_MS);
+        // // Stampa il potenziale in uscita sulla porta seriale
+        // printf("Potenziale in uscita: %lu\n", potenzialeUscita);
 
-TaskHandle_t taskHandler0 = NULL;
-
-void fan_handle(){
-    int cnt = 0;
-
-    while(1){
-        cnt = !cnt;
-        gpio_set_level(FAN_PIN, cnt);
-
-        ESP_LOGI(APP, "Fan: %d", cnt);
-        vTaskDelay(2500 / portTICK_PERIOD_MS);
+        // Spegni il transistor
+        gpio_set_level(PIN_TRANSISTOR, 0);
+        printf("Pin %d\n", gpio_get_level(PIN_TRANSISTOR));
+        // Attendi un po' prima di ripetere il loop
+        vTaskDelay(5000/portTICK_PERIOD_MS);
     }
-} 
+}
 
-void app_main(void){
-    esp_rom_gpio_pad_select_gpio(FAN_PIN);
-    gpio_set_direction(FAN_PIN, GPIO_MODE_OUTPUT);
-    
-    xTaskCreate(fan_handle, "fan_test", 4096, NULL, 10, &taskHandler0);
-    
+void app_main() {
+    // Inizializzazione delle periferiche
+    init();
+
+    // Creazione del task per il controllo del transistor
+    xTaskCreate(controlloTrasistor, "Controllo Transistor", 4096, NULL, 5, NULL);
 }

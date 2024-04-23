@@ -28,6 +28,6 @@ void app_main(void)
    {
        voltage = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_0), &adc1_chars);
        printf("ADC1_CHANNEL_0: %" PRIu32 " mV\n", voltage);
-       vTaskDelay(pdMS_TO_TICKS(100));
+       vTaskDelay(pdMS_TO_TICKS(60000/portTICK_PERIOD_MS));
    }
 }
