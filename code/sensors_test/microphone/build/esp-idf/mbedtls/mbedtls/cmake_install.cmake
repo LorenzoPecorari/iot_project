@@ -39,9 +39,9 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/utente/Scrivania/univ/iot_as/progetto/IoT---group-project/air/build/esp-idf/mbedtls/mbedtls/include/cmake_install.cmake")
-  include("/home/utente/Scrivania/univ/iot_as/progetto/IoT---group-project/air/build/esp-idf/mbedtls/mbedtls/3rdparty/cmake_install.cmake")
-  include("/home/utente/Scrivania/univ/iot_as/progetto/IoT---group-project/air/build/esp-idf/mbedtls/mbedtls/library/cmake_install.cmake")
+  include("/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/microphone/build/esp-idf/mbedtls/mbedtls/include/cmake_install.cmake")
+  include("/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/microphone/build/esp-idf/mbedtls/mbedtls/3rdparty/cmake_install.cmake")
+  include("/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/microphone/build/esp-idf/mbedtls/mbedtls/library/cmake_install.cmake")
 
 endif()
 
