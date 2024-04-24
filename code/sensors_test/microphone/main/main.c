@@ -20,8 +20,31 @@
 
 // GPIO_NUM_1 -> ADC_UNIT_1, ADC1_CHANNEL_0
 
+/*
+
++================= ATTENUATIONS =================+
+|================================================|
+| ADC_ATTEN_DB_0       -->     100 mV ~ 950 mV   |
+| ADC_ATTEN_DB_2_5     -->     100 mV ~ 1250 mV  |
+| ADC_ATTEN_DB_6       -->     150 mV ~ 1750 mV  |
+| ADC_ATTEN_DB_11 (12) -->     150 mV ~ 2450 mV  |
++================================================+
+
++============================ WIDTHS =========================+
+|=============================================================|
+| ADC_WIDTH_9Bit    (0)         -->     9 bits                |
+| ADC_WIDTH_10Bit   (1)         -->     10 bits               |
+| ADC_WIDTH_11Bit   (2)         -->     11 bits               |
+| ADC_WIDTH_12Bit   (3)         -->     12 bits               |
+| ADC_WIDTH_BIT_DEFAULT         -->     max bits available    |
++=============================================================+
+
+!!  use only 0, 1, 2 or 3 and not ADC_WIDTH_*bit otherwise it will not compile !!
+
+*/
+
 // attenutation and width of signal
-#define ATTENUATION ADC_ATTEN_DB_11
+#define ATTENUATION ADC_ATTEN_DB_12
 #define WIDTH ADC_WIDTH_BIT_DEFAULT
 
 // sampled data parameters
@@ -48,6 +71,6 @@ void app_main(void){
     // 2 sample/min => 120 sample/hour
     while(1){
         room_noise_sampling();
-        vTaskDelay(30000 / portTICK_PERIOD_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
