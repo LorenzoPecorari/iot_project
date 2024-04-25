@@ -1,17 +1,1 @@
-0000000000000000000000000000000000000000 2c668976bd53c5974eb9a1c4a9a7da83fee4d0fa Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712322689 +0200	clone: from https://github.com/LorenzoPecorari/IoT---group-project.git
-2c668976bd53c5974eb9a1c4a9a7da83fee4d0fa 5ffaa16d946b9466adfa9a1b26a0aed226c72128 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712323516 +0200	commit: changes on README
-5ffaa16d946b9466adfa9a1b26a0aed226c72128 3f6dc0fcaa0ce6abb0bf7c3df21b9e7dbb5a6384 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712323703 +0200	commit: photos removal
-3f6dc0fcaa0ce6abb0bf7c3df21b9e7dbb5a6384 565788a4f0affce7503f54193f19ab94b4796822 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712325316 +0200	commit: directory generation + hello_world code
-565788a4f0affce7503f54193f19ab94b4796822 b8de84e96b93f342126cdaf69a54dfd190547970 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712747457 +0200	pull: Fast-forward
-b8de84e96b93f342126cdaf69a54dfd190547970 c1f8cd59dda633e4e2b1d9a2d3330b17bdac04cd Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712750851 +0200	commit: updates on pptx and README
-c1f8cd59dda633e4e2b1d9a2d3330b17bdac04cd 7aa5273d97216f3fe9431bc8f4f1e1a1e30518c4 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712750987 +0200	pull: Fast-forward
-7aa5273d97216f3fe9431bc8f4f1e1a1e30518c4 6ab6a11cd4dd592f8f1cd1208d5a02df7f0d45db Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1712751009 +0200	commit: fix README
-6ab6a11cd4dd592f8f1cd1208d5a02df7f0d45db 5d93a5e996ca1c4ef05f0a668098082f2af6e4c7 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713000518 +0200	pull: Fast-forward
-5d93a5e996ca1c4ef05f0a668098082f2af6e4c7 a191e6feaee19257eca610759cc48a23ee3a63c4 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713000579 +0200	commit: fan test
-a191e6feaee19257eca610759cc48a23ee3a63c4 2f5bffcd6cc7890c462406e29c03f40104fd6b34 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713005726 +0200	pull: Fast-forward
-2f5bffcd6cc7890c462406e29c03f40104fd6b34 12ca643cdf1f50bcb7b074bfefe38ee84b66ef31 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713196235 +0200	pull: Fast-forward
-12ca643cdf1f50bcb7b074bfefe38ee84b66ef31 67531fd6eae67535616e625a8b4a063ccb8616e9 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713560663 +0200	commit: first servomotor test
-67531fd6eae67535616e625a8b4a063ccb8616e9 342319373e745a20133526d0d815d86217989a86 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713721203 +0200	pull: Fast-forward
-342319373e745a20133526d0d815d86217989a86 afd4b9b4c1f83c0e801e5f9205cf0cc872c188d4 Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713766521 +0200	commit: air module - first code
-afd4b9b4c1f83c0e801e5f9205cf0cc872c188d4 077a39f15e04d9622dd9f0731c0222cd7742021b Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713933007 +0200	pull: Fast-forward
-077a39f15e04d9622dd9f0731c0222cd7742021b f42083ff18eacb56d6a7d8ea1e4930cc85de5d4e Lorenzo Pecorari <pecorari.1885161@studenti.uniroma1.it> 1713955732 +0200	commit: microphone first code
+c6e444f75d5472f41fdcd4b6c5acd47851fc2ba8

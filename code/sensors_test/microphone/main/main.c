@@ -68,9 +68,9 @@ void init_microphone(){
 void app_main(void){
     init_microphone();
 
-    // 2 sample/min => 120 sample/hour
+    // 1 sample/min => 120 sample/hour
     while(1){
         room_noise_sampling();
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(60000 / portTICK_PERIOD_MS);
     }
 }
