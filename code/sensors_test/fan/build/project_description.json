@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "air",
-    "project_version":    "39ed178-dirty",
+    "project_version":    "ecf2522-dirty",
     "project_path":       "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/fan",
     "idf_path":           "/home/utente/esp/esp-idf",
     "build_dir":          "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/fan/build",
