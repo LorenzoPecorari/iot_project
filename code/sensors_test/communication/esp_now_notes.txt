@@ -1,0 +1,16 @@
+*** ESP-NOW NOTES ***
+
+official docs: https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/network/esp_now.html#_CPPv412esp_now_sendPK7uint8_tPK7uint8_t6size_t
+
+- set up wifi before using the protocol
+- deinitialize esp-now then wifi module
+- initialization through esp_now_init()
+- de-initialization throgh esp_now_deinit()
+- association with another device through esp_now_add_peer() (max 20 devices)
+- data tx using esp_now_send(), esp_now_register_send_cb() for callback function; see details for possible errors
+- to receive data use esp_now_register_recv_cb(); it is needed a callback function also for reception of data
+- callback functions => useful for knowing with message is sent/received correctly or not
+
+
+- headers to include: "esp_wifi.h", "esp_now.h"
+
