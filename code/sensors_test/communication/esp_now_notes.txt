@@ -14,3 +14,28 @@ official docs: https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-r
 
 - headers to include: "esp_wifi.h", "esp_now.h"
 
+*** WIFI SETUP ***
+
+official docs: https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-guides/wifi.html#esp32-s3-wi-fi-station-scenario-general
+
+- interfaces:
+	* STA -> station, "normal" usage of device into a network -> use this!
+	* AP -> access point
+	* Sniffer
+	* reserverd
+	* STA + AP -> WIFI_MODE_APSTA
+	
+- wifi driver initialization -> esp_wifi_init()
+- setting interface/mode -> esp_wifi_set_mode(WIFI_MODE_STA)
+- setting configuration -> esp_wifi_set_config(<mode>, <pointer to wifi_init_config_t structure>)
+- start module -> esp_wifi_start()
+- scan and connection -> esp_wifi_connect()
+- disconnection -> esp_wifi_disconnect()
+- stop and deinit phase -> esp_wifi_disconnect(), essp_wifi_stop(), esp_wifi_deinit()
+
+- wifi_init_config_t structure -> fields to fill: .sta{.ssid = <ssid of wifi ap>, .password = <password of wifi ap>}
+
+- important to handle events, program will be more reactive, no needed to wait fixed time -> generate a function for managing the events!
+- events have id, with ESP_EVENT_ANY_ID is possible to catch all the events related to WIFI cathegory (WIFI_EVENT) without caring about the id
+
+- netif is used for managing networks interfaces and events -> functions: esp_netif_init(), esp_event_loop_create_default()

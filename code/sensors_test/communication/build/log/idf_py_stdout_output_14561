@@ -1,0 +1,183 @@
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2810,len:0x178c
+load:0x403c8700,len:0x4
+load:0x403c8704,len:0xcb8
+load:0x403cb700,len:0x2d9c
+entry 0x403c8914
+[0;32mI (27) boot: ESP-IDF v5.3-dev-2265-gfdb7a43752 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Apr 27 2024 18:52:33[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (32) boot: chip revision: v0.1[0m
+[0;32mI (35) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (40) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (45) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (50) boot: Enabling RNG early entropy source...[0m
+[0;32mI (55) boot: Partition Table:[0m
+[0;32mI (59) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (66) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (73) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (81) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (88) boot: End of partition table[0m
+[0;32mI (92) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=0cb94h ( 52116) map[0m
+[0;32mI (110) esp_image: segment 1: paddr=0001cbbc vaddr=3fc91900 size=02914h ( 10516) load[0m
+[0;32mI (113) esp_image: segment 2: paddr=0001f4d8 vaddr=40374000 size=00b40h (  2880) load[0m
+[0;32mI (118) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=18490h ( 99472) map[0m
+[0;32mI (144) esp_image: segment 4: paddr=000384b8 vaddr=40374b40 size=0cda0h ( 52640) load[0m
+[0;32mI (161) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (162) boot: Disabling RNG early entropy source...[0m
+[0;32mI (173) cpu_start: Multicore app[0m
+[0;32mI (183) cpu_start: Pro cpu start user code[0m
+[0;32mI (183) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (183) app_init: Application information:[0m
+[0;32mI (186) app_init: Project name:     communications[0m
+[0;32mI (191) app_init: App version:      21d9c63-dirty[0m
+[0;32mI (197) app_init: Compile time:     Apr 27 2024 18:52:29[0m
+[0;32mI (203) app_init: ELF file SHA256:  d11256dc9...[0m
+[0;32mI (208) app_init: ESP-IDF:          v5.3-dev-2265-gfdb7a43752[0m
+[0;32mI (214) app_init: Min chip rev:     v0.0[0m
+[0;32mI (219) app_init: Max chip rev:     v0.99 [0m
+[0;32mI (224) app_init: Chip rev:         v0.1[0m
+[0;32mI (229) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (236) heap_init: At 3FC94AF0 len 00054C20 (339 KiB): RAM[0m
+[0;32mI (242) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (248) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (254) heap_init: At 600FE010 len 00001FD8 (7 KiB): RTCRAM[0m
+[0;32mI (261) spi_flash: detected chip: gd[0m
+[0;32mI (265) spi_flash: flash io: dio[0m
+[0;33mW (268) spi_flash: Detected size(8192k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (282) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (289) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (296) main_task: Started on CPU0[0m
+[0;32mI (316) main_task: Calling app_main()[0m
+[0;32mI (316) communications test: Compliation gone good[0m
+[0;32mI (10316) communications test: Compliation gone good[0m
+[0;32mI (20316) communications test: Compliation gone good[0m
+[0;32mI (30316) communications test: Compliation gone good[0m
+[0;32mI (40316) communications test: Compliation gone good[0m
+[0;32mI (50316) communications test: Compliation gone good[0m
+[0;32mI (60316) communications test: Compliation gone good[0m
+[0;32mI (70316) communications test: Compliation gone good[0m
+[0;32mI (80316) communications test: Compliation gone good[0m
+[0;32mI (90316) communications test: Compliation gone good[0m
+[0;32mI (100316) communications test: Compliation gone good[0m
+[0;32mI (110316) communications test: Compliation gone good[0m
+[0;32mI (120316) communications test: Compliation gone good[0m
+[0;32mI (130316) communications test: Compliation gone good[0m
+[0;32mI (140316) communications test: Compliation gone good[0m
+[0;32mI (150316) communications test: Compliation gone good[0m
+[0;32mI (160316) communications test: Compliation gone good[0m
+[0;32mI (170316) communications test: Compliation gone good[0m
+[0;32mI (180316) communications test: Compliation gone good[0m
+[0;32mI (190316) communications test: Compliation gone good[0m
+[0;32mI (200316) communications test: Compliation gone good[0m
+[0;32mI (210316) communications test: Compliation gone good[0m
+[0;32mI (220316) communications test: Compliation gone good[0m
+[0;32mI (230316) communications test: Compliation gone good[0m
+[0;32mI (240316) communications test: Compliation gone good[0m
+[0;32mI (250316) communications test: Compliation gone good[0m
+[0;32mI (260316) communications test: Compliation gone good[0m
+[0;32mI (270316) communications test: Compliation gone good[0m
+[0;32mI (280316) communications test: Compliation gone good[0m
+[0;32mI (290316) communications test: Compliation gone good[0m
+[0;32mI (300316) communications test: Compliation gone good[0m
+[0;32mI (310316) communications test: Compliation gone good[0m
+[0;32mI (320316) communications test: Compliation gone good[0m
+[0;32mI (330316) communications test: Compliation gone good[0m
+[0;32mI (340316) communications test: Compliation gone good[0m
+[0;32mI (350316) communications test: Compliation gone good[0m
+[0;32mI (360316) communications test: Compliation gone good[0m
+[0;32mI (370316) communications test: Compliation gone good[0m
+[0;32mI (380316) communications test: Compliation gone good[0m
+[0;32mI (390316) communications test: Compliation gone good[0m
+[0;32mI (400316) communications test: Compliation gone good[0m
+[0;32mI (410316) communications test: Compliation gone good[0m
+[0;32mI (420316) communications test: Compliation gone good[0m
+[0;32mI (430316) communications test: Compliation gone good[0m
+[0;32mI (440316) communications test: Compliation gone good[0m
+[0;32mI (450316) communications test: Compliation gone good[0m
+[0;32mI (460316) communications test: Compliation gone good[0m
+[0;32mI (470316) communications test: Compliation gone good[0m
+[0;32mI (480316) communications test: Compliation gone good[0m
+[0;32mI (490316) communications test: Compliation gone good[0m
+[0;32mI (500316) communications test: Compliation gone good[0m
+[0;32mI (510316) communications test: Compliation gone good[0m
+[0;32mI (520316) communications test: Compliation gone good[0m
+[0;32mI (530316) communications test: Compliation gone good[0m
+[0;32mI (540316) communications test: Compliation gone good[0m
+[0;32mI (550316) communications test: Compliation gone good[0m
+[0;32mI (560316) communications test: Compliation gone good[0m
+[0;32mI (570316) communications test: Compliation gone good[0m
+[0;32mI (580316) communications test: Compliation gone good[0m
+[0;32mI (590316) communications test: Compliation gone good[0m
+[0;32mI (600316) communications test: Compliation gone good[0m
+[0;32mI (610316) communications test: Compliation gone good[0m
+[0;32mI (620316) communications test: Compliation gone good[0m
+[0;32mI (630316) communications test: Compliation gone good[0m
+[0;32mI (640316) communications test: Compliation gone good[0m
+[0;32mI (650316) communications test: Compliation gone good[0m
+[0;32mI (660316) communications test: Compliation gone good[0m
+[0;32mI (670316) communications test: Compliation gone good[0m
+[0;32mI (680316) communications test: Compliation gone good[0m
+[0;32mI (690316) communications test: Compliation gone good[0m
+[0;32mI (700316) communications test: Compliation gone good[0m
+[0;32mI (710316) communications test: Compliation gone good[0m
+[0;32mI (720316) communications test: Compliation gone good[0m
+[0;32mI (730316) communications test: Compliation gone good[0m
+[0;32mI (740316) communications test: Compliation gone good[0m
+[0;32mI (750316) communications test: Compliation gone good[0m
+[0;32mI (760316) communications test: Compliation gone good[0m
+[0;32mI (770316) communications test: Compliation gone good[0m
+[0;32mI (780316) communications test: Compliation gone good[0m
+[0;32mI (790316) communications test: Compliation gone good[0m
+[0;32mI (800316) communications test: Compliation gone good[0m
+[0;32mI (810316) communications test: Compliation gone good[0m
+[0;32mI (820316) communications test: Compliation gone good[0m
+[0;32mI (830316) communications test: Compliation gone good[0m
+[0;32mI (840316) communications test: Compliation gone good[0m
+[0;32mI (850316) communications test: Compliation gone good[0m
+[0;32mI (860316) communications test: Compliation gone good[0m
+[0;32mI (870316) communications test: Compliation gone good[0m
+[0;32mI (880316) communications test: Compliation gone good[0m
+[0;32mI (890316) communications test: Compliation gone good[0m
+[0;32mI (900316) communications test: Compliation gone good[0m
+[0;32mI (910316) communications test: Compliation gone good[0m
+[0;32mI (920316) communications test: Compliation gone good[0m
+[0;32mI (930316) communications test: Compliation gone good[0m
+[0;32mI (940316) communications test: Compliation gone good[0m
+[0;32mI (950316) communications test: Compliation gone good[0m
+[0;32mI (960316) communications test: Compliation gone good[0m
+[0;32mI (970316) communications test: Compliation gone good[0m
+[0;32mI (980316) communications test: Compliation gone good[0m
+[0;32mI (990316) communications test: Compliation gone good[0m
+[0;32mI (1000316) communications test: Compliation gone good[0m
+[0;32mI (1010316) communications test: Compliation gone good[0m
+[0;32mI (1020316) communications test: Compliation gone good[0m
+[0;32mI (1030316) communications test: Compliation gone good[0m
+[0;32mI (1040316) communications test: Compliation gone good[0m
+[0;32mI (1050316) communications test: Compliation gone good[0m
+[0;32mI (1060316) communications test: Compliation gone good[0m
+[0;32mI (1070316) communications test: Compliation gone good[0m
+[0;32mI (1080316) communications test: Compliation gone good[0m
+[0;32mI (1090316) communications test: Compliation gone good[0m
+[0;32mI (1100316) communications test: Compliation gone good[0m
+[0;32mI (1110316) communications test: Compliation gone good[0m
+[0;32mI (1120316) communications test: Compliation gone good[0m
+[0;32mI (1130316) communications test: Compliation gone good[0m
+[0;32mI (1140316) communications test: Compliation gone good[0m
+[0;32mI (1150316) communications test: Compliation gone good[0m
+[0;32mI (1160316) communications test: Compliation gone good[0m
+[0;32mI (1170316) communications test: Compliation gone good[0m
+[0;32mI (1180316) communications test: Compliation gone good[0m
+[0;32mI (1190316) communications test: Compliation gone good[0m
+[0;32mI (1200316) communications test: Compliation gone good[0m
+[0;32mI (1210316) communications test: Compliation gone good[0m
+[0;32mI (1220316) communications test: Compliation gone good[0m
+[0;32mI (1230316) communications test: Compliation gone good[0m
+[0;32mI (1240316) communications test: Compliation gone good[0m
+[0;32mI (1250316) communications test: Compliation gone good[0m
+[0;32mI (1260316) communications test: Compliation gone good[0m
+[0;32mI (1270316) communications test: Compliation gone good[0m
