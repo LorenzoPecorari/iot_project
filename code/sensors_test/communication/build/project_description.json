@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "communications",
-    "project_version":    "21d9c63-dirty",
+    "project_version":    "e86ab9b-dirty",
     "project_path":       "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/communication",
     "idf_path":           "/home/utente/esp/esp-idf",
     "build_dir":          "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/communication/build",
