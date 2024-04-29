@@ -35,7 +35,7 @@ uint8_t peer_mac[ESP_NOW_ETH_ALEN];
 //uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
 uint8_t this_mac[6];
 
-uint8_t data[];
+uint8_t data[Q_LENGTH] = {0};
 
 int uninitialized_connection = 1;
 
@@ -235,9 +235,9 @@ void app_main(){
    // in the end, it should send an array of 10 'ones' of size = sizeof(uint8_t)
    /*
     while(cnt < Q_LENGTH){
-        data[cnt]++;
+        data[cnt] = (cnt * cnt) mod Q_LENGTH;
         vTaskDelay(1000 / portTICK_PERIOD_MS);
-        send_now_msg(data);
+        send_now_msg(&data[cnt]);
         cnt++;
     }
     */
