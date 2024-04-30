@@ -30,9 +30,9 @@ esp_err_t error;
 esp_now_peer_info_t peer_info;
 
 // mac addresses variables
-uint8_t peer_mac[ESP_NOW_ETH_ALEN];
+//uint8_t peer_mac[ESP_NOW_ETH_ALEN];
 //uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0xf4, 0x12, 0xfa, 0x9f, 0xf4, 0x70} //esp32 lorenzo
-//uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
+uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
 uint8_t this_mac[6];
 
 uint8_t data[Q_LENGTH] = {0};
@@ -222,25 +222,22 @@ void app_main(){
     printf("Connected to: %s\n", ssid);
     */
 
-   /*
+
     printf("\tWaiting 10s...");
-    while(cnt < 100){
+    while(cnt < 10){
         vTaskDelay(1000 / portTICK_PERIOD_MS);
         cnt++;
     }
     printf(" done\n");
-    */
 
    // part for sending data
    // in the end, it should send an array of 10 'ones' of size = sizeof(uint8_t)
-   /*
     while(cnt < Q_LENGTH){
-        data[cnt] = (cnt * cnt) mod Q_LENGTH;
+        data[cnt] = (cnt * cnt) % Q_LENGTH;
         vTaskDelay(1000 / portTICK_PERIOD_MS);
         send_now_msg(&data[cnt]);
         cnt++;
     }
-    */
    
    // part for receiving data
    /*
