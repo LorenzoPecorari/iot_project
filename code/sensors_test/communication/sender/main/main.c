@@ -232,6 +232,8 @@ void app_main(){
 
    // part for sending data
    // in the end, it should send an array of 10 'ones' of size = sizeof(uint8_t)
+    cnt = 0;
+    
     while(cnt < Q_LENGTH){
         data[cnt] = (cnt * cnt) % Q_LENGTH;
         vTaskDelay(1000 / portTICK_PERIOD_MS);
