@@ -1,0 +1,80 @@
+[1/10] Performing build step for 'bootloader'
+[1/1] cd /home/michele/Desktop/iot/test/wifi_connection/build/bootloader/esp-idf/esptool_py && /home/michele/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/michele/esp/v5.2.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /home/michele/Desktop/iot/test/wifi_connection/build/bootloader/bootloader.bin
+Bootloader binary size 0x5250 bytes. 0x2db0 bytes (36%) free.
+[2/8] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/main.c.obj
+[3/8] Linking C static library esp-idf/main/libmain.a
+[4/8] Generating ld/sections.ld
+[5/8] Linking CXX executable wifi_test.elf
+[6/8] Generating binary image from built executable
+esptool.py v4.7.0
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+Generated /home/michele/Desktop/iot/test/wifi_connection/build/wifi_test.bin
+[7/8] cd /home/michele/Desktop/iot/test/wifi_connection/build/esp-idf/esptool_py && /home/michele/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/michele/esp/v5.2.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/michele/Desktop/iot/test/wifi_connection/build/partition_table/partition-table.bin /home/michele/Desktop/iot/test/wifi_connection/build/wifi_test.bin
+wifi_test.bin binary size 0xd3590 bytes. Smallest app partition is 0x100000 bytes. 0x2ca70 bytes (17%) free.
+[7/8] cd /home/michele/esp/v5.2.1/esp-idf/components/esptool_py && /usr/bin/cmake -D IDF_PATH=/home/michele/esp/v5.2.1/esp-idf -D "SERIAL_TOOL=/home/michele/.espressif/python_env/idf5.2_py3.10_env/bin/python;;/home/michele/esp/v5.2.1/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32s3" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D WORKING_DIRECTORY=/home/michele/Desktop/iot/test/wifi_connection/build -P /home/michele/esp/v5.2.1/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool.py --chip esp32s3 -p /dev/ttyUSB0 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 2MB 0x0 bootloader/bootloader.bin 0x10000 wifi_test.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.7.0
+Serial port /dev/ttyUSB0
+Connecting....
+Chip is ESP32-S3 (QFN56) (revision v0.2)
+Features: WiFi, BLE, Embedded Flash 8MB (GD)
+Crystal is 40MHz
+MAC: 48:27:e2:e1:e0:f8
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00000000 to 0x00005fff...
+Flash will be erased from 0x00010000 to 0x000e3fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Compressed 21072 bytes to 13080...
+Writing at 0x00000000... (100 %)
+Wrote 21072 bytes (13080 compressed) at 0x00000000 in 0.6 seconds (effective 295.4 kbit/s)...
+Hash of data verified.
+Compressed 865680 bytes to 534888...
+Writing at 0x00010000... (3 %)
+Writing at 0x0001dbc1... (6 %)
+Writing at 0x00026769... (9 %)
+Writing at 0x0002b44a... (12 %)
+Writing at 0x00034761... (15 %)
+Writing at 0x0003eeb0... (18 %)
+Writing at 0x00044cba... (21 %)
+Writing at 0x0004b2d9... (24 %)
+Writing at 0x0005164d... (27 %)
+Writing at 0x0005751b... (30 %)
+Writing at 0x0005d221... (33 %)
+Writing at 0x000630f2... (36 %)
+Writing at 0x000695af... (39 %)
+Writing at 0x0006f410... (42 %)
+Writing at 0x000748ae... (45 %)
+Writing at 0x0007983f... (48 %)
+Writing at 0x0007e8c0... (51 %)
+Writing at 0x000839f0... (54 %)
+Writing at 0x00088ce8... (57 %)
+Writing at 0x0008e12c... (60 %)
+Writing at 0x00094041... (63 %)
+Writing at 0x000999b9... (66 %)
+Writing at 0x0009f495... (69 %)
+Writing at 0x000a5080... (72 %)
+Writing at 0x000aac08... (75 %)
+Writing at 0x000b0667... (78 %)
+Writing at 0x000b6355... (81 %)
+Writing at 0x000bba74... (84 %)
+Writing at 0x000c2e91... (87 %)
+Writing at 0x000cd55d... (90 %)
+Writing at 0x000d331e... (93 %)
+Writing at 0x000d95ca... (96 %)
+Writing at 0x000df85d... (100 %)
+Wrote 865680 bytes (534888 compressed) at 0x00010000 in 12.2 seconds (effective 568.2 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 103...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (103 compressed) at 0x00008000 in 0.0 seconds (effective 547.9 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...

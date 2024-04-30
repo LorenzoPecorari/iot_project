@@ -1,0 +1,66 @@
+[1/5] cd /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/build/esp-idf/esptool_py && /home/michele/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/michele/esp/v5.2.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/build/partition_table/partition-table.bin /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/build/communications.bin
+communications.bin binary size 0xb6820 bytes. Smallest app partition is 0x100000 bytes. 0x497e0 bytes (29%) free.
+[2/5] Performing build step for 'bootloader'
+[1/1] cd /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/build/bootloader/esp-idf/esptool_py && /home/michele/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/michele/esp/v5.2.1/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/build/bootloader/bootloader.bin
+Bootloader binary size 0x5250 bytes. 0x2db0 bytes (36%) free.
+[2/3] cd /home/michele/esp/v5.2.1/esp-idf/components/esptool_py && /usr/bin/cmake -D IDF_PATH=/home/michele/esp/v5.2.1/esp-idf -D "SERIAL_TOOL=/home/michele/.espressif/python_env/idf5.2_py3.10_env/bin/python;;/home/michele/esp/v5.2.1/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32s3" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D WORKING_DIRECTORY=/home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/build -P /home/michele/esp/v5.2.1/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool.py --chip esp32s3 -p /dev/ttyUSB0 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 2MB 0x0 bootloader/bootloader.bin 0x10000 communications.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.7.0
+Serial port /dev/ttyUSB0
+Connecting...
+Chip is ESP32-S3 (QFN56) (revision v0.2)
+Features: WiFi, BLE, Embedded Flash 8MB (GD)
+Crystal is 40MHz
+MAC: 48:27:e2:e1:e0:f8
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00000000 to 0x00005fff...
+Flash will be erased from 0x00010000 to 0x000c6fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Compressed 21072 bytes to 13080...
+Writing at 0x00000000... (100 %)
+Wrote 21072 bytes (13080 compressed) at 0x00000000 in 0.6 seconds (effective 290.8 kbit/s)...
+Hash of data verified.
+Compressed 747552 bytes to 464520...
+Writing at 0x00010000... (3 %)
+Writing at 0x0001cf94... (6 %)
+Writing at 0x000250bc... (10 %)
+Writing at 0x00029ed5... (13 %)
+Writing at 0x00035f1b... (17 %)
+Writing at 0x0003c35d... (20 %)
+Writing at 0x0004232b... (24 %)
+Writing at 0x0004870d... (27 %)
+Writing at 0x0004e8ea... (31 %)
+Writing at 0x0005470c... (34 %)
+Writing at 0x0005a038... (37 %)
+Writing at 0x0005ef67... (41 %)
+Writing at 0x00064153... (44 %)
+Writing at 0x00068fdb... (48 %)
+Writing at 0x0006e392... (51 %)
+Writing at 0x00073655... (55 %)
+Writing at 0x00078f99... (58 %)
+Writing at 0x0007e9e9... (62 %)
+Writing at 0x0008454b... (65 %)
+Writing at 0x0008a2e5... (68 %)
+Writing at 0x0008fba3... (72 %)
+Writing at 0x0009586e... (75 %)
+Writing at 0x0009b4e4... (79 %)
+Writing at 0x000a19ef... (82 %)
+Writing at 0x000a6e30... (86 %)
+Writing at 0x000b1039... (89 %)
+Writing at 0x000b84cd... (93 %)
+Writing at 0x000be84f... (96 %)
+Writing at 0x000c42db... (100 %)
+Wrote 747552 bytes (464520 compressed) at 0x00010000 in 10.6 seconds (effective 565.0 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 103...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (103 compressed) at 0x00008000 in 0.0 seconds (effective 518.6 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...

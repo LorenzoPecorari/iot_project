@@ -30,9 +30,9 @@ esp_err_t error;
 esp_now_peer_info_t peer_info;
 
 // mac addresses variables
-uint8_t peer_mac[ESP_NOW_ETH_ALEN];
-//uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0xf4, 0x12, 0xfa, 0x9f, 0xf4, 0x70} //esp32 lorenzo
-uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
+// uint8_t peer_mac[ESP_NOW_ETH_ALEN];
+uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0xf4, 0x12, 0xfa, 0x9f, 0xf4, 0x70} //esp32 lorenzo
+// uint8_t peer_mac[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
 uint8_t this_mac[6];
 
 uint8_t data[Q_LENGTH] = {0};

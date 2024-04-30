@@ -1,4 +1,4 @@
-# Install script for directory: /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/main
+# Install script for directory: /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

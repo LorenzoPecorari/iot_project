@@ -1,0 +1,111 @@
+wifi_test[0m
+�ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce3810,len:0x178c
+load:0x403c9700,len:0x4
+load:0x403c9704,len:0xcbc
+load:0x403cc700,len:0x2da0
+entry 0x403c9914
+[0;32mI (27) boot: ESP-IDF v5.2.1-dirty 2nd stage bootloader[0m
+[0;32mI (27) boot: compile time Apr 27 2024 16:00:56[0m
+[0;32mI (27) boot: Multicore bootloader[0m
+[0;32mI (30) boot: chip revision: v0.2[0m
+[0;32mI (34) boot.esp32s3: Boot SPI Speed : 80MHz[0m
+[0;32mI (39) boot.esp32s3: SPI Mode       : DIO[0m
+[0;32mI (44) boot.esp32s3: SPI Flash Size : 2MB[0m
+[0;32mI (48) boot: Enabling RNG early entropy source...[0m
+[0;32mI (54) boot: Partition Table:[0m
+[0;32mI (57) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (65) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (72) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (80) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (87) boot: End of partition table[0m
+[0;32mI (91) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=26bb4h (158644) map[0m
+[0;32mI (128) esp_image: segment 1: paddr=00036bdc vaddr=3fc97e00 size=04680h ( 18048) load[0m
+[0;32mI (132) esp_image: segment 2: paddr=0003b264 vaddr=40374000 size=04db4h ( 19892) load[0m
+[0;32mI (138) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=95ae8h (613096) map[0m
+[0;32mI (252) esp_image: segment 4: paddr=000d5b10 vaddr=40378db4 size=0ef98h ( 61336) load[0m
+[0;32mI (274) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (275) boot: Disabling RNG early entropy source...[0m
+[0;32mI (286) cpu_start: Multicore app[0m
+[0;32mI (296) cpu_start: Pro cpu start user code[0m
+[0;32mI (296) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (296) cpu_start: Application information:[0m
+[0;32mI (299) cpu_start: Project name:     wifi_test[0m
+[0;32mI (304) cpu_start: App version:      1[0m
+[0;32mI (308) cpu_start: Compile time:     Apr 27 2024 16:00:50[0m
+[0;32mI (314) cpu_start: ELF file SHA256:  aa076e7a3...[0m
+[0;32mI (320) cpu_start: ESP-IDF:          v5.2.1-dirty[0m
+[0;32mI (325) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (330) cpu_start: Max chip rev:     v0.99 [0m
+[0;32mI (335) cpu_start: Chip rev:         v0.2[0m
+[0;32mI (339) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (347) heap_init: At 3FCA04B8 len 00049258 (292 KiB): RAM[0m
+[0;32mI (353) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM[0m
+[0;32mI (359) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM[0m
+[0;32mI (365) heap_init: At 600FE010 len 00001FD8 (7 KiB): RTCRAM[0m
+[0;32mI (372) spi_flash: detected chip: gd[0m
+[0;32mI (375) spi_flash: flash io: dio[0m
+[0;33mW (379) spi_flash: Detected size(8192k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (393) sleep: Configure to isolate all GPIO pins in sleep state[0m
+[0;32mI (399) sleep: Enable automatic switching of GPIO sleep configuration[0m
+[0;32mI (407) main_task: Started on CPU0[0m
+[0;32mI (417) main_task: Calling app_main()[0m
+[0;32mI (447) Wifi test: Flash init[0m
+[0;32mI (447) Wifi test: Flash init[0m
+[0;32mI (447) Wifi test: Flash init[0m
+[0;32mI (447) pp: pp rom version: e7ae62f[0m
+[0;32mI (447) net80211: net80211 rom version: e7ae62f[0m
+I (467) wifi:wifi driver task: 3fcaa4d4, prio:23, stack:6656, core=0
+I (477) wifi:wifi firmware version: a9f5b59
+I (477) wifi:wifi certification version: v7.0
+I (477) wifi:config NVS flash: enabled
+I (477) wifi:config nano formating: disabled
+I (477) wifi:Init data frame dynamic rx buffer num: 32
+I (487) wifi:Init static rx mgmt buffer num: 5
+I (487) wifi:Init management short buffer num: 32
+I (497) wifi:Init dynamic tx buffer num: 32
+I (497) wifi:Init static tx FG buffer num: 2
+I (507) wifi:Init static rx buffer size: 1600
+I (507) wifi:Init static rx buffer num: 10
+I (507) wifi:Init dynamic rx buffer num: 32
+[0;32mI (517) wifi_init: rx ba win: 6[0m
+[0;32mI (517) wifi_init: tcpip mbox: 32[0m
+[0;32mI (527) wifi_init: udp mbox: 6[0m
+[0;32mI (527) wifi_init: tcp mbox: 6[0m
+[0;32mI (527) wifi_init: tcp tx win: 5760[0m
+[0;32mI (537) wifi_init: tcp rx win: 5760[0m
+[0;32mI (537) wifi_init: tcp mss: 1440[0m
+[0;32mI (547) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (547) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;32mI (547) Wifi test: Wifi init[0m
+[0;32mI (557) Wifi test: Set mode[0m
+[0;32mI (557) Wifi test: Set config[0m
+[0;32mI (567) phy_init: phy_version 640,cd64a1a,Jan 24 2024,17:28:12[0m
+I (607) wifi:mode : sta (48:27:e2:e1:e0:f8)
+I (607) wifi:enable tsf
+[0;32mI (607) Wifi test: Wifi connected to router[0m
+[0;32mI (607) Wifi test: Wifi start[0m
+[0;32mI (607) Wifi test: Wifi connection...[0m
+[0;31mE (617) esp-tls: couldn't get hostname for :www.google.it: getaddrinfo() returns 202, addrinfo=0x0[0m
+[0;31mE (627) esp-tls: Failed to open new connection[0m
+[0;31mE (627) transport_base: Failed to open a new connection[0m
+[0;31mE (637) HTTP_CLIENT: Connection failed, sock < 0[0m
+I (637) wifi:new:<11,0>, old:<1,0>, ap:<255,255>, sta:<11,0>, prof:1
+I (647) wifi:state: init -> auth (b0)
+[0;31mE (647) Test: Internet connectivity test failed[0m
+I (657) wifi:state: auth -> assoc (0)
+[0;32mI (657) main_task: Returned from app_main()[0m
+I (687) wifi:state: assoc -> run (10)
+I (747) wifi:connected with AndroidAPP, aid = 1, channel 11, BW20, bssid = 76:cd:01:ef:bd:4d
+I (747) wifi:security: WPA2-PSK, phy: bgn, rssi: -45
+I (747) wifi:pm start, type: 1
+
+I (747) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (757) wifi:set rx beacon pti, rx_bcn_pti: 0, bcn_timeout: 25000, mt_pti: 0, mt_time: 10000
+[0;32mI (767) WiFi: Connesso alla rete WiFi[0m
+I (817) wifi:dp: 2, bi: 102400, li: 4, scale listen interval from 307200 us to 409600 us
+I (817) wifi:AP's beacon interval = 102400 us, DTIM period = 2

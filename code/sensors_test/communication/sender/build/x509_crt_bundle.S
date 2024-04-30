@@ -1,4 +1,4 @@
-/* * Data converted from /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/michele/Desktop/iot/group_project/iot_project/code/sensors_test/communication/sender/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded
