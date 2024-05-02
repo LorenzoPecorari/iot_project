@@ -29,8 +29,8 @@ uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // br
 void handle_error(esp_err_t err){
 
     if(err != ESP_OK){
-        ESP_LOGE(APP_NAME, "Error");
-        ESP_ERROR_CHECK(err);
+        ESP_LOGE(APP_NAME, "Error %d", err);
+        //ESP_ERROR_CHECK(err);
     }
 
 }
