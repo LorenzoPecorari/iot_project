@@ -26,8 +26,9 @@ QueueHandle_t queue;
 
 //uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0xf4, 0x12, 0xfa, 0x9f, 0xf4, 0x70}; //esp32 lorenzo
 //uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
-uint8_t mac_addr_[ESP_NOW_ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}; // broadcast mac
-uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0}; // initially broadcast, later specific address
+uint8_t this_mac[ESP_NOW_ETH_ALEN] = {0};
 
 // "handles" the return value of a function
 void handle_error(esp_err_t err){
@@ -64,26 +65,18 @@ void recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len){
 
 // callback function for messages sending
 void send_cb(const uint8_t *mac_addr, esp_now_send_status_t status){
-    
-    if (status == ESP_NOW_SEND_SUCCESS) {
-        ESP_LOGI(APP_NAME, "Send success");
-    }
-    else {
+    if (status != ESP_NOW_SEND_SUCCESS)
         ESP_LOGE(APP_NAME, "Send failed");
-    }
-
 }
 
 // sends messages throug esp-now
 void send_esp_now_msg(uint8_t *data, int len){
-
     handle_error(esp_now_send(mac_addr, data, len));
     ESP_LOGI(APP_NAME, "Sent: %d", *(data));
-
 }
 
 // retrives the mac address of the device (wifi module)
-void retrieve_mac(uint8_t* mac, int len){
+void retrieve_mac(uint8_t* mac){
     if(!mac){
         ESP_LOGI(APP_NAME, "mac retrieving error");
     }
@@ -93,13 +86,70 @@ void retrieve_mac(uint8_t* mac, int len){
 
 };
 
+// sets the peer with certain mac passed as argoument of the function
 void set_peer(esp_now_peer_info_t* peer, uint8_t* mac){
+    if(peer && mac){
+        memcpy(peer->peer_addr, mac_addr, ESP_NOW_ETH_ALEN);
+        peer->channel = CHANNEL;
+        peer->encrypt = false;
+        
+        handle_error(esp_now_add_peer(peer));
+    }
+}
 
-    memcpy(peer->peer_addr, mac_addr, ESP_NOW_ETH_ALEN);
-    peer->channel = CHANNEL;
-    peer->encrypt = false;
+// sets the mac of the peer through set_peer()
+void set_mac(uint8_t* mac){
+    if(!mac)
+        ESP_LOGE(APP_NAME, "Invalid mac pointer");
+    else{
+        memcpy(mac_addr, mac, SIZE * Q_LENGTH);
+        
+        esp_now_peer_info_t *peer = malloc(sizeof(esp_now_peer_info_t));
     
-    handle_error(esp_now_add_peer(peer));
+        if (peer == NULL) {
+            ESP_LOGE(APP_NAME, "Memory allocation : fail");
+            return;
+        }
+
+        memset(peer, 0, sizeof(esp_now_peer_info_t));
+        set_peer(peer, mac_addr);
+        free(peer);
+    }
+
+}
+
+// sets the peer in order to sends and receive messages in broadcast
+void set_broadcast_mac(){
+    uint8_t addr[ESP_NOW_ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff,}; // broadcast mac
+    set_mac(addr);
+}
+
+// transmits its own broadcast
+void mac_tx(){
+    ESP_LOGI(APP_NAME, "Sending mac to... %02x:%02x:%02x:%02x:%02x:%02x", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+    int cnt = 0;
+
+    while(cnt < ESP_NOW_ETH_ALEN){
+        send_esp_now_msg(&this_mac[cnt], SIZE);
+        vTaskDelay(2500 / portTICK_PERIOD_MS);
+        cnt++;
+    }
+}
+
+// receives the mac address of the other peer
+void mac_rx(){
+    memset(mac_addr, 0, SIZE * ESP_NOW_ETH_ALEN);
+    int cnt = 0;
+
+    // receives the mac address from the other peer
+    while(cnt < ESP_NOW_ETH_ALEN){
+        xQueueReceive(queue, &mac_addr[cnt], portMAX_DELAY);
+        cnt++;
+    }
+
+    ESP_LOGI(APP_NAME, "Mac address received= %02x:%02x:%02x:%02x:%02x:%02x\n", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
+
+    set_mac(mac_addr);
 }
 
 //  creates the queue, initializes esp-now, registers the callback functions, sets the peer to which send data
@@ -116,18 +166,10 @@ void init_esp_now(){
     handle_error(esp_now_register_recv_cb(recv_cb));
     handle_error(esp_now_register_send_cb(send_cb));
 
-    esp_now_peer_info_t *peer = malloc(sizeof(esp_now_peer_info_t));
-    
-    if (peer == NULL) {
-        ESP_LOGE(APP_NAME, "Memory allocation : fail");
-        return;
-    }
+    set_broadcast_mac();
 
-    memset(peer, 0, sizeof(esp_now_peer_info_t));
-    
-    set_peer(peer, mac_addr);
-    
-    free(peer);
+    memset(this_mac, 0, SIZE * ESP_NOW_ETH_ALEN);
+    retrieve_mac(this_mac);
 }
 
 void app_main(void){
@@ -136,58 +178,7 @@ void app_main(void){
     wifi_init();
     init_esp_now();
 
-    int cnt = 0;
-
-    uint8_t* data = (uint8_t*) malloc(sizeof(uint8_t) * ESP_NOW_ETH_ALEN);
-    if(data){
-        memset(mac_addr_, 0, SIZE * ESP_NOW_ETH_ALEN);
-
-        // receives the mac address from the other peer
-        while(cnt < ESP_NOW_ETH_ALEN){
-            xQueueReceive(queue, &mac_addr[cnt], portMAX_DELAY);
-            cnt++;
-        }
-
-        memset(data, 0, SIZE * ESP_NOW_ETH_ALEN);
-
-        ESP_LOGI(APP_NAME, "Mac address received= %02x:%02x:%02x:%02x:%02x:%02x\n", mac_addr_[0], mac_addr_[1], mac_addr_[2], mac_addr_[3], mac_addr_[4], mac_addr_[5]);
-        retrieve_mac(data, ESP_NOW_ETH_ALEN);
-
-        cnt = 0;
-
-        esp_now_peer_info_t *peer = malloc(sizeof(esp_now_peer_info_t));
-    
-        if (peer == NULL) {
-            ESP_LOGE(APP_NAME, "Memory allocation : fail");
-            return;
-        }
-
-        memset(peer, 0, sizeof(esp_now_peer_info_t));
-        
-        set_peer(peer, mac_addr);
-        
-        free(peer);
-
-        // sends data containing the mac addr of the device (wifi module)
-        while(cnt < ESP_NOW_ETH_ALEN){
-            printf("MAC addr: %02x:%02x:%02x:%02x:%02x:%02x\n", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
-            printf("%02x", *(&data[cnt]));
-            send_esp_now_msg(&data[cnt], SIZE);
-            vTaskDelay(2500 / portTICK_PERIOD_MS);
-            cnt++;
-        }
-        
-        cnt = 0;
-
-        while(cnt < ESP_NOW_ETH_ALEN){
-            xQueueReceive(queue, &mac_addr[cnt], portMAX_DELAY);
-            cnt++;
-        }
-
-        free(data);
-
-    }
-    else
-        ESP_LOGE(APP_NAME, "Memory allocation: error!");
+    //mac_tx();
+    //mac_rx();
 
 }
