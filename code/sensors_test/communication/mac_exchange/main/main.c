@@ -141,9 +141,11 @@ void mac_rx(){
     memset(mac_addr, 0, SIZE * ESP_NOW_ETH_ALEN);
     int cnt = 0;
 
+    queue = xQueueCreate(Q_LENGTH, SIZE);
+
     // receives the mac address from the other peer
     while(cnt < ESP_NOW_ETH_ALEN){
-        xQueueReceive(queue, &mac_addr[cnt], portMAX_DELAY);
+        xQueueReceive(queue, (&mac_addr + cnt), portMAX_DELAY);
         cnt++;
     }
 
@@ -179,6 +181,6 @@ void app_main(void){
     init_esp_now();
 
     //mac_tx();
-    //mac_rx();
+    mac_rx();
 
 }

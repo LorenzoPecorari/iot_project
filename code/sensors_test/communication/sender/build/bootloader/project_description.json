@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "bootloader",
-    "project_version":    "v5.3-dev-2265-gfdb7a43752",
+    "project_version":    "v5.3-dev-2265-gfdb7a43752-dirty",
     "project_path":       "/home/utente/esp/esp-idf/components/bootloader/subproject",
     "idf_path":           "/home/utente/esp/esp-idf",
     "build_dir":          "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/communication/sender/build/bootloader",
@@ -11,7 +11,7 @@
     "app_elf":            "bootloader.elf",
     "app_bin":            "bootloader.bin",
     "build_type":         "flash_app",
-    "git_revision":       "v5.3-dev-2265-gfdb7a43752",
+    "git_revision":       "v5.3-dev-2265-gfdb7a43752-dirty",
     "target":             "esp32s3",
     "rev":                "",
     "min_rev":            "0",
