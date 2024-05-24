@@ -2,6 +2,8 @@ const int sampleWindow = 50;  // Sample window width in mS (50 mS = 20Hz)
 int const AMP_PIN = A0;       // Preamp output pin connected to A0
 unsigned int sample;
 
+int const OUT_PIN = A1;
+
 void setup()
 {
   Serial.begin(9600);
@@ -37,5 +39,6 @@ void loop()
   double volts = (peakToPeak * 5.0) / 1024;  // convert to volts
   Serial.print("Voltage: ");
   Serial.println(volts);
+  analogWrite(OUT_PIN, volts);
   delay(500);
 }

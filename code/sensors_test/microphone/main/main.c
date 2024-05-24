@@ -71,6 +71,6 @@ void app_main(void){
     // 1 sample/min => 120 sample/hour
     while(1){
         room_noise_sampling();
-        vTaskDelay(60000 / portTICK_PERIOD_MS);
+        vTaskDelay(500 / portTICK_PERIOD_MS);
     }
 }
