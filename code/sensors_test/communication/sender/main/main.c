@@ -7,5 +7,6 @@ void app_main(void){
     init_esp_now();
 
     mac_tx();
+    mac_rx();
 
 }

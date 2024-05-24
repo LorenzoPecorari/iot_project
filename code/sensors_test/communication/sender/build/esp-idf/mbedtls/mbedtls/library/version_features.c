@@ -1,1 +1,1 @@
-/home/utente/esp/esp-idf/components/mbedtls/mbedtls/library/version_features.c
+/home/michele/esp/v5.2.1/esp-idf/components/mbedtls/mbedtls/library/version_features.c

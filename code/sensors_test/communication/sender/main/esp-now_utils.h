@@ -101,7 +101,7 @@ void set_mac(uint8_t* mac){
     if(!mac)
         ESP_LOGE(APP_NAME, "Invalid mac pointer");
     else{
-        memcpy(mac_addr, mac, SIZE * Q_LENGTH);
+        memcpy(mac_addr, mac, ESP_NOW_ETH_ALEN);
         
         esp_now_peer_info_t *peer = malloc(sizeof(esp_now_peer_info_t));
     
