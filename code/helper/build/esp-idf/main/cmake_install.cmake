@@ -1,4 +1,4 @@
-# Install script for directory: /home/utente/Scrivania/univ/iot_as/progetto/IoT---group-project/air/main
+# Install script for directory: /home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/helper/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
