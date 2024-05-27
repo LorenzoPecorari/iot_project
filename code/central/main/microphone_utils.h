@@ -28,7 +28,7 @@ void check_people(){
 }
 
 void microphone_init(){
-    esp_adc_cal_characterize(ADC_UNIT_1, ATTENUATION, WIDTH, 0, &adc1);
+    esp_adc_cal_characterize(ADC, ATTENUATION, WIDTH, 0, &adc1);
 
     ESP_ERROR_CHECK(adc1_config_width(WIDTH));
     ESP_ERROR_CHECK(adc1_config_channel_atten(MIC_CHANNEL, ATTENUATION))

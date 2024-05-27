@@ -40,5 +40,14 @@ void app_main(void){
         xTaskCreatePinnedToCore(air_detection, "Air detection task", 4096, NULL, 10, &airTaskHandle, 0);
         ESP_LOGI(APP_NAME, "Waiting for helpers data");
         xTaskCreatePinnedToCore(helpers_data_rx, "Data waiting task", 4096, NULL, 10, &waitTaskHandle, 1);
+
+        //WAIT FOR THE END OF BOTH OF TASK
+        while(eTaskGetState(airTaskHandle)==eRunning || eTaskGetState(waitTaskHandle)==eRunning){
+            vTaskDekay(10000/portTICK_PERIOD_MS);
+        }
+
+        //START ELABORATION
+        ESP_LOGI(APP_NAME, "Starting data eleboration");
+        eleboration();
     }
 }
