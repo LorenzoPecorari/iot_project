@@ -5,6 +5,7 @@
 #include "driver/gpio.h"
 #include "driver/adc.h"
 #include "esp_adc_cal.h"
+#include "esp_sleep.h"
 #include <inttypes.h>
 
 #include "esp_log.h"
@@ -26,8 +27,13 @@ void app_main(void)
 
    while (1)
    {
-       voltage = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_0), &adc1_chars);
-       printf("ADC1_CHANNEL_0: %" PRIu32 " mV\n", voltage);
-       vTaskDelay(pdMS_TO_TICKS(60000/portTICK_PERIOD_MS));
+        for(int i=0; i<10; i++){
+            voltage = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_0), &adc1_chars);
+            ESP_LOGI("[TEST]","INDEX: %d ADC1_CHANNEL_0: %" PRIu32 " mV\n", i, voltage);
+            vTaskDelay(10000/portTICK_PERIOD_MS);
+        }
+
+        esp_sleep_enable_timer_wakeup(50000000);
+        esp_light_sleep_start();
    }
 }
