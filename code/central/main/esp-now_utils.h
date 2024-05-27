@@ -100,7 +100,7 @@ void sender_cb(const uint8_t *mac_addr, esp_now_send_status_t status){
     }
 }
 
-void esp_now_init(){
+void espnow_init(){
     queue=xQueueCreate(QUEUE_LENGTH, Q_ELEMENT_SIZE);
     if(queue==NULL){
         ESP_LOGE(APP_NAME, "Failed to create queue");

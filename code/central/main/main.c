@@ -6,9 +6,10 @@
 //CENTRAL DEVICE MAIN FILE
 
 void app_main(void){
-    //WIFI INITIALIZATION FOR ESP-NOW COMMUNICATION
+    //ELEMENTS INITIALIZATION
     wifi_init();
-    esp_now_init();
+    espnow_init();
+    microphone_init();
 
     //MAC SHARING TO HELPER DEVICES
     esp_now_mac_tx();
@@ -19,5 +20,7 @@ void app_main(void){
     while(1){
         //CHECK PERSONZ (CIT) INSIDE THE CLASSROOM
         check_people();
+
+        
     }
 }
