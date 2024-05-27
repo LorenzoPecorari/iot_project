@@ -15,6 +15,7 @@ void app_main(void){
     ESP_LOGI(APP_NAME, "Start elements initialization");
     wifi_init();
     espnow_init();
+    mqtt_init();
     microphone_init();
     airdetection_init();
     ESP_LOGI(APP_NAME, "Elements initialization completed");
@@ -41,13 +42,26 @@ void app_main(void){
         ESP_LOGI(APP_NAME, "Waiting for helpers data");
         xTaskCreatePinnedToCore(helpers_data_rx, "Data waiting task", 4096, NULL, 10, &waitTaskHandle, 1);
 
-        //WAIT FOR THE END OF BOTH OF TASK
+        //WAIT FOR THE END OF BOTH TASKS
         while(eTaskGetState(airTaskHandle)==eRunning || eTaskGetState(waitTaskHandle)==eRunning){
             vTaskDekay(10000/portTICK_PERIOD_MS);
         }
+        ESP_LOGI(APP_NAME, "Air task and data waiting task completed");
 
         //START ELABORATION
         ESP_LOGI(APP_NAME, "Starting data eleboration");
         eleboration();
+
+        //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY
+        ESP_LOGI(APP_NAME, "Starting mqtt communication");
+        xTaskCreatePinnedToCore(mqtt_transmission, "Mqtt task", 4096, NULL, 10, &mqttTaskHandle, 0);
+        ESP_LOGI(APP_NAME, "Notifying helpers");
+        xTaskCreatePinnedToCore(helpers_notify, "Notify task", 4096, NULL, 10, &notifyTaskHandle, 1);
+
+        //WAIT FOR THE END OF BOTH TASKS
+        while(eTaskGetState(mqttTaskHandle)==eRunning || eTaskGetState(notifyTaskHandle)==eRunning){
+            vTaskDekay(10000/portTICK_PERIOD_MS);
+        }
+        ESP_LOGI(APP_NAME, "Air task and data waiting task completed");
     }
 }

@@ -22,6 +22,10 @@ void esp_now_utils_handle_error(esp_err_t err){
     }
 }
 
+void helpers_notify(){
+    
+}
+
 void start_sample_tx(){
     ESP_LOGI(APP_NAME, "Starting sample communication");
     sprintf(msg, "Start sample");
