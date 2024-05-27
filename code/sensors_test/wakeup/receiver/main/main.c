@@ -1,4 +1,4 @@
-#include "esp-now_utils.h"
+#include "new_esp-now_utils.h"
 
 void app_main(void){
     
@@ -6,6 +6,8 @@ void app_main(void){
     wifi_init();
     init_esp_now();
 
-    mac_rx();
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    esp_light_sleep_start();
+    send_mac();
 
 }

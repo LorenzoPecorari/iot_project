@@ -24,6 +24,13 @@ QueueHandle_t queue;
 
 #define CHANNEL 0
 
+#define TYPE_SIZE 8
+#define MESSAGE_SIZE 64
+struct message_str{
+    char type[TYPE_SIZE];
+    char payload[MESSAGE_SIZE];
+} message_str;
+
 //uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0xf4, 0x12, 0xfa, 0x9f, 0xf4, 0x70}; //esp32 lorenzo
 //uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
 
@@ -132,8 +139,6 @@ void mac_tx(){
         vTaskDelay(DELAY);
         cnt++;
     }
-    
-    esp_light_sleep_start();
 }
 
 // receives the mac address of the other peer

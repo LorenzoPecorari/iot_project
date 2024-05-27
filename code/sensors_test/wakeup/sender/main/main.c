@@ -1,4 +1,4 @@
-#include "esp-now_utils.h"
+#include "new_esp-now.h"
 
 void app_main(void){
     
@@ -6,7 +6,6 @@ void app_main(void){
     wifi_init();
     init_esp_now();
 
-    mac_tx();
-    mac_rx();
-
+    send_mac();
+    send_message("MSG", "It's time to push this code!");
 }
