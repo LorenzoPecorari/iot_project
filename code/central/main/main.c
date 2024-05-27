@@ -16,6 +16,7 @@ void app_main(void){
     wifi_init();
     espnow_init();
     microphone_init();
+    airdetection_init();
     ESP_LOGI(APP_NAME, "Elements initialization completed");
 
     //MAC SHARING TO HELPER DEVICES

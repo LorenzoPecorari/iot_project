@@ -1,8 +1,6 @@
 #include "common.h"
 
 #define APP_NAME "[MICROPHONE]"
-#define ATTENUATION ADC_ATTEN_DB_12
-#define WIDTH ADC_WIDTH_BIT_DEFUALT
 
 static esp_adc_cal_characteristics_t adc1;
 uint8_t voltage;
@@ -23,7 +21,9 @@ void check_people(){
             }
         }
         check=0;
-        vTaskDelay(540000/portTICK_PERIOD_MS); //LIGHT SLEEP MODE?
+        // vTaskDelay(540000/portTICK_PERIOD_MS); //LIGHT SLEEP MODE?
+        esp_sleep_enable_timer_wakeup(540000000);
+        esp_light_sleep_start();
     }
 }
 

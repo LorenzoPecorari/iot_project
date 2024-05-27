@@ -13,7 +13,11 @@
 #include "esp_log.h"
 #include "esp_wifi.h"
 #include "esp_adc_cal.h"
+#include "esp_sleep.h"
 #include "nvs_flash.h"
+
+#define ATTENUATION ADC_ATTEN_DB_12
+#define WIDTH ADC_WIDTH_BIT_DEFUALT8
 
 #define MIC_CHANNEL //TO DECIDE
 #define PEOPLE_PRESENCE //TO DECIDE
