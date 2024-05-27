@@ -14,11 +14,22 @@ uint8_t helper_mac[ESP_NOW_ETH_ALEN]={0};
 
 QueueHandle_t queue;
 char* msg;
+char* data_rx;
 
 void esp_now_utils_handle_error(esp_err_t err){
     if(err != ESP_OK){
         ESP_LOGE(APP_NAME, "Error %d", err);
     }
+}
+
+void start_sample_tx(){
+    ESP_LOGI(APP_NAME, "Starting sample communication");
+    sprintf(msg, "Start sample");
+    esp_now_utils_handle_error(esp_now_send(helper_mac, msg, sizeof(msg)));
+}
+
+void helpers_data_rx(){
+    
 }
 
 void esp_now_mac_tx(){
@@ -31,15 +42,18 @@ void esp_now_mac_tx(){
     //     vTaskDelay(DELAY);
     //     count++;
     // }
+    xQueueReceive(queue, &data_rx, portMAX_DELAY);
+    ESP_LOGI(APP_NAME, "Helpers data received: %s", data_rx);
 }
 
 void esp_now_mac_rx(){
     memset(helper_mac, 0, Q_ELEMENT_SIZE*ESP_NOW_ETH_ALEN);
-    int count=0;
-    while(count<ESP_NOW_ETH_ALEN){
-        xQueuReceive(queue, &helper_mac[count], portMAX_DELAY);
-        count++;
-    }
+    // int count=0;
+    // while(count<ESP_NOW_ETH_ALEN){
+    //     xQueueReceive(queue, &helper_mac[count], portMAX_DELAY);
+    //     count++;
+    // }
+    xQueueReceive(queue, &helper_mac, portMAX_DELAY);
     ESP_LOGI(APP_NAME, "Mac address received: %02x:%02x:%02x:%02x:%02x:%02x\n", mac_addr[0], mac_addr[1], mac_addr[2], mac_addr[3], mac_addr[4], mac_addr[5]);
 }
 

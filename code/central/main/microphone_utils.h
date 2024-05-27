@@ -1,6 +1,6 @@
 #include "common.h"
 
-#define MICROPHONE "[MICROPHONE]"
+#define APP_NAME "[MICROPHONE]"
 #define ATTENUATION ADC_ATTEN_DB_12
 #define WIDTH ADC_WIDTH_BIT_DEFUALT
 
@@ -14,10 +14,10 @@ void check_people(){
         while(!people && check<6){
             voltage=esp_adc_cal_raw_to_voltage(adc1_get_raw(MIC_CHANNEL), &adc1);
             if(voltage>PEOPLE_PRESENCE){
-                ESP_LOGI(MICROPHONE, "People detected")
+                ESP_LOGI(APP_NAME, "People detected")
                 people=1;
             }else{
-                ESP_LOGI(MICROPHONE, "People don't detected");
+                ESP_LOGI(APP_NAME, "People don't detected");
                 check++;
                 vTaskDelay(10000/portTICK_PERIOD_MS);
             }
