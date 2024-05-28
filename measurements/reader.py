@@ -8,7 +8,7 @@ index = 0
 
 try:
     file_to_write = open(filename, mode='w')
-    while True:
+    while (index <= 1200):
         line = s.readline().decode().strip()
         print("Data:", line)
         

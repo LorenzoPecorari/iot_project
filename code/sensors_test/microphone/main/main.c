@@ -54,7 +54,7 @@ uint32_t voltage;
 // detectes the value of the output voltage from the microphone
 void room_noise_sampling(){
     voltage = esp_adc_cal_raw_to_voltage(adc1_get_raw(ADC1_CHANNEL_0), &adc1_c);
-    printf("%"  PRIu32 "mV\n", voltage);
+    printf("%"  PRIu32 "\n", voltage);
 }
 
 // initializes adc unit and its channel + checks for errors
@@ -71,6 +71,6 @@ void app_main(void){
     // 1 sample/min => 120 sample/hour
     while(1){
         room_noise_sampling();
-        vTaskDelay(500 / portTICK_PERIOD_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }
