@@ -62,6 +62,10 @@ void app_main(void){
         while(eTaskGetState(mqttTaskHandle)==eRunning || eTaskGetState(notifyTaskHandle)==eRunning){
             vTaskDekay(10000/portTICK_PERIOD_MS);
         }
-        ESP_LOGI(APP_NAME, "Air task and data waiting task completed");
+        ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
+
+        //LIGHT SLEEP MODE
+        esp_sleep_enable_timer_wakeup(300000000);
+        esp_light_sleep_start();
     }
 }
