@@ -93,9 +93,9 @@ void consume_message(){
         }
 
         esp_now_utils_handle_error(esp_sleep_enable_wifi_wakeup());
-        ESP_LOGI(APP_NAME, "Entering light sleep mode");
+        ESP_LOGI(APP_NAME, "Sleep");
         esp_light_sleep_start();
-        ESP_LOGI(APP_NAME, "Woke up from light sleep");
+        ESP_LOGI(APP_NAME, "Awake");
 
     }
 }

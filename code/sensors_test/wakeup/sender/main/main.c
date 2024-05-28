@@ -8,7 +8,7 @@ void app_main(void) {
 
     send_mac();
 
-    ESP_LOGI(APP_NAME, "Entering light sleep mode");
+    ESP_LOGI(APP_NAME, "sleep");
     esp_light_sleep_start();
-    ESP_LOGI(APP_NAME, "Woke up from light sleep");
+    ESP_LOGI(APP_NAME, "awake");
 }
