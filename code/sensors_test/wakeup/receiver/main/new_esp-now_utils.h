@@ -54,7 +54,11 @@ void wifi_init(){
     wifi_init_config_t init_conf = WIFI_INIT_CONFIG_DEFAULT();
 
     esp_now_utils_handle_error(esp_wifi_init(&init_conf));
+    
     esp_now_utils_handle_error(esp_wifi_set_mode(WIFI_MODE_STA));
+    esp_now_utils_handle_error(esp_wifi_set_ps(WIFI_PS_MIN_MODEM));
+    esp_now_utils_handle_error(esp_sleep_enable_wifi_wakeup());
+    
     esp_now_utils_handle_error(esp_wifi_start());
     
     esp_now_utils_handle_error(esp_wifi_set_channel(CHANNEL, WIFI_SECOND_CHAN_NONE));
@@ -87,6 +91,12 @@ void consume_message(){
         else if(!strcmp(received_message.type, "VALUE")){
             ESP_LOGI(APP_NAME, "Some values are being sent by other node");
         }
+
+        esp_now_utils_handle_error(esp_sleep_enable_wifi_wakeup());
+        ESP_LOGI(APP_NAME, "Entering light sleep mode");
+        esp_light_sleep_start();
+        ESP_LOGI(APP_NAME, "Woke up from light sleep");
+
     }
 }
 
@@ -94,9 +104,14 @@ void consume_message(){
 void recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len){
     struct message_str received_message;
     memcpy(&received_message, data, len);
+    
+    esp_now_utils_handle_error(esp_sleep_enable_wifi_wakeup());
+
     xQueueSend(queue, &received_message, portMAX_DELAY);
     ESP_LOGI(APP_NAME, "Received a message");
+    
     consume_message();
+
 }
 
 // callback function for messages sending
@@ -178,9 +193,7 @@ void init_esp_now(){
     esp_now_utils_handle_error(esp_now_register_send_cb(send_cb));
 
     set_broadcast_mac();
-
     retrieve_mac();
-    esp_sleep_enable_wifi_wakeup();
 }
 
 void send_mac(){
