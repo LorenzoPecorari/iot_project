@@ -8,7 +8,15 @@ void app_main(void) {
 
     send_mac();
 
-    ESP_LOGI(APP_NAME, "sleep");
-    esp_light_sleep_start();
-    ESP_LOGI(APP_NAME, "awake");
+    int del = 1000;
+    char string[16];
+
+    while(1){
+        memset(string, '\0', 16);
+        sprintf(string, "%d", del);
+        send_message("HELO", string);
+        vTaskDelay(del / portTICK_PERIOD_MS);
+        del += 500;
+    }
+
 }

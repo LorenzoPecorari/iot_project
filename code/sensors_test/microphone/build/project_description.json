@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "air",
-    "project_version":    "d96f001b-dirty",
+    "project_version":    "1b199b0a-dirty",
     "project_path":       "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/microphone",
     "idf_path":           "/home/utente/esp/esp-idf",
     "build_dir":          "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/microphone/build",
