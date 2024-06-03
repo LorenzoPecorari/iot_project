@@ -23,7 +23,9 @@ void esp_now_utils_handle_error(esp_err_t err){
 }
 
 void helpers_notify(){
-    
+    ESP_LOGI(APP_NAME, "Notifying helpers devices with data computed");
+    sprintf(msg, "");
+    esp_now_utils_handle_error(esp_now_send(helper_mac, msg, sizeof(msg)));
 }
 
 void start_sample_tx(){
@@ -33,12 +35,14 @@ void start_sample_tx(){
 }
 
 void helpers_data_rx(){
-    
+    memset(data_rx, 0, sizeof(data_rx));
+    xQueueReceive(queue, &data_rx, portMAX_DELAY);
+    ESP_LOGI(APP_NAME, "Helpers data received: %s", data_rx);
 }
 
 void esp_now_mac_tx(){
     ESP_LOGE(APP_NAME, "Mac transmission");
-    sprintf(msg, "%02x:%02x:%02x:%02x:%02x:%02x". central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
+    sprintf(msg, "%02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
     esp_now_utils_handle_error(esp_now_send(helper_mac, msg, sizeof(msg)));
     // int count=0;
     // while(count<ESP_NOW_ETH_ALEN){
@@ -46,8 +50,6 @@ void esp_now_mac_tx(){
     //     vTaskDelay(DELAY);
     //     count++;
     // }
-    xQueueReceive(queue, &data_rx, portMAX_DELAY);
-    ESP_LOGI(APP_NAME, "Helpers data received: %s", data_rx);
 }
 
 void esp_now_mac_rx(){
