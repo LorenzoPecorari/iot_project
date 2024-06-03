@@ -1,6 +1,8 @@
 #include "esp-now_utils.h"
 #include "wifi_utils.h"
 #include "microphone_utils.h"
+#include "air-detection_utils.h"
+#include "mqtt_utils.h"
 
 #define APP_NAME "[CENTRAL]"
 
@@ -44,13 +46,13 @@ void app_main(void){
 
         //WAIT FOR THE END OF BOTH TASKS
         while(eTaskGetState(airTaskHandle)==eRunning || eTaskGetState(waitTaskHandle)==eRunning){
-            vTaskDekay(10000/portTICK_PERIOD_MS);
+            vTaskDelay(10000/portTICK_PERIOD_MS);
         }
         ESP_LOGI(APP_NAME, "Air task and data waiting task completed");
 
         //START ELABORATION
         ESP_LOGI(APP_NAME, "Starting data eleboration");
-        eleboration();
+        elaboration();
 
         //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY
         ESP_LOGI(APP_NAME, "Starting mqtt communication");
@@ -60,7 +62,7 @@ void app_main(void){
 
         //WAIT FOR THE END OF BOTH TASKS
         while(eTaskGetState(mqttTaskHandle)==eRunning || eTaskGetState(notifyTaskHandle)==eRunning){
-            vTaskDekay(10000/portTICK_PERIOD_MS);
+            vTaskDelay(10000/portTICK_PERIOD_MS);
         }
         ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
 

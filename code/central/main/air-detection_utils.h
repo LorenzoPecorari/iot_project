@@ -1,7 +1,8 @@
 #include "common.h"
 
+#define AIR "[AIR]"
 #define SAMPLE 20
-#define DELAY 500/portTICK_PERIOD_MS
+#define DELAY_INPUT 500/portTICK_PERIOD_MS
 
 static esp_adc_cal_characteristics_t adc1;
 uint8_t voltages[SAMPLE];
@@ -14,12 +15,12 @@ void elaboration(){
 void air_detection(){
     for(int i=0; i<SAMPLE; i++){
         voltages[i]=esp_adc_cal_raw_to_voltage(adc1_get_raw(AIR_CHANNEL), &adc1);
-        avg=voltages[i];
-        vTaskDelay(pdMS_TO_TICK(DELAY));
+        average=voltages[i];
+        vTaskDelay(pdMS_TO_TICKS(DELAY_INPUT));
     }
-    ESP_LOGI(APP_NAME, "Air values detected");
-    average=/SAMPLE;
-    ESP_LOGI(APP_NAME, "Air values average %d", average);
+    ESP_LOGI(AIR, "Air values detected");
+    average/=SAMPLE;
+    ESP_LOGI(AIR, "Air values average %d", average);
 }
 
 void airdetection_init(){

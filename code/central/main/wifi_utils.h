@@ -1,6 +1,6 @@
 #include "common.h"
 
-#define APP_NAME "[WI-FI]"
+#define WIFI "[WI-FI]"
 
 wifi_config_t wifi_struct;
 
