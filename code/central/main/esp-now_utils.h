@@ -32,7 +32,7 @@ void helpers_notify(){
 void start_sample_tx(){
     ESP_LOGI(ESPNOW, "Starting sample communication");
     sprintf(msg, "Start sample");
-    esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t)msg, MAX_MSG_LEN));
+    // esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t)msg, MAX_MSG_LEN));
 }
 
 void helpers_data_rx(){
@@ -44,7 +44,7 @@ void helpers_data_rx(){
 void esp_now_mac_tx(){
     ESP_LOGE(ESPNOW, "Mac transmission");
     sprintf(msg, "%02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
-    esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t)msg, MAX_MSG_LEN));
+    // esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t)msg, MAX_MSG_LEN));
     // int count=0;
     // while(count<ESP_NOW_ETH_ALEN){
     //     esp_now_send(helper_mac, central_mac[count], Q_ELEMENT_SIZE);
