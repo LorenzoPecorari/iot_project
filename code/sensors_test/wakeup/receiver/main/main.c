@@ -5,10 +5,8 @@ void app_main(void) {
     wifi_init();
     init_esp_now();
 
-    ESP_LOGI(APP_NAME, "sleep");
-    esp_light_sleep_start();
-    ESP_LOGI(APP_NAME, "awake");
+    while(!got_other_mac);
 
-    send_mac();
+    send_mac("MAC_REPLY");
 
 }

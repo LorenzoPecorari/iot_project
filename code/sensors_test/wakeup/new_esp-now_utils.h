@@ -14,14 +14,12 @@
 
 #define APP_NAME "[ESP-NOW] "
 
-#define WAKE_UP_PIN GPIO_NUM_4
-
 #define Q_LENGTH 10
 
 #define SIZE sizeof(uint8_t)
 #define DELAY (2500 / portTICK_PERIOD_MS)
 #define CHANNEL 0
-#define TYPE_SIZE 8
+#define TYPE_SIZE 16
 #define MESSAGE_SIZE 128
 
 struct message_str {
@@ -30,6 +28,8 @@ struct message_str {
 } message_str;
 
 #define STRUCT_SIZE sizeof(message_str)
+
+int got_other_mac = 0;
 
 uint8_t other_mac[ESP_NOW_ETH_ALEN] = {0};
 uint8_t this_mac[ESP_NOW_ETH_ALEN] = {0};
@@ -53,37 +53,92 @@ void wifi_init() {
     esp_now_utils_handle_error(esp_wifi_set_channel(CHANNEL, WIFI_SECOND_CHAN_NONE));
 }
 
+void send_message(const char* type, const char* payload) {
+    struct message_str packet = {0};
+    strncpy(packet.type, type, TYPE_SIZE - 1);
+    packet.type[TYPE_SIZE - 1] = '\0';
+    strncpy(packet.payload, payload, MESSAGE_SIZE - 1);
+    packet.payload[MESSAGE_SIZE - 1] = '\0';
+
+    ESP_LOGI(APP_NAME, "Sent: [%s - %s]\n", packet.type, packet.payload);
+
+    esp_now_utils_handle_error(esp_now_send(other_mac, (uint8_t*)&packet, sizeof(packet)));
+}
+
+void send_mac(const char* type) {
+    char mac_as_str[18];
+    sprintf(mac_as_str, "%02x:%02x:%02x:%02x:%02x:%02x", this_mac[0], this_mac[1], this_mac[2], this_mac[3], this_mac[4], this_mac[5]);
+    send_message(type, mac_as_str);
+}
+
 void consume_message() {
     struct message_str received_message;
     if (xQueueReceive(queue, &received_message, portMAX_DELAY)) {
         
         ESP_LOGI(APP_NAME, "Received: [%s - %s]", received_message.type, received_message.payload);
         
-        if (!strcmp(received_message.type, "MAC")) {
+        if (!strcmp(received_message.type, "MAC_ID")) {
+            got_other_mac = 0;
+
             char copied[MESSAGE_SIZE];
             strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
             copied[MESSAGE_SIZE - 1] = '\0';
+            
             char* token;
             token = strtok(copied, ":");
             unsigned int t = 0;
+            
             for (int i = 0; token != NULL && i < ESP_NOW_ETH_ALEN; i++) {
                 sscanf(token, "%02x", &t);
                 token = strtok(NULL, ":");
                 other_mac[i] = (uint8_t) t;
             }
-        } else if (!strcmp(received_message.type, "WAKEUP")) {
-            ESP_LOGI(APP_NAME, "Wake up my friend!");
-        } else if (!strcmp(received_message.type, "VALUE")) {
+
+            // it waits a second after receiving MAC then it sends its own
+
+            got_other_mac = 1;
+        } 
+        else if(!strcmp(received_message.type, "MAC_REPLY")){
+            char copied[MESSAGE_SIZE];
+            strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
+            copied[MESSAGE_SIZE - 1] = '\0';
+            
+            char* token;
+            token = strtok(copied, ":");
+            unsigned int t = 0;
+            
+            for (int i = 0; token != NULL && i < ESP_NOW_ETH_ALEN; i++) {
+                sscanf(token, "%02x", &t);
+                token = strtok(NULL, ":");
+                other_mac[i] = (uint8_t) t;
+            }
+            got_other_mac = 1;
+        }
+        else if (!strcmp(received_message.type, "WAKE_REQ")) {
+            if(1){  // TODO : it is needed to define the variable related to noises
+                send_message("WAKE_REP", "This has to contain something about values");
+            }
+        }
+        else if (!strcmp(received_message.type, "WAKE_REP")) {
+            if(1){
+                // TODO : implement something here
+            }
+        }
+        else if (!strcmp(received_message.type, "VALUE_REQ")) {
             ESP_LOGI(APP_NAME, "Some values are being sent by other node");
-        } else {
+            send_message("VALUE_REP", "0");
+        }
+        else if (!strcmp(received_message.type, "VALUE_REP")) {
+            ESP_LOGI(APP_NAME, "Some values are being sent by other node");
+            // TODO : something to implement here 
+        }
+        else {
             ESP_LOGI(APP_NAME, "Unknown type, dropping...");
         }
-        esp_now_utils_handle_error(esp_sleep_enable_wifi_wakeup());
-        esp_light_sleep_start();
     }
 }
 
-void IRAM_ATTR recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len) {
+void recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len) {
     struct message_str received_message;
     memcpy(&received_message, data, len);    
 
@@ -96,18 +151,6 @@ void IRAM_ATTR recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len) {
 void send_cb(const uint8_t *mac_addr, esp_now_send_status_t status) {
     if (status != ESP_NOW_SEND_SUCCESS)
         ESP_LOGE(APP_NAME, "Send failed");
-}
-
-void send_message(const char* type, const char* payload) {
-    struct message_str packet = {0};
-    strncpy(packet.type, type, TYPE_SIZE - 1);
-    packet.type[TYPE_SIZE - 1] = '\0';
-    strncpy(packet.payload, payload, MESSAGE_SIZE - 1);
-    packet.payload[MESSAGE_SIZE - 1] = '\0';
-
-    ESP_LOGI(APP_NAME, "Sent: [%s - %s]\n", packet.type, packet.payload);
-
-    esp_now_utils_handle_error(esp_now_send(other_mac, (uint8_t*)&packet, sizeof(packet)));
 }
 
 void retrieve_mac() {
@@ -144,20 +187,6 @@ void set_broadcast_mac() {
     set_mac(addr);
 }
 
-void configure_wake_up_pin() {
-    gpio_config_t io_conf = {
-        .pin_bit_mask = (1ULL << WAKE_UP_PIN),
-        .mode = GPIO_MODE_OUTPUT,
-        .pull_up_en = GPIO_PULLUP_ENABLE,
-        .intr_type = GPIO_INTR_DISABLE
-    };
-
-    gpio_config(&io_conf);
-    gpio_set_level(WAKE_UP_PIN, 1);
-    
-    esp_sleep_enable_ext0_wakeup(WAKE_UP_PIN, 0);
-}
-
 void init_esp_now() {
     queue = xQueueCreate(Q_LENGTH, STRUCT_SIZE);
     
@@ -165,17 +194,8 @@ void init_esp_now() {
     esp_now_utils_handle_error(esp_event_loop_create_default());
     esp_now_utils_handle_error(esp_now_register_recv_cb(recv_cb));
     esp_now_utils_handle_error(esp_now_register_send_cb(send_cb));
-    
-    configure_wake_up_pin();
-    
+        
     set_broadcast_mac();
     retrieve_mac();
-    
-    gpio_set_level(WAKE_UP_PIN, 1);
 }
 
-void send_mac() {
-    char mac_as_str[18];
-    sprintf(mac_as_str, "%02x:%02x:%02x:%02x:%02x:%02x", this_mac[0], this_mac[1], this_mac[2], this_mac[3], this_mac[4], this_mac[5]);
-    send_message("MAC", mac_as_str);
-}

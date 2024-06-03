@@ -6,17 +6,10 @@ void app_main(void) {
     wifi_init();
     init_esp_now();
 
-    send_mac();
+    send_mac("MAC_ID");
 
-    int del = 1000;
-    char string[16];
+    while(!got_other_mac)
+        vTaskDelay(500 / portTICK_PERIOD_MS);
 
-    while(1){
-        memset(string, '\0', 16);
-        sprintf(string, "%d", del);
-        send_message("HELO", string);
-        vTaskDelay(del / portTICK_PERIOD_MS);
-        del += 500;
-    }
-
+    ESP_LOGI(APP_NAME, "Other mac registered");
 }
