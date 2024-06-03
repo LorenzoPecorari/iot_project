@@ -14,8 +14,8 @@ uint8_t central_mac[ESP_NOW_ETH_ALEN]={0};
 uint8_t helper_mac[ESP_NOW_ETH_ALEN]={0};
 
 QueueHandle_t queue;
-char* msg=calloc(MAX_MSG_LEN, sizeof(char));
-char* data_rx=calloc(MAX_MSG_LEN, sizeof(char));
+char* msg;
+char* data_rx;
 
 void esp_now_utils_handle_error(esp_err_t err){
     if(err != ESP_OK){
