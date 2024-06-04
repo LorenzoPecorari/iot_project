@@ -8,7 +8,7 @@
 #define CENTRAL_MAC 1
 #define HELPER_MAC 2
 #define CENTRAL_WAKE 3
-#define HELPER_WAKE 4
+// #define HELPER_WAKE 4
 #define CENTRAL_VALUE 5
 #define HELPER_VALUE 6
 
@@ -39,17 +39,19 @@ void esp_now_utils_handle_error(esp_err_t err){
     }
 }
 
-void packet_build(const char* type, const char* payload){
-    memset(packet_send, 0, MSG_STRUCT_SIZE);
-    strncpy(packet_send.type, type, TYPE_SIZE-1);
-    packet_send.type[TYPE_SIZE-1]='\0';
-    strncpy(packet_send.payload, payload, MESSAGE_SIZE);
-    packet_send.payload[MESSAGE_SIZE-1]='\0';
-    ESP_LOGI(ESPNOW, "Sending message: [%s - %s]", packet_send.type, packet_send.payload);
+void packet_build(message_t* packet, const char* type, const char* payload){
+    memset(packet, 0, MSG_STRUCT_SIZE);
+    strncpy(packet->type, type, TYPE_SIZE-1);
+    packet->type[TYPE_SIZE-1]='\0';
+    strncpy(packet->payload, payload, MESSAGE_SIZE);
+    packet->payload[MESSAGE_SIZE-1]='\0';
+    ESP_LOGI(ESPNOW, "Sending message: [%s - %s]", packet->type, packet->payload);
 }
 
-void esp_now_tx(){
-    
+void esp_now_tx(void* params){
+    memset(packet_send, 0, MSG_STRUCT_SIZE);
+    packet_send=&((message_t*) params);
+    esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
 }
 
 void value_tx(){
@@ -93,9 +95,9 @@ void esp_now_rx(){
                 }
                 ESP_LOGI(ESPNOW, "Received hellper mac address %02x:%02x:%02x:%02x:%02x:%02x", helper_mac[0], helper_mac[1], helper_mac[2], helper_mac[3], helper_mac[4], helper_mac[5]);
                 break;
-            case HELPER_WAKE:
-                //CHECK IF START THE SAMPLING
-                break;
+            // case HELPER_WAKE:
+            //     //CHECK IF START THE SAMPLING
+            //     break;
             case HELPER_VALUE:
                 break;
             default:
@@ -108,10 +110,6 @@ void esp_now_rx(){
 }
 
 void retrieve_mac(){
-    // if(!central_mac){
-    //     ESP_LOGE(ESPNOW, "Mac retrieving error");
-    // }
-
     esp_now_utils_handle_error(esp_read_mac(central_mac, ESP_MAC_WIFI_STA));
     ESP_LOGI(ESPNOW, "CENTRAL MAC: %02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
 }

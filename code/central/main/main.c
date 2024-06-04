@@ -11,6 +11,8 @@ TaskHandle_t waitTaskHandle=NULL;
 TaskHandle_t mqttTaskHandle=NULL;
 TaskHandle_t notifyTaskHandle=NULL;
 
+message_t* packet;
+
 //CENTRAL DEVICE MAIN FILE
 void app_main(void){
     //ELEMENTS INITIALIZATION
@@ -24,50 +26,69 @@ void app_main(void){
 
     //MAC SHARING TO HELPER DEVICES
     ESP_LOGI(APP_NAME, "Start mac exchange");
-    esp_now_mac_tx();
+    memset(payload, 0, MESSAGE_SIZE);
+    sprintf(payload, "%02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
+    packet_build(packet, CENTRAL_MAC, payload);
+    esp_now_tx((void*) packet);
 
     //WAITING FOR HELPER DEVICE MAC
-    esp_now_mac_rx();
+    esp_now_rx();
     ESP_LOGI(APP_NAME, "Mac exchange completed");
 
     while(1){
         //CHECK PERSONZ (CIT) INSIDE THE CLASSROOM
         ESP_LOGI(APP_NAME, "Checking people presence");
-        check_people();
+        if(check_people()){
+            //START SAMPLE
+            ESP_LOGI(APP_NAME, "People detected");
+            memset(payload, 0, MESSAGE_SIZE);
+            sprintf(payload, "%d", 1);
+            packet_build(packet, CENTRAL_WAKE, payload);
+            esp_now_tx((void* packet));
 
-        //NOTIFY HELPERS TO START DATA SAMPLE
-        start_sample_tx();
+            //START AIR DETECTION AND WATING FOR HELPERS DATA
+            ESP_LOGI(APP_NAME, "Starting air detection");
+            xTaskCreatePinnedToCore(air_detection, "Air detection task", 4096, NULL, 10, &airTaskHandle, 0);
+            ESP_LOGI(APP_NAME, "Waiting for helpers data");
+            xTaskCreatePinnedToCore(helpers_data_rx, "Data waiting task", 4096, NULL, 10, &waitTaskHandle, 1);
 
-        //START AIR DETECTION AND WATING FOR HELPERS DATA
-        ESP_LOGI(APP_NAME, "Starting air detection");
-        xTaskCreatePinnedToCore(air_detection, "Air detection task", 4096, NULL, 10, &airTaskHandle, 0);
-        ESP_LOGI(APP_NAME, "Waiting for helpers data");
-        xTaskCreatePinnedToCore(helpers_data_rx, "Data waiting task", 4096, NULL, 10, &waitTaskHandle, 1);
+            //WAIT FOR THE END OF BOTH TASKS
+            while(eTaskGetState(airTaskHandle)==eRunning || eTaskGetState(waitTaskHandle)==eRunning){
+                vTaskDelay(10000/portTICK_PERIOD_MS);
+            }
+            ESP_LOGI(APP_NAME, "Air task and data waiting task completed");
 
-        //WAIT FOR THE END OF BOTH TASKS
-        while(eTaskGetState(airTaskHandle)==eRunning || eTaskGetState(waitTaskHandle)==eRunning){
-            vTaskDelay(10000/portTICK_PERIOD_MS);
-        }
-        ESP_LOGI(APP_NAME, "Air task and data waiting task completed");
+            //START ELABORATION
+            ESP_LOGI(APP_NAME, "Starting data eleboration");
+            elaboration();
+            memset(payload, 0, MESSAGE_SIZE);
+            sprintf(payload, "%d", average);
+            packet_build(packet, CENTRAL_VALUE, payload);
 
-        //START ELABORATION
-        ESP_LOGI(APP_NAME, "Starting data eleboration");
-        elaboration();
+            //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY
+            ESP_LOGI(APP_NAME, "Starting mqtt communication");
+            xTaskCreatePinnedToCore(mqtt_transmission, "Mqtt task", 4096, NULL, 10, &mqttTaskHandle, 0);
+            ESP_LOGI(APP_NAME, "Notifying helpers");
+            xTaskCreatePinnedToCore(esp_now_tx, "Notify task", 4096, (void*) packet, 10, &notifyTaskHandle, 1);
 
-        //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY
-        ESP_LOGI(APP_NAME, "Starting mqtt communication");
-        xTaskCreatePinnedToCore(mqtt_transmission, "Mqtt task", 4096, NULL, 10, &mqttTaskHandle, 0);
-        ESP_LOGI(APP_NAME, "Notifying helpers");
-        xTaskCreatePinnedToCore(value_tx, "Notify task", 4096, NULL, 10, &notifyTaskHandle, 1);
+            //WAIT FOR THE END OF BOTH TASKS
+            while(eTaskGetState(mqttTaskHandle)==eRunning || eTaskGetState(notifyTaskHandle)==eRunning){
+                vTaskDelay(10000/portTICK_PERIOD_MS);
+            }
+            ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
 
-        //WAIT FOR THE END OF BOTH TASKS
-        while(eTaskGetState(mqttTaskHandle)==eRunning || eTaskGetState(notifyTaskHandle)==eRunning){
-            vTaskDelay(10000/portTICK_PERIOD_MS);
-        }
-        ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
-
-        //LIGHT SLEEP MODE
-        esp_sleep_enable_timer_wakeup(300000000);
-        esp_light_sleep_start();
+            //LIGHT SLEEP MODE
+            esp_sleep_enable_timer_wakeup(300000000);
+            esp_light_sleep_start();
+        }else{
+            //SLEEP
+            ESP_LOGI(APP_NAME, "Nobody detected");
+            memset(payload, 0, MESSAGE_SIZE);
+            sprintf(payload, "%d", 1);
+            packet_build(packet, CENTRAL_WAKE, payload);
+            esp_now_tx((void*) packet);
+            esp_sleep_enable_timer_wakeup(90000000);
+            esp_light_sleep_start();
+        }        
     }
 }
