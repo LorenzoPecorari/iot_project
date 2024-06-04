@@ -9,7 +9,7 @@ void app_main(void) {
     send_mac("MAC_ID");
 
     while(!got_other_mac)
-        vTaskDelay(500 / portTICK_PERIOD_MS);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
 
     ESP_LOGI(APP_NAME, "Other mac registered");
 }
