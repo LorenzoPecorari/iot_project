@@ -5,9 +5,8 @@ void app_main(void) {
     wifi_init();
     init_esp_now();
 
-    // Attendere che l'altro MAC sia ricevuto prima di procedere
     while(!got_other_mac) {
-        vTaskDelay(10 / portTICK_PERIOD_MS); // Attendere brevemente per evitare un loop troppo serrato
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
     send_mac("MAC_REPLY");
 
@@ -20,7 +19,6 @@ void app_main(void) {
         //init_esp_now();
         what_to_do = 0;
 
-        // Attendere una decisione prima di entrare nuovamente in light sleep
         while(!what_to_do) {
             send_message("WAKE_REQ", "request on what to do");
             vTaskDelay(1000 / portTICK_PERIOD_MS);
