@@ -58,7 +58,7 @@ void app_main(void){
         ESP_LOGI(APP_NAME, "Starting mqtt communication");
         xTaskCreatePinnedToCore(mqtt_transmission, "Mqtt task", 4096, NULL, 10, &mqttTaskHandle, 0);
         ESP_LOGI(APP_NAME, "Notifying helpers");
-        xTaskCreatePinnedToCore(helpers_notify, "Notify task", 4096, NULL, 10, &notifyTaskHandle, 1);
+        xTaskCreatePinnedToCore(value_tx, "Notify task", 4096, NULL, 10, &notifyTaskHandle, 1);
 
         //WAIT FOR THE END OF BOTH TASKS
         while(eTaskGetState(mqttTaskHandle)==eRunning || eTaskGetState(notifyTaskHandle)==eRunning){

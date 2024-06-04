@@ -5,17 +5,33 @@
 #include "esp_mac.h"
 
 #define ESPNOW "[ESP-NOW]"
+#define CENTRAL_MAC 1
+#define HELPER_MAC 2
+#define CENTRAL_WAKE 3
+#define HELPER_WAKE 4
+#define CENTRAL_VALUE 5
+#define HELPER_VALUE 6
+
 #define QUEUE_LENGTH 10
 #define Q_ELEMENT_SIZE sizeof(uint8_t)
 #define DELAY (2500 / portTICK_PERIOD_MS)
-#define MAX_MSG_LEN 250
+#define TYPE_SIZE sizeof(int)
+#define MESSAGE_SIZE 128
 
 uint8_t central_mac[ESP_NOW_ETH_ALEN]={0};
 uint8_t helper_mac[ESP_NOW_ETH_ALEN]={0};
 
 QueueHandle_t queue;
-char* msg;
-char* data_rx;
+
+struct message_t{
+    char type[TYPE_SIZE];
+    char payload[MESSAGE_SIZE];
+} message_t;
+#define MSG_STRUCT_SIZE sizeof(message_t)
+
+char* payload;
+message_t packet_send={0};
+message_t packet_received={0};
 
 void esp_now_utils_handle_error(esp_err_t err){
     if(err != ESP_OK){
@@ -23,45 +39,72 @@ void esp_now_utils_handle_error(esp_err_t err){
     }
 }
 
-void helpers_notify(){
-    // ESP_LOGI(ESPNOW, "Notifying helpers devices with data computed");
-    // sprintf(msg, "");
-    // esp_now_utils_handle_error(esp_now_send(helper_mac, msg, MAX_MSG_LEN));
+void packet_build(const char* type, const char* payload){
+    memset(packet_send, 0, MSG_STRUCT_SIZE);
+    strncpy(packet_send.type, type, TYPE_SIZE-1);
+    packet_send.type[TYPE_SIZE-1]='\0';
+    strncpy(packet_send.payload, payload, MESSAGE_SIZE);
+    packet_send.payload[MESSAGE_SIZE-1]='\0';
+    ESP_LOGI(ESPNOW, "Sending message: [%s - %s]", packet_send.type, packet_send.payload);
+}
+
+void esp_now_tx(){
+    
+}
+
+void value_tx(){
+    //IF DONE ON A TASK, CREATE THE STRUCT FOR PASSING THE VALUE
+    ESP_LOGI(ESPNOW, "Communicating the average value of data sampled");
+    memset(payload, 0, MAX_MSG_LEN);
+    sprintf(payload, "value");
+    packet_build(CENTRAL_VALUE, payload);
+    esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+
 }
 
 void start_sample_tx(){
-    ESP_LOGI(ESPNOW, "Starting sample communication");
-    sprintf(msg, "Start sample");
-    // esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t)msg, MAX_MSG_LEN));
-}
-
-void helpers_data_rx(){
-    memset(data_rx, 0, MAX_MSG_LEN);
-    xQueueReceive(queue, &data_rx, portMAX_DELAY);
-    ESP_LOGI(ESPNOW, "Helpers data received: %s", data_rx);
+    ESP_LOGI(ESPNOW, "Starting sample communication to helper");
+    memset(payload, 0, MAX_MSG_LEN);
+    sprintf(payload, "Start sampling");
+    packet_build(payload, CENTRAL_WAKE);
+    esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
 }
 
 void esp_now_mac_tx(){
     ESP_LOGE(ESPNOW, "Mac transmission");
-    sprintf(msg, "%02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
-    // esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t)msg, MAX_MSG_LEN));
-    // int count=0;
-    // while(count<ESP_NOW_ETH_ALEN){
-    //     esp_now_send(helper_mac, central_mac[count], Q_ELEMENT_SIZE);
-    //     vTaskDelay(DELAY);
-    //     count++;
-    // }
+    memset(payload, 0, MESSAGE_SIZE);
+    sprintf(payload, "%02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
+    packet_build(payload, CENTRAL_MAC);
+    esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
 }
 
-void esp_now_mac_rx(){
-    memset(helper_mac, 0, Q_ELEMENT_SIZE*ESP_NOW_ETH_ALEN);
-    // int count=0;
-    // while(count<ESP_NOW_ETH_ALEN){
-    //     xQueueReceive(queue, &helper_mac[count], portMAX_DELAY);
-    //     count++;
-    // }
-    xQueueReceive(queue, &helper_mac, portMAX_DELAY);
-    ESP_LOGI(ESPNOW, "Mac address received: %02x:%02x:%02x:%02x:%02x:%02x\n", helper_mac[0], helper_mac[1], helper_mac[2], helper_mac[3], helper_mac[4], helper_mac[5]);
+void esp_now_rx(){
+    memset(packet_received, 0, MSG_STRUCT_SIZE);
+    if(xQueueReceive(queue, &packet_received, portMAX_DELAY)){
+        ESP_LOGI(ESPNOW, "Packet correctly received");
+        switch(packet_received.type){
+            case HELPER_MAC:
+                char* token=strtok(packet_received.payload, ":");
+                uint8_t value=0;
+                for(int i=0; i<ESP_NOW_ETH_ALEN; i++){
+                    sscanf(token, "%02x", &t);
+                    helper_mac[i]=t;
+                    token=strtok(NULL, ":");
+                }
+                ESP_LOGI(ESPNOW, "Received hellper mac address %02x:%02x:%02x:%02x:%02x:%02x", helper_mac[0], helper_mac[1], helper_mac[2], helper_mac[3], helper_mac[4], helper_mac[5]);
+                break;
+            case HELPER_WAKE:
+                //CHECK IF START THE SAMPLING
+                break;
+            case HELPER_VALUE:
+                break;
+            default:
+                ESP_LOGW(ESPNOW, "Received an unexpected packet");
+                break;
+        }
+    }else{
+        ESP_LOGE(ESPNOW, "Can't received a packet");
+    }
 }
 
 void retrieve_mac(){
