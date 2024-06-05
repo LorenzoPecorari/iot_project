@@ -6,10 +6,13 @@
 
 static esp_adc_cal_characteristics_t adc1;
 uint8_t voltages[SAMPLE];
-int average=0;
+float average=0;
+float general_avg=0.0;
 
-void elaboration(){
-    //TO DECIDE
+void elaboration(float helper_average){
+    general_avg=average+helper_average;
+    general_avg/=2;
+    ESP_LOGI("General average of data sampled on this window: %f", general_avg);
 }
 
 void air_detection(){

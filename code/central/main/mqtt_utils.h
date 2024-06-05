@@ -22,7 +22,7 @@ esp_mqtt_event_handle_t event_handler;
 esp_mqtt_event_id_t event_id;
 
 char data_tx[64];
-int retrasmission=0;
+// int retrasmission=0;
 
 void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event_id, void* event_data){
     event_handler=(esp_mqtt_event_handle_t)event_data;
@@ -43,15 +43,17 @@ void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event
         case MQTT_EVENT_ERROR:
             break;
         case MQTT_EVENT_PUBLISHED:
+            ESP_LOGI(MQTT, "Data correctly trasmitted");
             break;
         default:
             break;
     }
 }
 
-void mqtt_transmission(){
+void mqtt_transmission(void* average){
     memset(data_tx, 0, sizeof(data_tx));
-    sprintf(data_tx, "Air data sampled: ");
+    sprintf(data_tx, "Air data sampled: %f", &((float*)average));
+    ESP_LOGI(MQTT, "Trasmitting data...");
     esp_mqtt_client_publish(client, TOPIC, data_tx, sizeof(data_tx), 1, 1);
 }
 

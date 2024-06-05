@@ -12,6 +12,7 @@ TaskHandle_t mqttTaskHandle=NULL;
 TaskHandle_t notifyTaskHandle=NULL;
 
 message_t* packet;
+float helper_average;
 
 //CENTRAL DEVICE MAIN FILE
 void app_main(void){
@@ -32,7 +33,7 @@ void app_main(void){
     esp_now_tx((void*) packet);
 
     //WAITING FOR HELPER DEVICE MAC
-    esp_now_rx();
+    esp_now_rx(NULL);
     ESP_LOGI(APP_NAME, "Mac exchange completed");
 
     while(1){
@@ -50,7 +51,7 @@ void app_main(void){
             ESP_LOGI(APP_NAME, "Starting air detection");
             xTaskCreatePinnedToCore(air_detection, "Air detection task", 4096, NULL, 10, &airTaskHandle, 0);
             ESP_LOGI(APP_NAME, "Waiting for helpers data");
-            xTaskCreatePinnedToCore(helpers_data_rx, "Data waiting task", 4096, NULL, 10, &waitTaskHandle, 1);
+            xTaskCreatePinnedToCore(esp_now_rx, "Data waiting task", 4096, (void*) &helper_average, 10, &waitTaskHandle, 1);
 
             //WAIT FOR THE END OF BOTH TASKS
             while(eTaskGetState(airTaskHandle)==eRunning || eTaskGetState(waitTaskHandle)==eRunning){
@@ -62,12 +63,12 @@ void app_main(void){
             ESP_LOGI(APP_NAME, "Starting data eleboration");
             elaboration();
             memset(payload, 0, MESSAGE_SIZE);
-            sprintf(payload, "%d", average);
+            sprintf(payload, "%d", general_avg);
             packet_build(packet, CENTRAL_VALUE, payload);
 
             //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY
             ESP_LOGI(APP_NAME, "Starting mqtt communication");
-            xTaskCreatePinnedToCore(mqtt_transmission, "Mqtt task", 4096, NULL, 10, &mqttTaskHandle, 0);
+            xTaskCreatePinnedToCore(mqtt_transmission, "Mqtt task", 4096, (void*)&general_avg, 10, &mqttTaskHandle, 0);
             ESP_LOGI(APP_NAME, "Notifying helpers");
             xTaskCreatePinnedToCore(esp_now_tx, "Notify task", 4096, (void*) packet, 10, &notifyTaskHandle, 1);
 
