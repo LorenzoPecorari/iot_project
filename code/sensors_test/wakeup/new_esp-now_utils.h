@@ -69,8 +69,6 @@ void send_message(const char* type, const char* payload) {
     } else {
         ESP_LOGE(APP_NAME, "Failed to send message: %s", esp_err_to_name(result));
     }
-
-    printf("result of send: %d\n", result);
 }
 
 void send_mac(const char* type) {
@@ -188,11 +186,6 @@ void recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len) {
 void send_cb(const uint8_t *mac_addr, esp_now_send_status_t status) {
     if (status != ESP_NOW_SEND_SUCCESS)
         ESP_LOGE(APP_NAME, "Send failed");
-    
-    if(status == ESP_OK)
-        printf("Yeppy\n");
-
-    printf("Status %d\n", status);
 }
 
 void retrieve_mac() {
@@ -222,3 +215,8 @@ void init_esp_now() {
     custom_esp_now_init();    
 }
 
+void light_sleep_custom(){
+    esp_light_sleep_start();
+    esp_now_deinit();
+    custom_esp_now_init();
+}
