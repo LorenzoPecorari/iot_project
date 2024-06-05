@@ -24,6 +24,7 @@ void air_detection(){
     ESP_LOGI(AIR, "Air values detected");
     average/=SAMPLE;
     ESP_LOGI(AIR, "Air values average %d", average);
+    vTaskDelete(NULL);
 }
 
 void airdetection_init(){

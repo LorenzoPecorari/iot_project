@@ -44,6 +44,7 @@ void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event
             break;
         case MQTT_EVENT_PUBLISHED:
             ESP_LOGI(MQTT, "Data correctly trasmitted");
+            vTaskDelete(NULL);
             break;
         default:
             break;

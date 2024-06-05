@@ -53,18 +53,22 @@ void esp_now_tx(void* params){
     switch(packet_send.type){
         case CENTRAL_MAC:
             ESP_LOGI(ESPNOW, "Sending central MAC address");
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
             break;
         case CENTRAL_WAKE:
             ESP_LOGI(ESPNOW, "Sending sampling instructions");
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
             break;
         case CENTRAL_VALUE:
             ESP_LOGI(ESPNOW, "Sending average data sampled");
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            vTaskDelete(NULL);
             break;
         default;
             ESP_LOGW(ESPNOW, "Sending unexpected packet");
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
             break
     }
-    esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
 }
 
 // void value_tx(){
@@ -113,6 +117,7 @@ void esp_now_rx(void* helper_avg){
                 ESP_LOGI(ESPNOW, "Received packet with helper data sampled average");
                 float* helper_average=(float*)helper_avg;
                 &helper_average=atof(packet_received.payload);
+                vTaskDelete(NULL);
                 break;
             default:
                 ESP_LOGW(ESPNOW, "Received an unexpected packet");
