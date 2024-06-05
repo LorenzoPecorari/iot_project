@@ -45,7 +45,7 @@ void app_main(void){
             memset(payload, 0, MESSAGE_SIZE);
             sprintf(payload, "%d", 1);
             packet_build(packet, CENTRAL_WAKE, payload);
-            esp_now_tx((void* packet));
+            esp_now_tx((void*) packet);
 
             //START AIR DETECTION AND WATING FOR HELPERS DATA
             ESP_LOGI(APP_NAME, "Starting air detection");
@@ -61,9 +61,9 @@ void app_main(void){
 
             //START ELABORATION
             ESP_LOGI(APP_NAME, "Starting data eleboration");
-            elaboration();
+            elaboration(helper_average);
             memset(payload, 0, MESSAGE_SIZE);
-            sprintf(payload, "%d", general_avg);
+            sprintf(payload, "%f", general_avg);
             packet_build(packet, CENTRAL_VALUE, payload);
 
             //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY

@@ -12,7 +12,7 @@ float general_avg=0.0;
 void elaboration(float helper_average){
     general_avg=average+helper_average;
     general_avg/=2;
-    ESP_LOGI("General average of data sampled on this window: %f", general_avg);
+    ESP_LOGI(AIR, "General average of data sampled on this window: %f", general_avg);
 }
 
 void air_detection(){
@@ -23,7 +23,7 @@ void air_detection(){
     }
     ESP_LOGI(AIR, "Air values detected");
     average/=SAMPLE;
-    ESP_LOGI(AIR, "Air values average %d", average);
+    ESP_LOGI(AIR, "Air values average %f", average);
     vTaskDelete(NULL);
 }
 

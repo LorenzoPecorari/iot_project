@@ -53,7 +53,8 @@ void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event
 
 void mqtt_transmission(void* average){
     memset(data_tx, 0, sizeof(data_tx));
-    sprintf(data_tx, "Air data sampled: %f", &((float*)average));
+    float avg=*((float*)average);
+    sprintf(data_tx, "Air data sampled: %f", avg);
     ESP_LOGI(MQTT, "Trasmitting data...");
     esp_mqtt_client_publish(client, TOPIC, data_tx, sizeof(data_tx), 1, 1);
 }
