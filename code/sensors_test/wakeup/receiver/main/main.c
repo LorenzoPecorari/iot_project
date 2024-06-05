@@ -9,22 +9,18 @@ void app_main(void) {
          vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 
-    send_mac("MAC_REPLY");
-
-
     while(1) {        
         esp_sleep_enable_timer_wakeup(1000000);
         light_sleep_custom();
         
         what_to_do = 0;
 
-        while(!what_to_do) {
-            send_message("WAKE_REQ", "");
-        }
+        while(!what_to_do)
+            vTaskDelay(10 / portTICK_PERIOD_MS);
         
         what_to_do = 0;
 
-        ESP_LOGI(APP_NAME, "Decision taken, I'll do something then go back to sleep");
+        ESP_LOGI(APP_NAME_ESPNOW, "Decision taken, I'll do something then go back to sleep");
         vTaskDelay(500 / portTICK_PERIOD_MS);
         esp_sleep_enable_timer_wakeup(2500000);
         light_sleep_custom();

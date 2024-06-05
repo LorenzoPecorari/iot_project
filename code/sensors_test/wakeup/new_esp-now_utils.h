@@ -12,7 +12,7 @@
 #include "esp_log.h"
 #include "driver/gpio.h"
 
-#define APP_NAME "[ESP-NOW] "
+#define APP_NAME_ESPNOW "[ESP-NOW] "
 
 #define Q_LENGTH 10
 
@@ -22,8 +22,14 @@
 #define TYPE_SIZE 16
 #define MESSAGE_SIZE 128
 
+#define CENTRAL_MAC 1
+#define CENTRAL_WAKE 2
+#define CENTRAL_VALUE 3
+#define HELPER_MAC 4
+#define HELPER_VALUE 5
+
 struct message_str {
-    char type[TYPE_SIZE];
+    int type;
     char payload[MESSAGE_SIZE];
 } message_str;
 
@@ -39,7 +45,7 @@ static QueueHandle_t queue = NULL;
 
 void esp_now_utils_handle_error(esp_err_t err) {
     if (err != ESP_OK) {
-        ESP_LOGE(APP_NAME, "Error %d", err);
+        ESP_LOGE(APP_NAME_ESPNOW, "Error %d", err);
     }
 }
 
@@ -54,27 +60,28 @@ void wifi_init() {
     esp_now_utils_handle_error(esp_wifi_set_channel(CHANNEL, WIFI_SECOND_CHAN_NONE));
 }
 
-void send_message(const char* type, const char* payload) {
+void send_message(int type, const char* payload) {
     struct message_str packet = {0};
-    strncpy(packet.type, type, TYPE_SIZE - 1);
-    packet.type[TYPE_SIZE - 1] = '\0';
+    
     strncpy(packet.payload, payload, MESSAGE_SIZE - 1);
+    
     packet.payload[MESSAGE_SIZE - 1] = '\0';
-
-    ESP_LOGI(APP_NAME, "Sending: [%s - %s]\n", packet.type, packet.payload);
+    packet.type = type;
+    
+    ESP_LOGI(APP_NAME_ESPNOW, "Sending: [%d - %s]\n", packet.type, packet.payload);
 
     esp_err_t result = esp_now_send(other_mac, (uint8_t*)&packet, sizeof(packet));
     if (result == ESP_OK) {
-        ESP_LOGI(APP_NAME, "Message sent successfully");
+        ESP_LOGI(APP_NAME_ESPNOW, "Message sent successfully");
     } else {
-        ESP_LOGE(APP_NAME, "Failed to send message: %s", esp_err_to_name(result));
+        ESP_LOGE(APP_NAME_ESPNOW, "Failed to send message: %s", esp_err_to_name(result));
     }
 }
 
-void send_mac(const char* type) {
+void send_mac() {
     char mac_as_str[18];
     sprintf(mac_as_str, "%02x:%02x:%02x:%02x:%02x:%02x", this_mac[0], this_mac[1], this_mac[2], this_mac[3], this_mac[4], this_mac[5]);
-    send_message(type, mac_as_str);
+    send_message(HELPER_MAC, mac_as_str);
 }
 
 void set_peer(esp_now_peer_info_t* peer, uint8_t* mac) {
@@ -88,12 +95,12 @@ void set_peer(esp_now_peer_info_t* peer, uint8_t* mac) {
 
 void set_mac(uint8_t* mac) {
     if (!mac)
-        ESP_LOGE(APP_NAME, "Invalid mac pointer");
+        ESP_LOGE(APP_NAME_ESPNOW, "Invalid mac pointer");
     else {
         memcpy(other_mac, mac, ESP_NOW_ETH_ALEN);
         esp_now_peer_info_t *peer = (esp_now_peer_info_t*) malloc(sizeof(esp_now_peer_info_t));
         if (peer == NULL) {
-            ESP_LOGE(APP_NAME, "Memory allocation : fail");
+            ESP_LOGE(APP_NAME_ESPNOW, "Memory allocation : fail");
             return;
         }
         memset(peer, 0, sizeof(esp_now_peer_info_t));
@@ -106,9 +113,10 @@ void consume_message() {
     struct message_str received_message;
     if (xQueueReceive(queue, &received_message, portMAX_DELAY)) {
         
-        ESP_LOGI(APP_NAME, "Received: [%s - %s]", received_message.type, received_message.payload);
+        ESP_LOGI(APP_NAME_ESPNOW, "Received: [%d - %s]", received_message.type, received_message.payload);
         
-        if (!strcmp(received_message.type, "MAC_ID")) {
+        switch(received_message.type){
+        case CENTRAL_MAC:
             got_other_mac = 0;
 
             char copied[MESSAGE_SIZE];
@@ -126,49 +134,30 @@ void consume_message() {
                 printf("%02x\n", other_mac[i]);
             }
 
-            // it waits a second after receiving MAC then it sends its own
             set_mac(other_mac);
+            send_mac();
             got_other_mac = 1;
-        } 
-        else if(!strcmp(received_message.type, "MAC_REPLY")){
-            char copied[MESSAGE_SIZE];
-            strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
-            copied[MESSAGE_SIZE - 1] = '\0';
-            
-            char* token;
-            token = strtok(copied, ":");
-            unsigned int t = 0;
-            
-            for (int i = 0; token != NULL && i < ESP_NOW_ETH_ALEN; i++) {
-                sscanf(token, "%02x", &t);
-                token = strtok(NULL, ":");
-                other_mac[i] = (uint8_t) t;
-            }
+            break;
 
-            set_mac(other_mac);
-            got_other_mac = 1;
-        }
-        else if (!strcmp(received_message.type, "WAKE_REQ")) {
-            if(1){  // TODO : it is needed to define the variable related to noises
-                send_message("WAKE_REP", "This has to contain something about values");
-            }
-        }
-        else if (!strcmp(received_message.type, "WAKE_REP")) {
-            if(1){
-                ;// TODO : implement something here
-            }
-            what_to_do = 1;
-        }
-        else if (!strcmp(received_message.type, "VALUE_REQ")) {
-            ESP_LOGI(APP_NAME, "Some values are being sent by other node");
-            send_message("VALUE_REP", "0");
-        }
-        else if (!strcmp(received_message.type, "VALUE_REP")) {
-            ESP_LOGI(APP_NAME, "Some values are being sent by other node");
-            // TODO : something to implement here 
-        }
-        else {
-            ESP_LOGI(APP_NAME, "Unknown type, dropping...");
+        case CENTRAL_WAKE:
+            ESP_LOGI(APP_NAME_ESPNOW, "Received sampling instructions");
+            if(!strcmp(received_message.payload, "1"))
+                what_to_do = 1;
+                // TODO : received ok for sampling data!
+        break;
+        
+        case CENTRAL_VALUE:
+            ESP_LOGI(APP_NAME_ESPNOW, "Received average data sampled");
+            // TODO : parameters to be estabilished wrt received ones
+            
+            //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            //vTaskDelete(NULL);
+            break;
+
+        default:
+            ESP_LOGW(APP_NAME_ESPNOW, "Unkonow packet, drop...");
+            //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            break;
         }
     }
 }
@@ -185,7 +174,7 @@ void recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len) {
 
 void send_cb(const uint8_t *mac_addr, esp_now_send_status_t status) {
     if (status != ESP_NOW_SEND_SUCCESS)
-        ESP_LOGE(APP_NAME, "Send failed");
+        ESP_LOGE(APP_NAME_ESPNOW, "Send failed");
 }
 
 void retrieve_mac() {
