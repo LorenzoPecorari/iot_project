@@ -10,7 +10,8 @@ void app_main(void) {
     }
 
     while(1) {        
-        esp_sleep_enable_timer_wakeup(1000000);
+        esp_sleep_enable_timer_wakeup(2500000);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
         light_sleep_custom();
         
         what_to_do = 0;

@@ -78,10 +78,10 @@ void send_message(int type, const char* payload) {
     }
 }
 
-void send_mac() {
+void send_mac(int type) {
     char mac_as_str[18];
     sprintf(mac_as_str, "%02x:%02x:%02x:%02x:%02x:%02x", this_mac[0], this_mac[1], this_mac[2], this_mac[3], this_mac[4], this_mac[5]);
-    send_message(HELPER_MAC, mac_as_str);
+    send_message(type, mac_as_str);
 }
 
 void set_peer(esp_now_peer_info_t* peer, uint8_t* mac) {
@@ -135,7 +135,27 @@ void consume_message() {
             }
 
             set_mac(other_mac);
-            send_mac();
+            send_mac(HELPER_MAC);
+            got_other_mac = 1;
+            break;
+        
+        case HELPER_MAC:
+            got_other_mac = 0;
+
+            strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
+            copied[MESSAGE_SIZE - 1] = '\0';
+            
+            token = strtok(copied, ":");
+            t = 0;
+            
+            for (int i = 0; token != NULL && i < ESP_NOW_ETH_ALEN; i++) {
+                sscanf(token, "%02x", &t);
+                token = strtok(NULL, ":");
+                other_mac[i] = (uint8_t) t;
+                printf("%02x\n", other_mac[i]);
+            }
+
+            set_mac(other_mac);
             got_other_mac = 1;
             break;
 
@@ -144,6 +164,7 @@ void consume_message() {
             if(!strcmp(received_message.payload, "1"))
                 what_to_do = 1;
                 // TODO : received ok for sampling data!
+            send_message(HELPER_VALUE, "value inside");
         break;
         
         case CENTRAL_VALUE:
@@ -153,6 +174,15 @@ void consume_message() {
             //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
             //vTaskDelete(NULL);
             break;
+
+        case HELPER_VALUE:
+            ESP_LOGI(APP_NAME_ESPNOW, "Received average data sampled");
+            // TODO : parameters to be estabilished wrt received ones
+            
+            //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            //vTaskDelete(NULL);
+            break;
+
 
         default:
             ESP_LOGW(APP_NAME_ESPNOW, "Unkonow packet, drop...");

@@ -6,9 +6,8 @@ void app_main(void) {
     wifi_init();
     init_esp_now();
     
-    send_mac("MAC_ID");
+    send_mac(CENTRAL_MAC);
 
-    while(1){
-        vTaskDelay(10 / portTICK_PERIOD_MS);
-    }
+    vTaskDelay(4000 / portTICK_PERIOD_MS);
+    send_message(CENTRAL_WAKE, "HELO");
 }
