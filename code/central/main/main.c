@@ -24,10 +24,12 @@ void app_main(void){
     microphone_init();
     airdetection_init();
     ESP_LOGI(APP_NAME, "Elements initialization completed");
+    packet=(message_t*)malloc(MSG_STRUCT_SIZE);
+    packet->payload="";
 
     //MAC SHARING TO HELPER DEVICES
     ESP_LOGI(APP_NAME, "Start mac exchange");
-    memset(payload, 0, MESSAGE_SIZE);
+    // memset(payload, 0, MESSAGE_SIZE);
     sprintf(payload, "%02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
     packet_build(packet, CENTRAL_MAC, payload);
     esp_now_tx((void*) packet);

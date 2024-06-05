@@ -12,7 +12,6 @@
 #define HELPER_VALUE 5
 
 #define QUEUE_LENGTH 10
-#define Q_ELEMENT_SIZE sizeof(uint8_t)
 #define DELAY (2500 / portTICK_PERIOD_MS)
 #define TYPE_SIZE sizeof(int)
 #define MESSAGE_SIZE 128
@@ -24,11 +23,12 @@ QueueHandle_t queue;
 
 typedef struct{
     int type;
-    char payload[MESSAGE_SIZE];
+    char* payload;
 } message_t;
 #define MSG_STRUCT_SIZE sizeof(message_t)
+#define Q_ELEMENT_SIZE MSG_STRUCT_SIZE
 
-char* payload;
+char* payload="";
 message_t packet_send={0};
 message_t packet_received={0};
 
@@ -39,15 +39,15 @@ void esp_now_utils_handle_error(esp_err_t err){
 }
 
 void packet_build(message_t* packet, const int type, const char* payload){
-    memset(packet, 0, MSG_STRUCT_SIZE);
+    // memset(packet, 0, MSG_STRUCT_SIZE);
     packet->type=type;
-    strncpy(packet->payload, payload, MESSAGE_SIZE);
-    packet->payload[MESSAGE_SIZE-1]='\0';
+    strcpy(packet->payload, payload);
+    // packet->payload[MESSAGE_SIZE-1]='\0';
     ESP_LOGI(ESPNOW, "Sending message: [%d - %s]", packet->type, packet->payload);
 }
 
 void esp_now_tx(void* params){
-    memset(&packet_send, 0, MSG_STRUCT_SIZE);
+    // memset(&packet_send, 0, MSG_STRUCT_SIZE);
     packet_send=*((message_t*) params);
     switch(packet_send.type){
         case CENTRAL_MAC:
@@ -165,9 +165,10 @@ void set_broadcast_trasmission(){
 }
 
 //CALLBACK FUNCTION FOR MESSAGES REICEVING
-void receiver_cb(const uint8_t* queue,const uint8_t* data, int len){
-    xQueueSend(queue, data, len);
-    ESP_LOGI(ESPNOW, "Received: %d", data[0]);
+void receiver_cb(const uint8_t* mac, const uint8_t* data, int len){
+    // memcpy(&packet_received, data, sizeof(*data));
+    xQueueSend(queue, data, portMAX_DELAY);
+    // ESP_LOGI(ESPNOW, "Received: [%d - %s]", data->type, data->payload);
 }
 
 //CALLBACK FUNCTION FOR MESSAGES SENDING
@@ -189,10 +190,10 @@ void espnow_init(){
     ESP_LOGI(ESPNOW, "Queue created");
 
     esp_now_utils_handle_error(esp_now_init());
-    esp_now_utils_handle_error(esp_now_register_recv_cb(sender_cb));
-    esp_now_utils_handle_error(esp_now_register_send_cb(receiver_cb));
+    esp_now_utils_handle_error(esp_now_register_recv_cb(receiver_cb));
+    esp_now_utils_handle_error(esp_now_register_send_cb(sender_cb));
 
     set_broadcast_trasmission();
-    memset(&central_mac, 0, Q_ELEMENT_SIZE*ESP_NOW_ETH_ALEN);
+    memset(&central_mac, 0, sizeof(uint8_t)*ESP_NOW_ETH_ALEN);
     retrieve_mac();
 }

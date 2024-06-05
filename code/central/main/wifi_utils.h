@@ -1,8 +1,8 @@
 #include "common.h"
 
 #define WIFI "[WI-FI]"
-#define WIFI_SSID ""
-#define WIFI_PASSWORD ""
+#define WIFI_SSID "TIM-30577277"
+#define WIFI_PASSWORD "SHsxdHKFQGHch6dsTYH4FyQu"
 
 wifi_config_t wifi_struct;
 EventGroupHandle_t event_group;
@@ -50,7 +50,7 @@ void wifi_init(){
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_struct));
     ESP_ERROR_CHECK(esp_wifi_start());
 
-    ESP_ERROR_CHECK(esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE));
+    esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
 
     // EventBits_t notification_bits = xEventGroupWaitBits(group, CONN_BIT | FAIL_BIT, pdFALSE, pdFALSE, portMAX_DELAY);
 
