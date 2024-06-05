@@ -204,15 +204,21 @@ void set_broadcast_mac() {
     set_mac(addr);
 }
 
-void init_esp_now() {
-    queue = xQueueCreate(Q_LENGTH, STRUCT_SIZE);
-    
+void custom_esp_now_init(){
     esp_now_utils_handle_error(esp_now_init());
     esp_now_utils_handle_error(esp_event_loop_create_default());
     esp_now_utils_handle_error(esp_now_register_recv_cb(recv_cb));
     esp_now_utils_handle_error(esp_now_register_send_cb(send_cb));
-        
+    
+    set_mac(other_mac);
+}
+
+void init_esp_now() {
+    queue = xQueueCreate(Q_LENGTH, STRUCT_SIZE);
+
     set_broadcast_mac();
     retrieve_mac();
+
+    custom_esp_now_init();    
 }
 
