@@ -13,10 +13,9 @@
 #include "nvs_flash.h"
 
 #define MIC_PIN 
-#define AIR_PIN 
-#define RED_LED_PIN 
-#define YELLOW_LED_PIN 
-#define GREEN_LED_PIN 
+#define AIR_PIN
 
 // esp-now communication channel
 #define CHANNEL 0
+
+extern uint32_t air_voltage;

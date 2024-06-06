@@ -1,136 +1,244 @@
+#include "air_module.h"
 #include "common.h"
 
 #include "esp_now.h"
+#include "esp_sleep.h"
 #include "esp_task.h"
 #include "esp_mac.h"
 
-#define APP_NAME_ESP_NOW "[ESP-NOW] "
+#define APP_NAME_ESPNOW "[ESP-NOW] "
 
 #define Q_LENGTH 10
+
 #define SIZE sizeof(uint8_t)
 #define DELAY (2500 / portTICK_PERIOD_MS)
+#define CHANNEL 0
+#define TYPE_SIZE 16
+#define MESSAGE_SIZE 128
 
-QueueHandle_t queue;
+#define CENTRAL_MAC 1
+#define CENTRAL_WAKE 2
+#define CENTRAL_VALUE 3
+#define HELPER_MAC 4
+#define HELPER_VALUE 5
 
-uint8_t central_mac[ESP_NOW_ETH_ALEN] = {0}; // initially broadcast, later specific address
-uint8_t helper_mac[ESP_NOW_ETH_ALEN] = {0};
+struct message_str {
+    int type;
+    char payload[MESSAGE_SIZE];
+} message_str;
 
-// "handles" the return value of a function
-void esp_now_utils_handle_error(esp_err_t err){
-    if(err != ESP_OK)
-        ESP_LOGE(APP_NAME_ESP_NOW, "Error %d", err);
+#define STRUCT_SIZE sizeof(message_str)
+
+int got_other_mac = 0;
+int what_to_do = 0;
+
+uint8_t other_mac[ESP_NOW_ETH_ALEN] = {0};
+uint8_t this_mac[ESP_NOW_ETH_ALEN] = {0};
+
+static QueueHandle_t queue = NULL;
+
+void esp_now_utils_handle_error(esp_err_t err) {
+    if (err != ESP_OK) {
+        ESP_LOGE(APP_NAME_ESPNOW, "Error %d", err);
+    }
 }
 
-// callback function for messges receiving
-void receive_cb(const uint8_t *central_mac, const uint8_t *data, int len){
-    xQueueSend(queue, data, len);
-    ESP_LOGI(APP_NAME_ESP_NOW, "Received : %d", data[0]);
+void wifi_init() {
+    esp_now_utils_handle_error(esp_netif_init());
+    wifi_init_config_t init_conf = WIFI_INIT_CONFIG_DEFAULT();
+    esp_now_utils_handle_error(esp_wifi_init(&init_conf));
+    
+    esp_now_utils_handle_error(esp_wifi_set_mode(WIFI_MODE_STA));
+    esp_now_utils_handle_error(esp_wifi_set_ps(WIFI_PS_MIN_MODEM));
+    
+    esp_now_utils_handle_error(esp_sleep_enable_wifi_wakeup());
+    esp_now_utils_handle_error(esp_wifi_start());
+    
+    esp_now_utils_handle_error(esp_wifi_set_channel(CHANNEL, WIFI_SECOND_CHAN_NONE));
 }
 
-// callback function for messages sending
-void send_cb(const uint8_t *central_mac, esp_now_send_status_t status){
-    if (status != ESP_NOW_SEND_SUCCESS)
-        ESP_LOGE(APP_NAME_ESP_NOW, "Send failed");
+void send_message(int type, const char* payload) {
+    struct message_str packet = {0};
+    
+    strncpy(packet.payload, payload, MESSAGE_SIZE - 1);
+    
+    packet.payload[MESSAGE_SIZE - 1] = '\0';
+    packet.type = type;
+    
+    ESP_LOGI(APP_NAME_ESPNOW, "Sending: [%d - %s]\n", packet.type, packet.payload);
+
+    esp_err_t result = esp_now_send(other_mac, (uint8_t*)&packet, sizeof(packet));
+    if (result == ESP_OK) {
+        ESP_LOGI(APP_NAME_ESPNOW, "Message sent successfully");
+    } else {
+        ESP_LOGE(APP_NAME_ESPNOW, "Failed to send message: %s", esp_err_to_name(result));
+    }
 }
 
-// retrives the mac address of the device (wifi module)
-void retrieve_mac(){
-    esp_now_utils_handle_error(esp_read_mac(helper_mac, ESP_MAC_WIFI_STA));
-    ESP_LOGI(APP_NAME_ESP_NOW, "MAC: %02x:%02x:%02x:%02x:%02x:%02x", helper_mac[0], helper_mac[1], helper_mac[2], helper_mac[3], helper_mac[4], helper_mac[5]);
+void send_mac(int type) {
+    char mac_as_str[18];
+    sprintf(mac_as_str, "%02x:%02x:%02x:%02x:%02x:%02x", this_mac[0], this_mac[1], this_mac[2], this_mac[3], this_mac[4], this_mac[5]);
+    send_message(type, mac_as_str);
 }
 
-// sets the peer with certain mac passed as argoument of the function
-void set_peer(esp_now_peer_info_t* peer, uint8_t* mac_address){
-    if(peer && mac_address){
-        memcpy(peer->peer_addr, central_mac, ESP_NOW_ETH_ALEN);
+void set_peer(esp_now_peer_info_t* peer, uint8_t* mac) {
+    if (peer && mac) {
+        memcpy(peer->peer_addr, mac, ESP_NOW_ETH_ALEN);
         peer->channel = CHANNEL;
         peer->encrypt = false;
-        
         esp_now_utils_handle_error(esp_now_add_peer(peer));
     }
 }
 
-// sets the mac of the peer through set_peer()
-void set_mac(uint8_t* mac_address){
-    if(!mac_address)
-        ESP_LOGE(APP_NAME_ESP_NOW, "Invalid mac pointer");
-    else{
-        memcpy(central_mac, mac_address, ESP_NOW_ETH_ALEN);
-        
-        esp_now_peer_info_t *peer = malloc(sizeof(esp_now_peer_info_t));
-    
+void set_mac(uint8_t* mac) {
+    if (!mac)
+        ESP_LOGE(APP_NAME_ESPNOW, "Invalid mac pointer");
+    else {
+        memcpy(other_mac, mac, ESP_NOW_ETH_ALEN);
+        esp_now_peer_info_t *peer = (esp_now_peer_info_t*) malloc(sizeof(esp_now_peer_info_t));
         if (peer == NULL) {
-            ESP_LOGE(APP_NAME_ESP_NOW, "Memory allocation failed");
+            ESP_LOGE(APP_NAME_ESPNOW, "Memory allocation : fail");
             return;
         }
-
         memset(peer, 0, sizeof(esp_now_peer_info_t));
-        set_peer(peer, mac_address);
+        set_peer(peer, other_mac);
         free(peer);
     }
-
 }
 
-// sets the peer in order to sends and receive messages in broadcast
-void set_broadcast_mac(){
-    uint8_t addr[ESP_NOW_ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff,}; // broadcast mac
+void consume_message() {
+    struct message_str received_message;
+    if (xQueueReceive(queue, &received_message, portMAX_DELAY)) {
+        
+        ESP_LOGI(APP_NAME_ESPNOW, "Received: [%d - %s]", received_message.type, received_message.payload);
+        
+        switch(received_message.type){
+        case CENTRAL_MAC:
+            got_other_mac = 0;
+
+            char copied[MESSAGE_SIZE];
+            strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
+            copied[MESSAGE_SIZE - 1] = '\0';
+            
+            char* token;
+            token = strtok(copied, ":");
+            unsigned int t = 0;
+            
+            for (int i = 0; token != NULL && i < ESP_NOW_ETH_ALEN; i++) {
+                sscanf(token, "%02x", &t);
+                token = strtok(NULL, ":");
+                other_mac[i] = (uint8_t) t;
+                printf("%02x\n", other_mac[i]);
+            }
+
+            set_mac(other_mac);
+            send_mac(HELPER_MAC);
+            got_other_mac = 1;
+            break;
+        
+        case HELPER_MAC:
+            got_other_mac = 0;
+
+            strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
+            copied[MESSAGE_SIZE - 1] = '\0';
+            
+            token = strtok(copied, ":");
+            t = 0;
+            
+            for (int i = 0; token != NULL && i < ESP_NOW_ETH_ALEN; i++) {
+                sscanf(token, "%02x", &t);
+                token = strtok(NULL, ":");
+                other_mac[i] = (uint8_t) t;
+            }
+
+            set_mac(other_mac);
+            got_other_mac = 1;
+            break;
+
+        case CENTRAL_WAKE:
+            ESP_LOGI(APP_NAME_ESPNOW, "Received sampling instructions");
+            if(!strcmp(received_message.payload, "1"))
+                what_to_do = 1;
+                // TODO : received ok for sampling data!
+
+            get_values();
+
+            char buf[16];
+            sprintf(buf, "%" PRIu32, voltage);
+
+            send_message(HELPER_VALUE, buf);
+        break;
+        
+        case CENTRAL_VALUE:
+            ESP_LOGI(APP_NAME_ESPNOW, "Received average data sampled");
+            // TODO : parameters to be estabilished wrt received ones
+            
+            //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            //vTaskDelete(NULL)
+            break;
+
+        case HELPER_VALUE:
+            ESP_LOGI(APP_NAME_ESPNOW, "Received average data sampled from helper");
+            send_message(CENTRAL_VALUE, "130");
+            // TODO : parameters to be estabilished wrt received ones
+            
+            //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            //vTaskDelete(NULL);
+            break;
+
+
+        default:
+            ESP_LOGW(APP_NAME_ESPNOW, "Unkonow packet, drop...");
+            //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            break;
+        }
+    }
+}
+
+void recv_cb(const uint8_t *mac_addr, const uint8_t *data, int len) {
+    struct message_str received_message;
+    memcpy(&received_message, data, len);    
+
+    esp_now_utils_handle_error(esp_sleep_enable_wifi_wakeup());
+    xQueueSend(queue, &received_message, portMAX_DELAY);
+
+    consume_message();
+}
+
+void send_cb(const uint8_t *mac_addr, esp_now_send_status_t status) {
+    if (status != ESP_NOW_SEND_SUCCESS)
+        ESP_LOGE(APP_NAME_ESPNOW, "Send failed");
+}
+
+void retrieve_mac() {
+    esp_now_utils_handle_error(esp_read_mac(this_mac, ESP_MAC_WIFI_STA));
+}
+
+void set_broadcast_mac() {
+    uint8_t addr[ESP_NOW_ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
     set_mac(addr);
 }
 
-// transmits its own broadcast
-void esp_now_mac_tx(){
-    ESP_LOGI(APP_NAME_ESP_NOW, "Sending mac to... %02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
-    int cnt = 0;
-
-    while(cnt < ESP_NOW_ETH_ALEN){
-        esp_now_send(central_mac, &helper_mac[cnt], SIZE);
-        ESP_LOGI(APP_NAME_ESP_NOW, "Sent: %d", helper_mac[cnt]);
-        vTaskDelay(DELAY);
-        cnt++;
-    }
-}
-
-// receives the mac address of the other peer
-void esp_now_mac_rx(){
-    memset(central_mac, 0, SIZE * ESP_NOW_ETH_ALEN);
-    int cnt = 0;
-
-    queue = xQueueCreate(Q_LENGTH, SIZE);
-
-    // receives the mac address from the other peer
-    while(cnt < ESP_NOW_ETH_ALEN){
-        xQueueReceive(queue, &central_mac[cnt], portMAX_DELAY);
-        cnt++;
-    }
-
-    ESP_LOGI(APP_NAME_ESP_NOW, "Mac address received= %02x:%02x:%02x:%02x:%02x:%02x\n", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
-
-    set_mac(central_mac);
-}
-
-//  creates the queue, initializes esp-now, registers the callback functions, sets the peer to which send data
-void init_esp_now(){
-    queue = xQueueCreate(Q_LENGTH, SIZE);
-
-    if (queue == NULL) {
-        ESP_LOGE(APP_NAME_ESP_NOW, "Failed to create queue");
-        return;
-    }
-
+void custom_esp_now_init(){
     esp_now_utils_handle_error(esp_now_init());
-    esp_now_utils_handle_error(esp_now_register_recv_cb(receive_cb));
+    esp_now_utils_handle_error(esp_event_loop_create_default());
+    esp_now_utils_handle_error(esp_now_register_recv_cb(recv_cb));
     esp_now_utils_handle_error(esp_now_register_send_cb(send_cb));
+    
+    set_mac(other_mac);
+}
+
+void init_esp_now() {
+    queue = xQueueCreate(Q_LENGTH, STRUCT_SIZE);
 
     set_broadcast_mac();
+    retrieve_mac();
 
-    memset(helper_mac, 0, SIZE * ESP_NOW_ETH_ALEN);
-    retrieve_mac(helper_mac);
+    custom_esp_now_init();    
 }
 
-// sends sampled data to central device
-void send_data(float temp_val, float air_val){
-    float data[2] = {temp_val, air_val};ù
-
-    esp_now_utils_handle_error(esp_now_send(central_mac, (uint8_t*) &data, sizeof(float) * 2));
-    ESP_LOGI(APP_NAME_ESP_NOW, "Sent data: (%f, %f)", data[0], data[1]);
+void light_sleep_custom(){
+    esp_light_sleep_start();
+    esp_now_deinit();
+    custom_esp_now_init();
 }

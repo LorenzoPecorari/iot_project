@@ -1,24 +1,29 @@
 #include "esp-now_utils_helper.h"
-#include "wifi_utils.h"
 
-#define APP_NAME "[HELPER] "
+void app_main(void) {
 
-void app_main(void){
+    esp_now_utils_handle_error(nvs_flash_init());
     wifi_init();
     init_esp_now();
+    init_adc();
 
-    esp_now_mac_tx();
-
-    send_data(8.16, 32.64);
-    //esp_now_mac_rx();   
-
-    while(1){
-        // light sleep until central does not send wakeup message
-        
-        // sample data
-        
-        // send data
-        // send_data(8.16, 32.64);
+    while(!got_other_mac) {
+         vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 
+    while(1) {        
+        esp_sleep_enable_timer_wakeup(2500000);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        light_sleep_custom();
+        
+        what_to_do = 0;
+
+        while(!what_to_do)
+            vTaskDelay(10 / portTICK_PERIOD_MS);
+        
+        ESP_LOGI(APP_NAME_ESPNOW, "Decision taken, I'll send values");
+        vTaskDelay(500 / portTICK_PERIOD_MS);
+        esp_sleep_enable_timer_wakeup(2500000);
+        light_sleep_custom();
+    }
 }
