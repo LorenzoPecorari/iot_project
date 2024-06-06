@@ -164,7 +164,7 @@ void consume_message() {
             get_values();
 
             char buf[16];
-            sprintf(buf, "%" PRIu32, voltage);
+            sprintf(buf, "%" PRIu32, air_voltage);
 
             send_message(HELPER_VALUE, buf);
         break;
