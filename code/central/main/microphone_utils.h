@@ -19,7 +19,7 @@ int check_people(){
             vTaskDelay(10000/portTICK_PERIOD_MS);
         }
     }
-    return people=1;
+    return people;
 }
 
 void microphone_init(){
