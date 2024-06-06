@@ -21,6 +21,10 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
             ESP_LOGI(WIFI, "Connecting to wifi...");
             if (esp_wifi_connect() == ESP_OK){
                 ESP_LOGI(WIFI, "Connection success!");
+                // esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
+            }else{
+                ESP_LOGE(WIFI, "Cannot connect to wifi");
+
             }
         }
         else if(event_id == WIFI_EVENT_STA_DISCONNECTED){
@@ -47,10 +51,10 @@ void wifi_init(){
     wifi_init_config_t init_config=WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&init_config));
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_struct));
+    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_conf));
     ESP_ERROR_CHECK(esp_wifi_start());
 
-    esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
+    
 
     // EventBits_t notification_bits = xEventGroupWaitBits(group, CONN_BIT | FAIL_BIT, pdFALSE, pdFALSE, portMAX_DELAY);
 
