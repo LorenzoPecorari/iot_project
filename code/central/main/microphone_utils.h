@@ -9,8 +9,8 @@ int check_people(){
     bool people=0;
     int check=0;
     while(!people && check<6){
-        voltage=esp_adc_cal_raw_to_voltage(adc1_get_raw(MIC_CHANNEL), &adc1);
-        if(voltage>PEOPLE_PRESENCE){
+        voltage=gpio_get_level(MIC_CHANNEL);
+        if(voltage){
             ESP_LOGI(MIC, "People detected");
             people=1;
         }else{

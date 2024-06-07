@@ -47,8 +47,6 @@ void packet_build(message_t* packet, const int type, const char* payload){
 }
 
 void esp_now_tx(void* params){
-    // memset(&packet_send, 0, MSG_STRUCT_SIZE);
-    // packet_send=*((message_t*) params);
     switch(((message_t*)params)->type){
         case CENTRAL_MAC:
             ESP_LOGI(ESPNOW, "Sending central MAC address");
@@ -71,44 +69,18 @@ void esp_now_tx(void* params){
     }
 }
 
-// void value_tx(){
-//     //IF DONE ON A TASK, CREATE THE STRUCT FOR PASSING THE VALUE
-//     ESP_LOGI(ESPNOW, "Communicating the average value of data sampled");
-//     memset(payload, 0, MAX_MSG_LEN);
-//     sprintf(payload, "value");
-//     packet_build(CENTRAL_VALUE, payload);
-//     esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
-
-// }
-
-// void start_sample_tx(){
-//     ESP_LOGI(ESPNOW, "Starting sample communication to helper");
-//     memset(payload, 0, MAX_MSG_LEN);
-//     sprintf(payload, "Start sampling");
-//     packet_build(payload, CENTRAL_WAKE);
-//     esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
-// }
-
-// void esp_now_mac_tx(){
-//     ESP_LOGE(ESPNOW, "Mac transmission");
-//     memset(payload, 0, MESSAGE_SIZE);
-//     sprintf(payload, "%02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
-//     packet_build(payload, CENTRAL_MAC);
-//     esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
-// }
-
 void esp_now_rx(void* helper_avg){
-    message_t packet_received;
-    memset(&packet_received, 0, MSG_STRUCT_SIZE);
+    message_t packet_received={0};
     if(xQueueReceive(queue, &packet_received, portMAX_DELAY)){
         ESP_LOGI(ESPNOW, "Packet correctly received");
         switch(packet_received.type){
             case HELPER_MAC:
                 ESP_LOGI(ESPNOW, "Received packet with helper MAC address");
                 char* token=strtok(packet_received.payload, ":");
-                uint8_t value=0;
+                unsigned int value=0;
                 for(int i=0; i<ESP_NOW_ETH_ALEN; i++){
-                    value=atoi(token);
+                    // value=atoi(token);
+                    sscanf(token, "%02x", &value);
                     helper_mac[i]=value;
                     token=strtok(NULL, ":");
                 }
