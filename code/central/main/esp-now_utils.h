@@ -55,21 +55,31 @@ void esp_now_tx(void* params){
             break;
         case CENTRAL_WAKE:
             ESP_LOGI(ESPNOW, "Sending sampling instructions");
-            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&params, MSG_STRUCT_SIZE));
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)params, MSG_STRUCT_SIZE));
             break;
         case CENTRAL_VALUE:
             ESP_LOGI(ESPNOW, "Sending average data sampled");
-            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&params, MSG_STRUCT_SIZE));
-            vTaskDelete(NULL);
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)params, MSG_STRUCT_SIZE));
             break;
         default:
             ESP_LOGW(ESPNOW, "Sending unexpected packet");
-            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&params, MSG_STRUCT_SIZE));
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)params, MSG_STRUCT_SIZE));
             break;
+    }
+    vTaskDelay(10000/portTICK_PERIOD_MS);
+}
+
+void set_peer(esp_now_peer_info_t* peer,const uint8_t* mac_address){
+    if(peer && mac_address){
+        memcpy(peer->peer_addr, helper_mac, ESP_NOW_ETH_ALEN);
+        peer->channel=ESP_NOW_CHANNEL;
+        peer->encrypt=false;
+
+        esp_now_utils_handle_error(esp_now_add_peer(peer));
     }
 }
 
-void esp_now_rx(void* helper_avg){
+void esp_now_rx(float* helper_avg){
     message_t packet_received={0};
     if(xQueueReceive(queue, &packet_received, portMAX_DELAY)){
         ESP_LOGI(ESPNOW, "Packet correctly received");
@@ -85,12 +95,20 @@ void esp_now_rx(void* helper_avg){
                     token=strtok(NULL, ":");
                 }
                 ESP_LOGI(ESPNOW, "Received helper mac address %02x:%02x:%02x:%02x:%02x:%02x", helper_mac[0], helper_mac[1], helper_mac[2], helper_mac[3], helper_mac[4], helper_mac[5]);
+
+                esp_now_peer_info_t* peer=(esp_now_peer_info_t*)malloc(sizeof(esp_now_peer_info_t));
+                if(peer==NULL){
+                    ESP_LOGE(ESPNOW, "Memory allocation failed");
+                    return;
+                }
+                memset(peer, 0, sizeof(esp_now_peer_info_t));
+                set_peer(peer, helper_mac);
+                free(peer);
                 break;
             case HELPER_VALUE:
                 ESP_LOGI(ESPNOW, "Received packet with helper data sampled average");
-                float* helper_average=(float*)helper_avg;
-                *helper_average=atof(packet_received.payload);
-                vTaskDelete(NULL);
+                *helper_avg=atof(packet_received.payload);
+                ESP_LOGI(ESPNOW, "Value received %f", (*helper_avg));
                 break;
             default:
                 ESP_LOGW(ESPNOW, "Received an unexpected packet");
@@ -104,16 +122,6 @@ void esp_now_rx(void* helper_avg){
 void retrieve_mac(){
     esp_now_utils_handle_error(esp_read_mac(central_mac, ESP_MAC_WIFI_STA));
     ESP_LOGI(ESPNOW, "CENTRAL MAC: %02x:%02x:%02x:%02x:%02x:%02x", central_mac[0], central_mac[1], central_mac[2], central_mac[3], central_mac[4], central_mac[5]);
-}
-
-void set_peer(esp_now_peer_info_t* peer,const uint8_t* mac_address){
-    if(peer && mac_address){
-        memcpy(peer->peer_addr, helper_mac, ESP_NOW_ETH_ALEN);
-        peer->channel=ESP_NOW_CHANNEL;
-        peer->encrypt=false;
-
-        esp_now_utils_handle_error(esp_now_add_peer(peer));
-    }
 }
 
 void set_mac(const uint8_t* mac_address){
@@ -141,8 +149,11 @@ void set_broadcast_trasmission(){
 //CALLBACK FUNCTION FOR MESSAGES REICEVING
 void receiver_cb(const uint8_t* mac, const uint8_t* data, int len){
     // memcpy(&packet_received, data, sizeof(*data));
-    xQueueSend(queue, data, portMAX_DELAY);
-    // ESP_LOGI(ESPNOW, "Received: [%d - %s]", data->type, data->payload);
+    ESP_LOGI(ESPNOW, "Callback");
+    message_t rec;
+    memcpy(&rec, data, len);
+    xQueueSend(queue, &rec, portMAX_DELAY);
+    ESP_LOGI(ESPNOW, "Received: [%d - %s]", rec.type, rec.payload);
 }
 
 //CALLBACK FUNCTION FOR MESSAGES SENDING
@@ -164,9 +175,10 @@ void espnow_init(){
     ESP_LOGI(ESPNOW, "Queue created");
 
     esp_now_utils_handle_error(esp_now_init());
+    esp_now_utils_handle_error(esp_event_loop_create_default());
     esp_now_utils_handle_error(esp_now_register_recv_cb(receiver_cb));
     esp_now_utils_handle_error(esp_now_register_send_cb(sender_cb));
-
+    
     set_broadcast_trasmission();
     memset(&central_mac, 0, sizeof(uint8_t)*ESP_NOW_ETH_ALEN);
     retrieve_mac();

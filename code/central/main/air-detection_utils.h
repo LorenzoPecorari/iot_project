@@ -19,12 +19,11 @@ void air_detection(){
     for(int i=0; i<SAMPLE; i++){
         voltages[i]=esp_adc_cal_raw_to_voltage(adc1_get_raw(AIR_CHANNEL), &adc1);
         average=voltages[i];
-        vTaskDelay(pdMS_TO_TICKS(DELAY_INPUT));
+        vTaskDelay(DELAY_INPUT);
     }
     ESP_LOGI(AIR, "Air values detected");
     average/=SAMPLE;
     ESP_LOGI(AIR, "Air values average %f", average);
-    vTaskDelete(NULL);
 }
 
 void airdetection_init(){

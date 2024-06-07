@@ -44,17 +44,16 @@ void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event
             break;
         case MQTT_EVENT_PUBLISHED:
             ESP_LOGI(MQTT, "Data correctly trasmitted");
-            vTaskDelete(NULL);
+            esp_wifi_disconnect();
             break;
         default:
             break;
     }
 }
 
-void mqtt_transmission(void* average){
+void mqtt_transmission(float average){
     memset(data_tx, 0, sizeof(data_tx));
-    float avg=*((float*)average);
-    sprintf(data_tx, "Air data sampled: %f", avg);
+    sprintf(data_tx, "Air data sampled: %f", average);
     ESP_LOGI(MQTT, "Trasmitting data...");
     esp_mqtt_client_publish(client, TOPIC, data_tx, sizeof(data_tx), 1, 1);
 }

@@ -3,12 +3,12 @@
 #define MIC "[MICROPHONE]"
 
 static esp_adc_cal_characteristics_t adc1;
-uint8_t voltage;
+uint8_t voltage=0;
 
 int check_people(){
     bool people=0;
     int check=0;
-    while(!people && check<6){
+    while(!people && check<15){
         voltage=gpio_get_level(MIC_CHANNEL);
         if(voltage){
             ESP_LOGI(MIC, "People detected");
@@ -16,7 +16,7 @@ int check_people(){
         }else{
             ESP_LOGI(MIC, "People don't detected");
             check++;
-            vTaskDelay(10000/portTICK_PERIOD_MS);
+            vTaskDelay(1000/portTICK_PERIOD_MS);
         }
     }
     return people;
