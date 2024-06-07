@@ -6,6 +6,7 @@ void app_main(void) {
     wifi_init();
     init_esp_now();
     init_adc();
+    fan_init();
 
     while(!got_other_mac) {
          vTaskDelay(10 / portTICK_PERIOD_MS);

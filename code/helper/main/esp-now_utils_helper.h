@@ -1,4 +1,5 @@
 #include "air_module.h"
+#include "fan_utils.h"
 #include "common.h"
 
 #include "esp_now.h"
@@ -165,6 +166,8 @@ void consume_message() {
 
             char buf[16];
             sprintf(buf, "%" PRIu32, air_voltage);
+
+            cool_room();
 
             send_message(HELPER_VALUE, buf);
         break;
