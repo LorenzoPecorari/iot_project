@@ -18,14 +18,14 @@ esp_event_handler_instance_t got_ip;
 void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data){
     if(event_base == WIFI_EVENT){
         if (event_id == WIFI_EVENT_STA_START){
-            ESP_LOGI(WIFI, "Connecting to wifi...");
-            if (esp_wifi_connect() == ESP_OK){
-                ESP_LOGI(WIFI, "Connection success!");
-                // esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
-            }else{
-                ESP_LOGE(WIFI, "Cannot connect to wifi");
+            // ESP_LOGI(WIFI, "Connecting to wifi...");
+            // if (esp_wifi_connect() == ESP_OK){
+            //     ESP_LOGI(WIFI, "Connection success!");
+            //     // esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
+            // }else{
+            //     ESP_LOGE(WIFI, "Cannot connect to wifi");
 
-            }
+            // }
         }
         else if(event_id == WIFI_EVENT_STA_DISCONNECTED){
             ESP_LOGE(WIFI, "Disconnected, reconnection will be tried");

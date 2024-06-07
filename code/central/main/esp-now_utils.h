@@ -23,14 +23,14 @@ QueueHandle_t queue;
 
 typedef struct{
     int type;
-    char* payload;
+    char payload[MESSAGE_SIZE];
 } message_t;
 #define MSG_STRUCT_SIZE sizeof(message_t)
 #define Q_ELEMENT_SIZE MSG_STRUCT_SIZE
 
-char* payload="";
+char payload[MESSAGE_SIZE];
 message_t packet_send={0};
-message_t packet_received={0};
+// message_t packet_received={0};
 
 void esp_now_utils_handle_error(esp_err_t err){
     if(err != ESP_OK){
@@ -40,33 +40,33 @@ void esp_now_utils_handle_error(esp_err_t err){
 
 void packet_build(message_t* packet, const int type, const char* payload){
     // memset(packet, 0, MSG_STRUCT_SIZE);
-    packet->type=type;
-    strcpy(packet->payload, payload);
+    packet_send.type=type;
+    strcpy(packet_send.payload, payload);
     // packet->payload[MESSAGE_SIZE-1]='\0';
-    ESP_LOGI(ESPNOW, "Sending message: [%d - %s]", packet->type, packet->payload);
+    ESP_LOGI(ESPNOW, "Sending message: [%d - %s]", packet_send.type, packet_send.payload);
 }
 
 void esp_now_tx(void* params){
     // memset(&packet_send, 0, MSG_STRUCT_SIZE);
-    packet_send=*((message_t*) params);
-    switch(packet_send.type){
+    // packet_send=*((message_t*) params);
+    switch(((message_t*)params)->type){
         case CENTRAL_MAC:
             ESP_LOGI(ESPNOW, "Sending central MAC address");
-            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)params, MSG_STRUCT_SIZE));
             ESP_LOGI(ESPNOW, "Waitinig callback function...");
             break;
         case CENTRAL_WAKE:
             ESP_LOGI(ESPNOW, "Sending sampling instructions");
-            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&params, MSG_STRUCT_SIZE));
             break;
         case CENTRAL_VALUE:
             ESP_LOGI(ESPNOW, "Sending average data sampled");
-            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&params, MSG_STRUCT_SIZE));
             vTaskDelete(NULL);
             break;
         default:
             ESP_LOGW(ESPNOW, "Sending unexpected packet");
-            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&params, MSG_STRUCT_SIZE));
             break;
     }
 }
@@ -98,6 +98,7 @@ void esp_now_tx(void* params){
 // }
 
 void esp_now_rx(void* helper_avg){
+    message_t packet_received;
     memset(&packet_received, 0, MSG_STRUCT_SIZE);
     if(xQueueReceive(queue, &packet_received, portMAX_DELAY)){
         ESP_LOGI(ESPNOW, "Packet correctly received");
