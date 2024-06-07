@@ -53,6 +53,7 @@ void esp_now_tx(void* params){
         case CENTRAL_MAC:
             ESP_LOGI(ESPNOW, "Sending central MAC address");
             esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
+            ESP_LOGI(ESPNOW, "Waitinig callback function...");
             break;
         case CENTRAL_WAKE:
             ESP_LOGI(ESPNOW, "Sending sampling instructions");

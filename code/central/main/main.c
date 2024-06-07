@@ -26,6 +26,7 @@ void app_main(void){
     ESP_LOGI(APP_NAME, "Elements initialization completed");
     packet=(message_t*)malloc(MSG_STRUCT_SIZE);
     packet->payload="";
+    vTaskDelay(10000/portTICK_PERIOD_MS);
 
     //MAC SHARING TO HELPER DEVICES
     ESP_LOGI(APP_NAME, "Start mac exchange");

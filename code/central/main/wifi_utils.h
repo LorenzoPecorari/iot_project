@@ -1,8 +1,8 @@
 #include "common.h"
 
 #define WIFI "[WI-FI]"
-#define WIFI_SSID "TIM-30577277"
-#define WIFI_PASSWORD "SHsxdHKFQGHch6dsTYH4FyQu"
+#define WIFI_SSID "S10 di Lorenzo"
+#define WIFI_PASSWORD "1W1llH4ckY0ur4cc0unt"
 
 wifi_config_t wifi_struct;
 EventGroupHandle_t event_group;
