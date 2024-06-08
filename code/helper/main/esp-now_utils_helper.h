@@ -201,23 +201,12 @@ void consume_message() {
                 strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
                 copied[MESSAGE_SIZE] = '\0';
 
-                int k = 0;
-                t = 0;
-
-                while(t < MESSAGE_SIZE && copied[t] != '\0' && copied[t] != '$'){
-                    air_string[t] = copied[t];
-                    k++;
-                }
-
-                while(t < MESSAGE_SIZE && k < MESSAGE_SIZE && copied[t] != '\0'){
-                    air_string[k] = copied[t + k];
-                    t++;
-                    k++;
-                }
-
-                air_voltage = atoi(air_string);
-                temperature = atof(temp_string);
-
+                token = strtok(copied, "$");
+                sscanf(token, "%"PRIu32"", &air_voltage);
+                
+                token = strtok(NULL, "$");                
+                sscanf(token, "%f", &temperature);
+                
                 if(air_voltage > 200)
                     open_window();
                 else
