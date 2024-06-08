@@ -39,6 +39,9 @@ uint8_t this_mac[ESP_NOW_ETH_ALEN] = {0};
 
 static QueueHandle_t queue = NULL;
 
+char air_string[MESSAGE_SIZE / 2];
+char temp_string[MESSAGE_SIZE / 2];
+
 void esp_now_utils_handle_error(esp_err_t err) {
     if (err != ESP_OK) {
         ESP_LOGE(APP_NAME_ESPNOW, "Error %d", err);
@@ -108,17 +111,30 @@ void set_mac(uint8_t* mac) {
     }
 }
 
+void remove_spaces(char* source) {
+    char* i = source;
+    char* j = source;
+    while (*j != 0) {
+        *i = *j++;
+        if (*i != ' ') {
+            i++;
+        }
+    }
+    *i = 0;
+}
+
 void consume_message() {
     struct message_str received_message;
     if (xQueueReceive(queue, &received_message, portMAX_DELAY)) {
         
         ESP_LOGI(APP_NAME_ESPNOW, "Received: [%d - %s]", received_message.type, received_message.payload);
-        
+
+        char copied[MESSAGE_SIZE];
+
         switch(received_message.type){
         case CENTRAL_MAC:
             got_other_mac = 0;
 
-            char copied[MESSAGE_SIZE];
             strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
             copied[MESSAGE_SIZE - 1] = '\0';
             
@@ -159,43 +175,49 @@ void consume_message() {
 
         case CENTRAL_WAKE:
             ESP_LOGI(APP_NAME_ESPNOW, "Received sampling instructions");
+            
             if(!strcmp(received_message.payload, "1")){
                 what_to_do = 0;
                 // TODO : received ok for sampling data!
                 
                 get_values();
-                
-                // if(air_voltage > 200)
-                //     open_window();
-                // else
-                //     close_window();
-                
-                // if(temperature < 18)
-                //     heat_room();
-                // else if(temperature > 25)
-                //     cool_room();
-                // else
-                //     ok_room();
 
-                char buf[16];
-                sprintf(buf, "%" PRIu32, air_voltage);
+                char buf[32];
+                memset(buf, '\0', 32);
+                sprintf(buf, "%" PRIu32 "$%.2f", air_voltage, temperature);
 
-                //for(int i = 0; i < 10; i++)
                 send_message(HELPER_VALUE, buf);
 
-                
             }
-            // get_values();
+
         break;
         
         case CENTRAL_VALUE:
             ESP_LOGI(APP_NAME_ESPNOW, "Received average data sampled");
 
                 what_to_do = 0;
-                // TODO : received ok for sampling data!
                 
-                //get_values();
-                
+                // parsing data
+                strncpy(copied, received_message.payload, MESSAGE_SIZE - 1);
+                copied[MESSAGE_SIZE] = '\0';
+
+                int k = 0;
+                t = 0;
+
+                while(t < MESSAGE_SIZE && copied[t] != '\0' && copied[t] != '$'){
+                    air_string[t] = copied[t];
+                    k++;
+                }
+
+                while(t < MESSAGE_SIZE && k < MESSAGE_SIZE && copied[t] != '\0'){
+                    air_string[k] = copied[t + k];
+                    t++;
+                    k++;
+                }
+
+                air_voltage = atoi(air_string);
+                temperature = atof(temp_string);
+
                 if(air_voltage > 200)
                     open_window();
                 else
