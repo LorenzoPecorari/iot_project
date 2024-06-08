@@ -30,7 +30,7 @@ typedef struct{
 
 char payload[MESSAGE_SIZE];
 message_t packet_send={0};
-// message_t packet_received={0};
+char* token;
 
 void esp_now_utils_handle_error(esp_err_t err){
     if(err != ESP_OK){
@@ -79,17 +79,16 @@ void set_peer(esp_now_peer_info_t* peer,const uint8_t* mac_address){
     }
 }
 
-void esp_now_rx(float* helper_avg){
+void esp_now_rx(float* helper_air, float* helper_tmp){
     message_t packet_received={0};
     if(xQueueReceive(queue, &packet_received, portMAX_DELAY)){
         ESP_LOGI(ESPNOW, "Packet correctly received");
         switch(packet_received.type){
             case HELPER_MAC:
                 ESP_LOGI(ESPNOW, "Received packet with helper MAC address");
-                char* token=strtok(packet_received.payload, ":");
+                token=strtok(packet_received.payload, ":");
                 unsigned int value=0;
                 for(int i=0; i<ESP_NOW_ETH_ALEN; i++){
-                    // value=atoi(token);
                     sscanf(token, "%02x", &value);
                     helper_mac[i]=value;
                     token=strtok(NULL, ":");
@@ -107,8 +106,11 @@ void esp_now_rx(float* helper_avg){
                 break;
             case HELPER_VALUE:
                 ESP_LOGI(ESPNOW, "Received packet with helper data sampled average");
-                *helper_avg=atof(packet_received.payload);
-                ESP_LOGI(ESPNOW, "Value received %f", (*helper_avg));
+                token=strtok(packet_received.payload, "$");
+                sscanf(token, "%f", helper_air);
+                token=strtok(NULL, "$");
+                sscanf(token, "%f", helper_tmp);
+                ESP_LOGI(ESPNOW, "Values received: %f - %f", (*helper_air), (*helper_tmp));
                 break;
             default:
                 ESP_LOGW(ESPNOW, "Received an unexpected packet");

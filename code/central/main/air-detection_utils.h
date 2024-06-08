@@ -23,18 +23,21 @@ float resistance;
 float temperature;
 uint32_t voltage_air;
 
-void elaboration(float helper_average){
+void elaboration(float helper_air, float helper_tmp){
+    general_avg_air=0.0;
+    general_avg_temp=0.0;
     //COMPUTING GENERAL AIR QUALITY VALUES AVERAGE
-    general_avg_air=average_air+helper_average;
+    general_avg_air=average_air+helper_air;
     general_avg_air/=2;
-    ESP_LOGI(AIR, "General average of data sampled on this window: %f", general_avg_air);
+    ESP_LOGI(AIR, "Average air quality data sampled: %f", general_avg_air);
 
     //COMPUTING GENERAL TEMPERATURE VALUES AVERAGE
+    general_avg_temp=average_temp+helper_tmp;
+    general_avg_temp/=2;
+    ESP_LOGI(AIR, "Average temperature data sampled: %f", general_avg_temp);
 
     average_air=0.0;
-    general_avg_air=0.0;
     average_temp=0.0;
-    general_avg_temp=0.0;
 }
 
 void temp_detection(){

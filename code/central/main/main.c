@@ -12,7 +12,8 @@ TaskHandle_t mqttTaskHandle=NULL;
 TaskHandle_t notifyTaskHandle=NULL;
 
 message_t* packet;
-float helper_average;
+float helper_average_avg;
+float helper_temperature_avg;
 
 //CENTRAL DEVICE MAIN FILE
 void app_main(void){
@@ -36,7 +37,7 @@ void app_main(void){
     esp_now_tx((void*)&packet_send);
 
     //WAITING FOR HELPER DEVICE MAC
-    esp_now_rx(NULL);
+    esp_now_rx(NULL, NULL);
     ESP_LOGI(APP_NAME, "Mac exchange completed");
 
     while(1){
@@ -52,7 +53,7 @@ void app_main(void){
 
             //START AIR DETECTION AND WATING FOR HELPERS DATA
             ESP_LOGI(APP_NAME, "Waiting for helpers data");
-            esp_now_rx(&helper_average);
+            esp_now_rx(&helper_average_avg, &helper_temperature_avg);
             ESP_LOGI(APP_NAME, "Starting air detection");
             air_detection();
 
@@ -61,10 +62,9 @@ void app_main(void){
 
             //START ELABORATION
             ESP_LOGI(APP_NAME, "Starting data eleboration");
-            elaboration(helper_average);
+            elaboration(helper_average_avg, helper_temperature_avg);
             memset(payload, 0, MESSAGE_SIZE);
-            //CHECK WITH LOLLO
-            sprintf(payload, "%f, %f", general_avg_air, general_avg_temp);
+            sprintf(payload, "%.2f$%.2f", general_avg_air, general_avg_temp);
             packet_build(packet, CENTRAL_VALUE, payload);
 
             //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY

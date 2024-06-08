@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "central",
-    "project_version":    "a445e370-dirty",
+    "project_version":    "bcec1a36-dirty",
     "project_path":       "/home/michele/Desktop/iot/group_project/iot_project/code/central",
     "idf_path":           "/home/michele/esp/v5.2.1/esp-idf",
     "build_dir":          "/home/michele/Desktop/iot/group_project/iot_project/code/central/build",
