@@ -63,7 +63,8 @@ void app_main(void){
             ESP_LOGI(APP_NAME, "Starting data eleboration");
             elaboration(helper_average);
             memset(payload, 0, MESSAGE_SIZE);
-            sprintf(payload, "%f", general_avg);
+            //CHECK WITH LOLLO
+            sprintf(payload, "%f, %f", general_avg_air, general_avg_temp);
             packet_build(packet, CENTRAL_VALUE, payload);
 
             //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY
@@ -73,7 +74,7 @@ void app_main(void){
             esp_wifi_connect();
             vTaskDelay(10000/portTICK_PERIOD_MS);
             mqtt_init();
-            mqtt_transmission(general_avg);
+            mqtt_transmission(general_avg_air, general_avg_temp);
             esp_mqtt_client_stop(client);
 
             ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");

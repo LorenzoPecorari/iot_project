@@ -51,9 +51,10 @@ void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event
     }
 }
 
-void mqtt_transmission(float average){
+void mqtt_transmission(float air_avg, float temp_avg){
+    //TO MODIFY FOR ADDING TEMPERATURE VALUES AVERAGE
     memset(data_tx, 0, sizeof(data_tx));
-    sprintf(data_tx, "Air data sampled: %f", average);
+    sprintf(data_tx, "Air data sampled: %f", air_avg);
     ESP_LOGI(MQTT, "Trasmitting data...");
     esp_mqtt_client_publish(client, TOPIC, data_tx, sizeof(data_tx), 1, 1);
 }

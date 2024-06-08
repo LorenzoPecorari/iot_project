@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
+#include <math.h>
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -20,8 +21,9 @@
 #define WIDTH ADC_WIDTH_BIT_DEFAULT
 #define ADC ADC_UNIT_1
 
-#define MIC_CHANNEL ADC1_CHANNEL_0 //GPIO1
-#define AIR_CHANNEL ADC1_CHANNEL_1 //GPIO2
+#define MIC_CHANNEL ADC1_CHANNEL_0 
+#define AIR_CHANNEL ADC1_CHANNEL_1 
+#define TEMP_CHANNEL ADC1_CHANNEL_2
 #define RED_LED_PIN GPIO4
 #define YELLOW_LED_PIN GPIO5
 #define GREEN_LED_PIN GPIO6
