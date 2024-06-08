@@ -15,6 +15,21 @@ message_t* packet;
 float helper_average_avg;
 float helper_temperature_avg;
 
+void custom_esp_now_init(){
+    esp_now_utils_handle_error(esp_now_init());
+    esp_now_utils_handle_error(esp_event_loop_create_default());
+    esp_now_utils_handle_error(esp_now_register_recv_cb(receiver_cb));
+    esp_now_utils_handle_error(esp_now_register_send_cb(sender_cb));
+    
+    set_mac(helper_mac);
+}
+
+void light_sleep_custom(){
+    esp_light_sleep_start();
+    esp_now_deinit();
+    custom_esp_now_init();
+}
+
 //CENTRAL DEVICE MAIN FILE
 void app_main(void){
     //ELEMENTS INITIALIZATION
@@ -80,9 +95,9 @@ void app_main(void){
             ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
 
             //LIGHT SLEEP MODE
-            // esp_sleep_enable_timer_wakeup(300000000);
-            // esp_light_sleep_start();
-            vTaskDelay(2000/portTICK_PERIOD_MS);
+            esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
+            light_sleep_custom();
+            // vTaskDelay(2000/portTICK_PERIOD_MS);
             ESP_LOGI(APP_NAME, "Restarting loop...");
         }else{
             //SLEEP
