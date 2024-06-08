@@ -1,5 +1,6 @@
 #include "air_module.h"
 #include "fan_utils.h"
+#include "servomotor.h"
 #include "common.h"
 
 #include "esp_now.h"
@@ -158,26 +159,64 @@ void consume_message() {
 
         case CENTRAL_WAKE:
             ESP_LOGI(APP_NAME_ESPNOW, "Received sampling instructions");
-            if(!strcmp(received_message.payload, "1"))
-                what_to_do = 1;
+            if(!strcmp(received_message.payload, "1")){
+                what_to_do = 0;
                 // TODO : received ok for sampling data!
+                
+                get_values();
+                
+                // if(air_voltage > 200)
+                //     open_window();
+                // else
+                //     close_window();
+                
+                // if(temperature < 18)
+                //     heat_room();
+                // else if(temperature > 25)
+                //     cool_room();
+                // else
+                //     ok_room();
 
-            get_values();
+                char buf[16];
+                sprintf(buf, "%" PRIu32, air_voltage);
 
-            char buf[16];
-            sprintf(buf, "%" PRIu32, air_voltage);
+                //for(int i = 0; i < 10; i++)
+                send_message(HELPER_VALUE, buf);
 
-            cool_room();
-
-            send_message(HELPER_VALUE, buf);
+                
+            }
+            // get_values();
         break;
         
         case CENTRAL_VALUE:
             ESP_LOGI(APP_NAME_ESPNOW, "Received average data sampled");
+
+                what_to_do = 0;
+                // TODO : received ok for sampling data!
+                
+                //get_values();
+                
+                if(air_voltage > 200)
+                    open_window();
+                else
+                    close_window();
+                
+                if(temperature < 18)
+                    heat_room();
+                else if(temperature > 25)
+                    cool_room();
+                else
+                    ok_room();
+
+                
             // TODO : parameters to be estabilished wrt received ones
             
             //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
             //vTaskDelete(NULL)
+
+            printf("I'm going to interact with the environment");
+            what_to_do = 1;
+
             break;
 
         case HELPER_VALUE:

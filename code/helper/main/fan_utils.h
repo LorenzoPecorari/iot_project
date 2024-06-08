@@ -19,7 +19,7 @@
 
 */
 
-#define PIN_TRANSISTOR GPIO_NUM_19 // Imposta il pin collegato alla base del transistor
+#define PIN_TRANSISTOR GPIO_NUM_1 // Imposta il pin collegato alla base del transistor
 // #define LED_PIN GPIO_NUM_4 // Imposta il pin di controllo dell'ESP32-S3
 #define HOT_LED_PIN GPIO_NUM_20
 #define COLD_LED_PIN GPIO_NUM_21
@@ -60,7 +60,7 @@ void switch_leds_off(){
 
 // it turns on led for cooling, turns off led for heating, turns on fan
 void cool_room(){
-    printf("High temerature, fan needed for COOLING the room\n");
+    ESP_LOGI(APP_NAME_AIR, "High temerature, fan needed for COOLING the room\n");
     gpio_set_level(HOT_LED_PIN, 0);
     gpio_set_level(COLD_LED_PIN, 1);
     switch_fan_on();
@@ -68,10 +68,16 @@ void cool_room(){
 
 // it turns on led for heating, turns off led for cooling, turns on fan
 void heat_room(){
-    printf("Low temperature, fan needed for HEATING the room\n");
+    ESP_LOGI(APP_NAME_AIR, "Low temperature, fan needed for HEATING the room\n");
     gpio_set_level(COLD_LED_PIN, 0);
     gpio_set_level(HOT_LED_PIN, 1);
     switch_fan_on();
+}
+
+void ok_room(){
+    gpio_set_level(COLD_LED_PIN, 0);
+    gpio_set_level(HOT_LED_PIN, 0);
+    switch_fan_off();
 }
 
 void controlloVentola(void *pvParameter) {
