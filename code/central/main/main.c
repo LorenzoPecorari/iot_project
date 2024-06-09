@@ -16,11 +16,7 @@ float helper_average_avg;
 float helper_temperature_avg;
 
 void custom_esp_now_init(){
-    esp_now_utils_handle_error(esp_now_init());
-    esp_now_utils_handle_error(esp_event_loop_create_default());
-    esp_now_utils_handle_error(esp_now_register_recv_cb(receiver_cb));
-    esp_now_utils_handle_error(esp_now_register_send_cb(sender_cb));
-    
+    espnow_init();
     set_mac(helper_mac);
 }
 
@@ -36,6 +32,9 @@ void app_main(void){
     ESP_LOGI(APP_NAME, "Start elements initialization");
     wifi_init();
     espnow_init();
+    set_broadcast_trasmission();
+    memset(&central_mac, 0, sizeof(uint8_t)*ESP_NOW_ETH_ALEN);
+    retrieve_mac();
     // mqtt_init();
     microphone_init();
     airdetection_init();

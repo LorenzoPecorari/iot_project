@@ -180,8 +180,4 @@ void espnow_init(){
     esp_now_utils_handle_error(esp_event_loop_create_default());
     esp_now_utils_handle_error(esp_now_register_recv_cb(receiver_cb));
     esp_now_utils_handle_error(esp_now_register_send_cb(sender_cb));
-    
-    set_broadcast_trasmission();
-    memset(&central_mac, 0, sizeof(uint8_t)*ESP_NOW_ETH_ALEN);
-    retrieve_mac();
 }
