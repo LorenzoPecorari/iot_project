@@ -116,18 +116,20 @@ void app_main(void){
             esp_mqtt_client_stop(client);
 
             ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
+            // wifi_deinit_custom();
+            // wifi_init();
+            // esp_now_deinit();
+            // custom_esp_now_init();
+
+            //LIGHT SLEEP MODE
+            esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
+            light_sleep_custom();
+            vTaskDelay(2000/portTICK_PERIOD_MS);
+            ESP_LOGI(APP_NAME, "Restarting loop...");
             wifi_deinit_custom();
             wifi_init();
             esp_now_deinit();
             custom_esp_now_init();
-
-            //LIGHT SLEEP MODE
-            // esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
-            // light_sleep_custom();
-            // // vTaskDelay(2000/portTICK_PERIOD_MS);
-            // ESP_LOGI(APP_NAME, "Restarting loop...");
-            // wifi_reinit();
-            // esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
         }else{
             //SLEEP
             ESP_LOGI(APP_NAME, "Nobody detected");
