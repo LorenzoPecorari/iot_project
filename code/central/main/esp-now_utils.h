@@ -164,7 +164,7 @@ void sender_cb(const uint8_t *mac_addr, esp_now_send_status_t status){
         ESP_LOGI(ESPNOW, "Message sent");
         // memset(msg, 0, MAX_MSG_LEN);
     }else{
-        ESP_LOGE(ESPNOW, "Failed to send message");
+        ESP_LOGE(ESPNOW, "Failed to send message - status: %d", status);
     }
 }
 

@@ -17,7 +17,15 @@ float helper_temperature_avg;
 
 void custom_esp_now_init(){
     espnow_init();
-    set_mac(helper_mac);
+    // set_mac(helper_mac);
+    esp_now_peer_info_t* peer=(esp_now_peer_info_t*)malloc(sizeof(esp_now_peer_info_t));
+    if(peer==NULL){
+        ESP_LOGE(ESPNOW, "Memory allocation failed");
+        return;
+    }
+    memset(peer, 0, sizeof(esp_now_peer_info_t));
+    set_peer(peer, helper_mac);
+    free(peer);
 }
 
 void light_sleep_custom(){
@@ -94,10 +102,12 @@ void app_main(void){
             ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
 
             //LIGHT SLEEP MODE
-            esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
-            light_sleep_custom();
-            // vTaskDelay(2000/portTICK_PERIOD_MS);
-            ESP_LOGI(APP_NAME, "Restarting loop...");
+            // esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
+            // light_sleep_custom();
+            // // vTaskDelay(2000/portTICK_PERIOD_MS);
+            // ESP_LOGI(APP_NAME, "Restarting loop...");
+            // wifi_reinit();
+            // esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
         }else{
             //SLEEP
             ESP_LOGI(APP_NAME, "Nobody detected");

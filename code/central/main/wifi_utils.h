@@ -67,3 +67,21 @@ void wifi_init(){
 
     // ESP_LOGI(WIFI, "Init completed");
 }
+
+void wifi_reinit(){
+    // ESP_ERROR_CHECK(nvs_flash_init());
+    // ESP_ERROR_CHECK(esp_netif_init());
+    // ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+    //event_group=xEventGroupCreate();
+
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL, &any_id));
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT, IP_EVENT_STA_GOT_IP, &wifi_event_handler, NULL, &got_ip));
+    
+    // esp_netif_create_default_wifi_sta();
+    wifi_init_config_t init_config=WIFI_INIT_CONFIG_DEFAULT();
+    ESP_ERROR_CHECK(esp_wifi_init(&init_config));
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
+    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_conf));
+    ESP_ERROR_CHECK(esp_wifi_start());
+}
