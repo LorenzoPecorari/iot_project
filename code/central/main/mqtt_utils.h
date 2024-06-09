@@ -46,6 +46,7 @@ void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event
             ESP_LOGI(MQTT, "Data correctly trasmitted");
             esp_wifi_disconnect();
             esp_wifi_deinit();
+            esp_wifi_stop();
             break;
         default:
             break;

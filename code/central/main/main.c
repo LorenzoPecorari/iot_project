@@ -15,17 +15,27 @@ message_t* packet;
 float helper_average_avg;
 float helper_temperature_avg;
 
-void custom_esp_now_init(){
-    espnow_init();
-    // set_mac(helper_mac);
+void set_peer_custom(){
     esp_now_peer_info_t* peer=(esp_now_peer_info_t*)malloc(sizeof(esp_now_peer_info_t));
     if(peer==NULL){
         ESP_LOGE(ESPNOW, "Memory allocation failed");
         return;
     }
     memset(peer, 0, sizeof(esp_now_peer_info_t));
-    set_peer(peer, helper_mac);
+    
+    memcpy(peer->peer_addr, helper_mac, ESP_NOW_ETH_ALEN);
+    peer->channel=ESP_NOW_CHANNEL;
+    peer->encrypt=false;
+
+    esp_now_utils_handle_error(esp_now_mod_peer(peer));
+    
     free(peer);
+}
+
+void custom_esp_now_init(){
+    espnow_init();
+    set_mac(helper_mac);
+    // set_peer_custom();
 }
 
 void light_sleep_custom(){
@@ -65,6 +75,11 @@ void app_main(void){
     while(1){
         //CHECK PERSONZ (CIT) INSIDE THE CLASSROOM
         ESP_LOGI(APP_NAME, "Checking people presence");
+        
+        // set channel for esp now communication
+        esp_wifi_set_channel(ESP_NOW_CHANNEL, WIFI_SECOND_CHAN_NONE);
+        set_peer_custom();
+        
         if(check_people()){
             //START SAMPLE
             ESP_LOGI(APP_NAME, "People detected");
@@ -92,7 +107,8 @@ void app_main(void){
             //START MQTT DATA COMMUNICATION AND HELPERS NOTIFY
             ESP_LOGI(APP_NAME, "Notifying helpers");
             esp_now_tx((void*) &packet_send);
-            ESP_LOGI(APP_NAME, "Starting mqtt communication");
+            // ESP_LOGI(APP_NAME, "Starting mqtt communication");
+            esp_wifi_set_channel(MQTT_CHANNEL, WIFI_SECOND_CHAN_NONE);
             esp_wifi_connect();
             vTaskDelay(10000/portTICK_PERIOD_MS);
             mqtt_init();
@@ -100,6 +116,10 @@ void app_main(void){
             esp_mqtt_client_stop(client);
 
             ESP_LOGI(APP_NAME, "Mqtt communication task and helpers notify task completed");
+            wifi_deinit_custom();
+            wifi_init();
+            esp_now_deinit();
+            custom_esp_now_init();
 
             //LIGHT SLEEP MODE
             // esp_sleep_enable_timer_wakeup(2 * 1000 *1000);

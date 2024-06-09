@@ -40,7 +40,7 @@ void wifi_event_handler(void* arg, esp_event_base_t event_base, int32_t event_id
 void wifi_init(){
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
+    esp_event_loop_create_default();
 
     event_group=xEventGroupCreate();
 
@@ -84,4 +84,33 @@ void wifi_reinit(){
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_conf));
     ESP_ERROR_CHECK(esp_wifi_start());
+}
+
+void wifi_deinit_custom() {
+    // Disconnetti dal Wi-Fi
+    ESP_ERROR_CHECK(esp_wifi_disconnect());
+
+    // Ferma il Wi-Fi
+    ESP_ERROR_CHECK(esp_wifi_stop());
+
+    // Deinizializza il Wi-Fi
+    ESP_ERROR_CHECK(esp_wifi_deinit());
+
+    // Unregister degli event handler
+    ESP_ERROR_CHECK(esp_event_handler_instance_unregister(WIFI_EVENT, ESP_EVENT_ANY_ID, any_id));
+    ESP_ERROR_CHECK(esp_event_handler_instance_unregister(IP_EVENT, IP_EVENT_STA_GOT_IP, got_ip));
+
+    // Deinizializza l'interfaccia di rete
+    esp_netif_t *sta_netif = esp_netif_get_handle_from_ifkey("WIFI_STA_DEF");
+    if (sta_netif) {
+        esp_netif_destroy(sta_netif);
+    }
+
+    // Cancella il gruppo di eventi
+    vEventGroupDelete(event_group);
+
+    // Disattiva NVS (opzionale)
+    ESP_ERROR_CHECK(nvs_flash_deinit());
+
+    ESP_LOGI(WIFI, "Wi-Fi deinited successfully");
 }
