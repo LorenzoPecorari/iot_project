@@ -53,7 +53,7 @@ void temp_detection(){
         vTaskDelay(DELAY);
     }
     average_temp/=SAMPLE;
-    ESP_LOGI(AIR, "Temperature values detected");
+    ESP_LOGI(AIR, "Temperature values detected: %.2f", average_temp);
 }
 
 void air_quality_detection(){
@@ -63,7 +63,7 @@ void air_quality_detection(){
         vTaskDelay(DELAY);
     }
     average_air/=SAMPLE;
-    ESP_LOGI(AIR, "Air quality values detected");
+    ESP_LOGI(AIR, "Air quality values detected: %.2f", average_air);
 }
 
 void air_detection(){
