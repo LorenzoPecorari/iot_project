@@ -21,8 +21,8 @@
 
 #define PIN_TRANSISTOR GPIO_NUM_2 // Imposta il pin collegato alla base del transistor
 // #define LED_PIN GPIO_NUM_4 // Imposta il pin di controllo dell'ESP32-S3
-#define HOT_LED_PIN GPIO_NUM_7
-#define COLD_LED_PIN GPIO_NUM_8
+#define HOT_LED_PIN GPIO_NUM_4
+#define COLD_LED_PIN GPIO_NUM_5
 
 int temp_flag = 0; 
 /* flag for defining if use the fan for decreasing on incresing temperature
