@@ -21,7 +21,7 @@ esp_mqtt_client_handle_t client;
 esp_mqtt_event_handle_t event_handler;
 esp_mqtt_event_id_t event_id;
 
-char data_tx[64];
+char data_tx[128];
 // int retrasmission=0;
 
 void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event_id, void* event_data){
@@ -54,7 +54,7 @@ void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_t event
 }
 
 void mqtt_transmission(float air_avg, float temp_avg){
-    memset(data_tx, 0, sizeof(data_tx));
+    memset(data_tx, 0, 128);
     sprintf(data_tx, "Air data sampled: %.2f\nTemperature detected: %.2f", air_avg, temp_avg);
     ESP_LOGI(MQTT, "Trasmitting data...");
     esp_mqtt_client_publish(client, TOPIC, data_tx, sizeof(data_tx), 1, 1);
