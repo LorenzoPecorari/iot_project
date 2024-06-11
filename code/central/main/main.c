@@ -122,7 +122,7 @@ void app_main(void){
             // custom_esp_now_init();
 
             //LIGHT SLEEP MODE
-            esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
+            esp_sleep_enable_timer_wakeup(600 * 1000 *1000);
             light_sleep_custom();
             vTaskDelay(2000/portTICK_PERIOD_MS);
             ESP_LOGI(APP_NAME, "Restarting loop...");
@@ -139,7 +139,7 @@ void app_main(void){
             esp_now_tx((void*) &packet_send);
             vTaskDelay(10000/portTICK_PERIOD_MS);
             //LIGHT SLEEP MODE
-            esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
+            esp_sleep_enable_timer_wakeup(600 * 1000 *1000);
             light_sleep_custom();
             vTaskDelay(2000/portTICK_PERIOD_MS);
             ESP_LOGI(APP_NAME, "Restarting loop...");

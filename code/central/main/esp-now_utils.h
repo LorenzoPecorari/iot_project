@@ -155,7 +155,7 @@ void receiver_cb(const uint8_t* mac, const uint8_t* data, int len){
     message_t rec;
     memcpy(&rec, data, len);
     xQueueSend(queue, &rec, portMAX_DELAY);
-    ESP_LOGI(ESPNOW, "Received: [%d - %s]", rec.type, rec.payload);
+    ESP_LOGI(ESPNOW, "Received: [type: %d]", rec.type);
 }
 
 //CALLBACK FUNCTION FOR MESSAGES SENDING
