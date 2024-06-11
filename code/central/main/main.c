@@ -134,11 +134,19 @@ void app_main(void){
             //SLEEP
             ESP_LOGI(APP_NAME, "Nobody detected");
             memset(payload, 0, MESSAGE_SIZE);
-            sprintf(payload, "%d", 1);
+            sprintf(payload, "%d", 0);
             packet_build(packet, CENTRAL_WAKE, payload);
             esp_now_tx((void*) &packet_send);
-            // esp_sleep_enable_timer_wakeup(90000000);
-            // esp_light_sleep_start();
+            vTaskDelay(10000/portTICK_PERIOD_MS);
+            //LIGHT SLEEP MODE
+            esp_sleep_enable_timer_wakeup(2 * 1000 *1000);
+            light_sleep_custom();
+            vTaskDelay(2000/portTICK_PERIOD_MS);
+            ESP_LOGI(APP_NAME, "Restarting loop...");
+            wifi_deinit_custom();
+            wifi_init();
+            esp_now_deinit();
+            custom_esp_now_init();
         }        
     }
 }
