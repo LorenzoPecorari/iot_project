@@ -12,8 +12,6 @@
 
 static esp_adc_cal_characteristics_t adc1_airq;
 static esp_adc_cal_characteristics_t adc1_temp;
-uint32_t air_quality[SAMPLE];
-uint32_t temperatures[SAMPLE];
 float average_air=0.0;
 float general_avg_air=0.0;
 
@@ -69,7 +67,6 @@ void temp_detection(){
 
         // temperature evaluated in Celsius
         temperature = 1.0 / (1.0 / (NOMINAL_TEMPERATURE + 273.15) + log(resistance / NOMINAL_RESISTANCE) / B_COEFFICIENT) - 273.15;
-        temperatures[i]=temperature;
         average_temp+=temperature;
 
         vTaskDelay(DELAY);
@@ -80,8 +77,8 @@ void temp_detection(){
 
 void air_quality_detection(){
     for(int i=0; i<SAMPLE; i++){
-        air_quality[i]=esp_adc_cal_raw_to_voltage(adc1_get_raw(AIR_CHANNEL), &adc1_airq);
-        average_air+=air_quality[i];
+        voltage_air=esp_adc_cal_raw_to_voltage(adc1_get_raw(AIR_CHANNEL), &adc1_airq);
+        average_air+=voltage_air;
         vTaskDelay(DELAY);
     }
     average_air/=SAMPLE;
