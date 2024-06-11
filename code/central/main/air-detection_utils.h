@@ -56,7 +56,7 @@ void elaboration(float helper_air, float helper_tmp){
     }else{
         gpio_set_level(GREEN_LED_PIN, 1);
         ESP_LOGI(AIR, "Good air in the room");
-    }.0
+    }
 
     average_air=0.0;
     average_temp=0.0;
