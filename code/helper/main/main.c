@@ -33,7 +33,7 @@ void app_main(void) {
 
         vTaskDelay(1000 / portTICK_PERIOD_MS);
 
-        esp_sleep_enable_timer_wakeup(600 * 1000 *1000);
+        esp_sleep_enable_timer_wakeup(30 * 1000 *1000);
         light_sleep_custom();
     }
 }

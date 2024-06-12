@@ -7,7 +7,7 @@ import numpy as np
 ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
 
 power = []
-sampling_time = 1800
+sampling_time = 600
 
 def collect_data(duration):
     start_time = time.time()
