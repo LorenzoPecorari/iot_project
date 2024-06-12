@@ -86,4 +86,15 @@ The first command to execute is <code>idf.py build</code>, which checks if there
 
 The terminal used for program execution has to be opened on the directory of the program. In this case, the directory is <code>central/</code>.
 
-To get a good execution of the whole project, the execution of each device follows an order: the first to be executed are the helper devices and then the central. If there are some problem with the execution, press the <i>RST</i> button on the ESPs, first the helper ones and then the central one.
+To get a good execution of the whole project, the execution of each device follows an order: the first to be executed are the helper devices and then the central. If there are some problem with the execution, press the <i>RST</i> button on the ESPs, first the helper one and then the central one.
+
+<h2>Software analysis</h2>
+
+Central software starts with the initialization of part of the element required: wifi, esp-now and sensors. Mqtt unit will be initialized only when device has to trasmit the data to the broker. 
+
+After initiliazations, central starts the communication with helper device with the goal of exchanging the MAC address: central communicates its address in broadcast, helper takes that MAC and it replies to the center on its address. After sending the message with the function <code>esp_now_tx()</code> (general function to trasmit the data with esp now), central device will wait the reply from the helper (<code>esp_now_rx()</code>, function that manages all the messages received with esp now). When helper MAC is correctly received by the central, the execution goes in an endless loop (the main part).
+
+The first step of the loop is the people detection: <code>check_people()</code> is the function that returns <code>true</code> if it gets an high value from the microphone, otherwise it returns <code>false</code>. In this last case, central communicates to helper that nobody has been detected (it sends a message with payload "0"), it goes to sleep (<code>esp_light_sleep_start()</code>) and when the device wakes up it restarts the loop, checking the people in the room.
+
+If a noise has been detected, central communicates to helper to start the data sampling (message with payload "1"), it waits that data from helper and then it samples its data with function <code>air_detection()</code>. When central has its data and helper's data, it proceeds with <code>elaboration()</code> that gives the data average. Average is communicated to the helper and to the mqtt broker. When these communications have been completed, central device goes to sleep.
+
