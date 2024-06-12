@@ -58,7 +58,7 @@ void get_values(){
     for(int i = 0; i < NUM_SAMPLINGS; i++){
         buf[i] = esp_adc_cal_raw_to_voltage(adc1_get_raw(AIR_CHANNEL), &air_adc1_chars);
         air_voltage += buf[i];
-        vTaskDelay(pdMS_TO_TICKS((SAMPLING_TIME * 1000) / portTICK_PERIOD_MS));
+        vTaskDelay((SAMPLING_TIME * 1000) / portTICK_PERIOD_MS);
     }
 
     air_voltage /= NUM_SAMPLINGS;
@@ -69,7 +69,7 @@ void get_values(){
         resistance_therm = (float) R_FIXED * ((3300.0 / temp_voltage) - 1);
         temperature += 1.0 / (1.0 / (NOMINAL_TEMPERATURE + 273.15) + log(resistance_therm / NOMINAL_RESISTANCE) / B_COEFFICIENT) - 273.15;
 
-        vTaskDelay(pdMS_TO_TICKS((SAMPLING_TIME * 1000) / portTICK_PERIOD_MS));
+        vTaskDelay((SAMPLING_TIME * 1000) / portTICK_PERIOD_MS);
     }
 
     temperature /= NUM_SAMPLINGS;

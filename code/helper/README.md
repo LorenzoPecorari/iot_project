@@ -105,7 +105,7 @@ The required main and relevant software for making the project working are:
             ESP-NOW
         </td>
         <td>
-            Wireless protocol communication for Espressif devices; it provides E2E communication with low latency, high energetic efficiency and high scalability.
+            Wireless protocol communication for Espressif devices; it provides E2E communication with low latency, high energetic efficiency and high scalability just using the WiFi module included into the microcontroller.
         </td>
     </tr>
 </table>
@@ -113,18 +113,25 @@ The required main and relevant software for making the project working are:
 ### Data sampling ###
 By using the Analaog-to-Digital converter and the General Purpose Input-Output pins (GPIOs), it is possible to sample date from sensor and sending signals for handling actuators. In particular, after initializing the relative <code>esp_adc_cal_characteristics_t</code> structure for a certain pin using the library functions, it is needed to set the channel for detecting signals: for each of the sensor is related a channel for avoiding interferences or other issues. Once this configuration, for analog signals is needed the funcion <code>esp_adc_cal_raw_to_voltage()</code> that takes as input the raw signal from the configured ADC unit and a pointer to the structure previously initializated to it.
 
-### Communication with other peer ###
-Even if the project uses a master-slave approach, the communication between nodes happens like a P2P network with some phases and, in particular, for helper are mainly the following ones. 
+### Building and exectuing the code ###
+In order to get the software working properly, is needed to run the commands <code>idf.py build</code>, <code>idf.py flash</code> and <code>idf.py monitor</code>. If needed, it may be require to execute a clean of the previous build by <code>idf.py fullclean</code> .
+
+### Running the project ###
+The execution of the code used fot the project can be divided into some different phases starting from an initial "handshake" to the exchange of individually sampled information and the relative interaction to the environment. For completeness, they are shortly reported.
 
 #### MAC exchange #### 
-It uses the callbacks <code>send_cb</code> and <code>recv_cb</code> and the function <code>send_mac</code> for exchanging its own MAC address with central node, consume the message by the usage of <code>conusme_message</code> that detects the type of the packed received/send; once get the mac, it will be set by the function <code>set_peer</code> with argument the variable containing central MAC<
+It uses the callbacks <code>send_cb</code> and <code>recv_cb</code> and the function <code>send_mac</code> for exchanging its own MAC address with central node, consume the message by the usage of <code>conusme_message</code> that detects the type of the packed received/send; once get the mac, it will be set by the function <code>set_peer</code> with argument the variable containing central MAC.
 
 #### Sampling phase #### 
-Once received the approvation for sampling datas, the dedicated function <code>get_values</code> starts to collect informations from the environment, 10 samplings for temperature and other 10 for air in orrder to get an arithmetical mean of each of them over a minute; after the computation of those, data will be send to central and it will wait for other information by it
+Once received the approvation for sampling datas, the dedicated function <code>get_values</code> starts to collect information from the environment: 10 samplings for temperature and other 10 for air in orrder to get an arithmetical mean of each of them. After their computation, data will be send to central and the device will wait for other information by other peer.
 
 #### Reception of averaged data and interaction with environment #### 
-After received information from central with an average of collected data from each of them, this device will elaborate them and decides what to do. Elaboration of data consists of a parsing of the payload that is inside the packet sent back by central device. After that operation, if temperature and quality of air are above or below a certain threshold, helper will act using the fan and the servomotor to improve the quality of the room.
+After receiving information from central with an average of collected data from each of them, this device will elaborate them and decides what to do. Elaboration of data consists of a parsing of the payload that is inside the packet sent back by central device. After that operation, if temperature and quality of air are above or below a certain threshold, helper will act using the fan and the servomotor to improve the quality of the room.
 
 #### Sleep mode time ####
-For reducing energy consumption of the this node, the system is developed for using a light sleep mode: it consists of a low-consume condition for the processor that cuts off a lot of power to components, reducing availability of functionalities while maintaing a restricted set of information in memory. After receiving a packet with no need to compute the sampling phase or terminated the actions to do with actuators, the mcu will go to sleep for 10 minutes.  
+For reducing energy consumption of the this node, the system is developed for using a light sleep mode: it consists of a low-consume condition for the processor that cuts off a lot of power to components, reducing availability of functionalities while maintaing a restricted set of information in memory. After receiving a packet with no need to compute the sampling phase or terminated the actions to do with actuators, the mcu will go to sleep for 10 minutes.
 
+## Energy consumption ##
+The analysis about the energy consumption of the device with all the sensor connected with, shows some interesting details. Setting a too short period of sleep leads to a very high consumption of resources:
+<img src="./energy_consumption_high_freq.jpg"></br>
+As can be observed by the plot, even if the light sleep reduces the energy consumption for a factor approximatively equal to 2.5, the average 
