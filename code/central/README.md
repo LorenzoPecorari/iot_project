@@ -158,7 +158,15 @@ As you can see from the images, the level value is more or less 60 decibel. This
 
 The air module gives in millivolts. As in the previousm experiment are done with specific code to find which is the level value that defines when air can be considered as "good quality" or "bad quality".
 
-//FIND THE PICTURES OF AIR DATA GRAPHS
+<img src="README_pictures/few_fresh_open.png">
+
+The environment of this picture is a big classroom with open windows. Data sampling starts with sensor turned on a side, then it's setted in right position (face up). When this changement occurs, a real value is sampled (more or less 300 mV). From that point, avoiding the peaks, there is a little improvement thanks to the open window.
+
+<img src="README_pictures/open_after_bad.png">
+
+This other envirinoment is a smallest room starting with a closed window at beginning that it's opened few moment later. It's more clear how opening a window can improve the quality of the air.
+
+This two examples gives the good (300 mV) and the bad (400 mV) values of the air. Taking an average of the these two values, the level value of the air can be easily computed (more or less 350 mV).
 
 <h4>Thermistor</h4>
 
