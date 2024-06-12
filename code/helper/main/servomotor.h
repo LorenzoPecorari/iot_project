@@ -23,7 +23,7 @@
 
 */
 
-#define S_PIN GPIO_NUM_26 // pin to change when all things have to be merged
+#define S_PIN GPIO_NUM_6 // pin to change when all things have to be merged
 
 // positions of servomotor, values in microseconds 
 #define MIN_POS 1000 // -90 deg position, maybe not used for project
@@ -68,6 +68,8 @@ void open_window(){
 
         gpio_set_level(S_PIN, 0);
         esp_rom_delay_us(PWM_PERIOD - period_up);
+
+        vTaskDelay(pdMS_TO_TICKS(20));
     }
 
     ESP_LOGI(APP, "Window: opened!");
@@ -86,6 +88,7 @@ void close_window(){
 
             gpio_set_level(S_PIN, 0);
             esp_rom_delay_us(PWM_PERIOD - period_up);
+            vTaskDelay(pdMS_TO_TICKS(20));
     }
 
     ESP_LOGI(APP, "Window: closed!");

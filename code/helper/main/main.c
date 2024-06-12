@@ -20,6 +20,7 @@ void app_main(void) {
         
         what_to_do = 0;
 
+
         while(!what_to_do)
             vTaskDelay(10 / portTICK_PERIOD_MS);
         
@@ -32,7 +33,7 @@ void app_main(void) {
 
         vTaskDelay(1000 / portTICK_PERIOD_MS);
 
-        esp_sleep_enable_timer_wakeup(15 * 1000 *1000);
+        esp_sleep_enable_timer_wakeup(600 * 1000 *1000);
         light_sleep_custom();
     }
 }

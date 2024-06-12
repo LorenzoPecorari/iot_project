@@ -98,7 +98,7 @@ void controlloVentola(void *pvParameter) {
                 heat_room();
         }
 
-        vTaskDelay(10000 / portTICK_PERIOD_MS);
+        //vTaskDelay(10000 / portTICK_PERIOD_MS);
 
         /*
         // Accendi la ventola

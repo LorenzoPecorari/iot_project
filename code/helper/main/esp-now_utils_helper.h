@@ -33,6 +33,7 @@ struct message_str {
 
 int got_other_mac = 0;
 int what_to_do = 0;
+int open = 0;
 
 uint8_t other_mac[ESP_NOW_ETH_ALEN] = {0};
 uint8_t this_mac[ESP_NOW_ETH_ALEN] = {0};
@@ -207,7 +208,7 @@ void consume_message() {
                 token = strtok(NULL, "$");                
                 sscanf(token, "%f", &temperature);
                 
-                if(air_voltage > 200)
+                if(air_voltage > 350)
                     open_window();
                 else
                     close_window();
@@ -219,7 +220,6 @@ void consume_message() {
                 else
                     ok_room();
 
-                
             // TODO : parameters to be estabilished wrt received ones
             
             //esp_now_utils_handle_error(esp_now_send(helper_mac, (uint8_t*)&packet_send, MSG_STRUCT_SIZE));
