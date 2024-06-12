@@ -162,9 +162,19 @@ The air module gives in millivolts. As in the previousm experiment are done with
 
 <h4>Thermistor</h4>
 
-Thermistor is a resistence that change its value with the envrinment temperature. This value is taken from a pin of the thermistor brought in the esp as millivolts value. This last one has to be evaluted to give it a real sense (to give it the corrisponding temperature value). The formula that makes this opreation is:
+Thermistor is a resistence that change its value with the environment temperature. This value is taken from a pin of the thermistor and brought in the esp as millivolts value. This last one has to be evaluted to give it a real sense (to give it the corrisponding temperature value). The formulas that make this operation are:
 
-//INSERT FORMULA
+<img src="README_pictures/thermistor_resistence.png">
+
+<img src="README_pictures/thermistor_formula.png">
+
+- <code>T</code> is the tempreature to get;
+- <code>t<sub>s</sub></code> is the nominal temperature;
+- <code>R<sub>t</sub></code> is the thermistor resistence;
+- <code>Ω</code> is the value of the external resistence;
+- <code>β</code> is the thermistor sensivuty;
+- <code>V<sub>cc</sub></code> is the input tension;
+- <code>V<sub>in</sub></code> is the tension coming from thermistor;
 
 <h3>Energy consumption</h3>
 
