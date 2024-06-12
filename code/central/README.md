@@ -53,7 +53,7 @@ The hardware configuration could be as follow
 <img src="README_pictures/hw_configuration.jpeg">
 
 
-<h2>Sensors analysis</h2>
+<h3>Sensors analysis</h3>
 
 Central has sensors and leds. It hasn't actuators because only the helpers intercat directly with the environment. Sensors used by central are:
 
@@ -78,5 +78,12 @@ The leds report a visual average of data sampled. They are four, two for air val
 
 Led status will change each time data sampling is done.
 
+<h2>Build and execution</h2>
 
+To start central device, its code has to be <i>built</i>. Open a ESP-IDF terminal, that gives the possbility to execute the program <code>idf.py</code> (execution manager of the program loaded on an ESP device).
 
+The first command to execute is <code>idf.py build</code>, which checks if there are errors on the written code and compiles the code. When the code is ready to be executed, it has to be loaded on the microcontroller with the command <code>idf.py flash</code>. In the end, for the program execution, the command to use is <code>idf.py monitor</code>.
+
+The terminal used for program execution has to be opened on the directory of the program. In this case, the directory is <code>central/</code>.
+
+To get a good execution of the whole project, the execution of each device follows an order: the first to be executed are the helper devices and then the central. If there are some problem with the execution, press the <i>RST</i> button on the ESPs, first the helper ones and then the central one.
