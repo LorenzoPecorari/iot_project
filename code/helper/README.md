@@ -65,7 +65,7 @@ For each component is reported the pin to connect with, input tension and a shor
 This is the air-quality detection sensor used for monitoring how stale the air is inside the room. For this component it is adopted a sampling of the analog output provided as output in different situations for estabilishing a which level is needed to interact with the environment. Even if it provides also a digital output, it is preferred to use the analog one for threshold compatibilities.
 
 #### NPN S8050 transistor and cooling fan ####
-NPN transistor that is capable to amplify and/or commute signals for small devices like these that are used for the project. Using the signal coming from the GPIO pin, it can be used to manage the functioning of the cooling fan managed by the ESP32. So, collector is collector is linked to the negative connector of the fan, the base to the GPIO of the mcu and emitter to ground.
+NPN transistor that is capable to amplify and/or commute signals for small devices like these that are used for the project. Using the signal coming from the GPIO pin, it can be used to manage the functioning of the cooling fan managed by the ESP32. So, collector is linked to the negative connector of the fan, the base to the GPIO of the mcu through a resistence and emitter to ground. This system gives the possibility to manage the on/off of the fan: when the GPIO is setted to 1, fan starts to turn; otherwise with the GPIO setted to 0, the fan stops.
 
 The fan is controlled through the previously described component and its capable to (virtually!) decrease or increase the temperature. Differently from some others fans, it has no possibility to change the speed of the fan due to lack of third pin.
 
@@ -154,9 +154,19 @@ Values sampled has a specific meaning and they have to be recognized by the devi
 
 Warning: the following thresholds are in common with the central device.
 
-### Thermistor thresholds ###
+### Air module thresholds ###
 
-/// WATCH OUT ! ///
+The air module gives in millivolts. As in the previousm experiment are done with specific code to find which is the level value that defines when air can be considered as "good quality" or "bad quality".
+
+<img src="">
+
+The environment of this picture is a big classroom with open windows. Data sampling starts with sensor turned on a side, then it's setted in right position (face up). When this changement occurs, a real value is sampled (more or less 300 mV). From that point, avoiding the peaks, there is a little improvement thanks to the open window.
+
+<img src="">
+
+This other envirinoment is a smallest room starting with a closed window at beginning that it's opened few moment later. It's more clear how opening a window can improve the quality of the air.
+
+This two examples gives the good (300 mV) and the bad (400 mV) values of the air. Taking an average of the these two values, the level value of the air can be easily computed (more or less 350 mV).
 
 ## Energy consumption ##
 The analysis about the energy consumption of the device with all the sensor connected with, shows some interesting details. Setting a too short period of sleep leads to a very high consumption of resources. 
