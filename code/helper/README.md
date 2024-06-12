@@ -132,6 +132,31 @@ After receiving information from central with an average of collected data from 
 For reducing energy consumption of the this node, the system is developed for using a light sleep mode: it consists of a low-consume condition for the processor that cuts off a lot of power to components, reducing availability of functionalities while maintaing a restricted set of information in memory. After receiving a packet with no need to compute the sampling phase or terminated the actions to do with actuators, the mcu will go to sleep for 10 minutes.
 
 ## Energy consumption ##
-The analysis about the energy consumption of the device with all the sensor connected with, shows some interesting details. Setting a too short period of sleep leads to a very high consumption of resources:
-<img src="./energy_consumption_high_freq.jpg"></br>
-As can be observed by the plot, even if the light sleep reduces the energy consumption for a factor approximatively equal to 2.5, the average 
+The analysis about the energy consumption of the device with all the sensor connected with, shows some interesting details. Setting a too short period of sleep leads to a very high consumption of resources. 
+
+For the following graphs is needed to underline the fact that power values has mW as unit while each sampling is done each half second, so, each element of horizontal axis is to consider as 0.5s and not 1.0s .
+
+### High sleep/awake ratio ###
+The importance of chosing a good trade-off between between period of sleep and period of activity is fundamental for obtaining a reasonable energy consumption. Applying a sleep of only 30s, with respect of an average up time of 180s, leads to this situation:
+
+<img src= "./consumption_high_freq.jpg"></br>
+
+As can be observed by the plot, even if the light sleep reduces the energy consumption for a factor approximatively equal to 2.5, the average, there are an quite high spike of energy needed for functioning. As the practice allows to observe, the device will be for more or less 3 minutes in activity and am average of half a minute in a sleepy state. It is interesting to observe that it is required an average of 1900 mW of power for maintaining in activity the device while is executing the code abaout interaction and communication and an average of 800 mW for the sleep mode phase. Knowing that the mcu is powered via USB, the nominal tension used by it is about 5V. Assuming to use a battery of 10000 mAh, it is possible to achieve the time that this battery can be up:
+<br>
+<img src = "./high_freq.png">
+
+### Low sleep/awake ratio ###
+Instead of a short period of sleep of 30s, it can be quite better to use a longer interval of 600s (10 min) that allows to obtain something like that:
+
+<img src= "./consumption_low_freq.jpg"></br>
+
+The reduction of the power needed between awake and sleep states is the same, alway arounf 2.5 times better for the second one. By applying the longer sleep time, it can be reached an higher lifetime of the battery:
+<br>
+<img src = "./low_freq.png">
+
+### Observations ###
+As can be appreciated by the graphs and the numerical results, appying a longer sleep period time benefits the efficiency of the battery duration. However, this value can be also enough unsufficient due to different possible applications of the project. 
+
+An important observation relies on the fact that the sammpled energy consumption is related to a "bad" case on the overall usage of the system. In fact, it was provided a situation where the devices had to communicate the presence of people inside the room, a bad quality of the air and an high temperature. With all those factors, the ESP32 is in a condition where it has to send a signal to the servomotor for opening the window and it also has to activate the fan. Another relevant detail to underline is that the actuators can be power supplied by an external source of power like the 220V AC.
+
+Finally, the thermistor does not require a lot of power unlike the air sensor that has to heat an internal coil and maintains it at a quite high temperature for detecting the gasses inside the air.
