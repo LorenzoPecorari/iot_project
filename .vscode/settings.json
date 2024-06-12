@@ -1,8 +1,12 @@
 {
-    "idf.port": "/dev/ttyUSB0",
+    "idf.port": "/dev/ttyUSB1",
     "idf.adapterTargetName": "esp32s3",
     "idf.openOcdConfigs": [
         "board/esp32s3-bridge.cfg"
     ],
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "new_esp-now_utils.h": "c"
+    }
 }

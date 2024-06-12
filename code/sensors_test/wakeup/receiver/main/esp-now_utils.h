@@ -18,11 +18,19 @@
 
 #define Q_LENGTH 10
 #define SIZE sizeof(uint8_t)
+
 #define DELAY (2500 / portTICK_PERIOD_MS)
 
-QueueHandle_t queue;
-
 #define CHANNEL 0
+
+#define TYPE_SIZE 8
+#define MESSAGE_SIZE 64
+struct message_str{
+    char type[TYPE_SIZE];
+    char payload[MESSAGE_SIZE];
+} message_str;
+
+QueueHandle_t queue;
 
 //uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0xf4, 0x12, 0xfa, 0x9f, 0xf4, 0x70}; //esp32 lorenzo
 //uint8_t mac_addr[ESP_NOW_ETH_ALEN] = {0x48, 0x27, 0xe2, 0xe1, 0xe0, 0xf8}; // esp32 michele
@@ -68,6 +76,10 @@ void send_cb(const uint8_t *mac_addr, esp_now_send_status_t status){
 void send_esp_now_msg(uint8_t *data, int len){
     esp_now_utils_handle_error(esp_now_send(mac_addr, data, len));
     ESP_LOGI(APP_NAME, "Sent: %d", *(data));
+}
+
+void LE_listening(){
+    //TODO
 }
 
 // retrives the mac address of the device (wifi module)
