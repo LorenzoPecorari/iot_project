@@ -1,5 +1,5 @@
 <h1>What's the mood - CENTRAL DEVICE</h1>
-<i>Central device</i> is the main node of this IoT system. It's the bridge between the IoT network and the external broker. It manages the execution of the <i>helpers device</i>, giving them the instructions for starting the data sampling and the general result of all data sampled on the system. This result is evalueted computing the average of the data sampled by all the system devices. The average is shared to helper devices and a mqtt broker (<i>HiveMQ</i>).
+<i>Central device</i> is the master node of this IoT system. It's the bridge between the IoT network and the external broker. It manages the execution of the <i>helpers device</i>, giving them the instructions for starting the data sampling and the general result of all data sampled on the system. This result is evalueted computing the average of the data sampled by all the system devices. The average is shared to helper devices and a mqtt broker (<i>HiveMQ</i>).
 
 <h2>Hardware configuration</h2>
 Hardware element required for the central device implementation are:
@@ -53,7 +53,7 @@ The hardware configuration could be as follow
 <img src="README_pictures/hw_configuration.jpeg">
 
 
-<h3>Sensors analysis</h3>
+<h3>Sensors: hardware analysis</h3>
 
 Central has sensors and leds. It hasn't actuators because only the helpers intercat directly with the environment. Sensors used by central are:
 
@@ -98,3 +98,40 @@ The first step of the loop is the people detection: <code>check_people()</code> 
 
 If a noise has been detected, central communicates to helper to start the data sampling (message with payload "1"), it waits that data from helper and then it samples its data with function <code>air_detection()</code>. When central has its data and helper's data, it proceeds with <code>elaboration()</code> that gives the data average. Average is communicated to the helper and to the mqtt broker. When these communications have been completed, central device goes to sleep.
 
+<h3>Sensors: software analysis</h3>
+
+Sensors can be of two type: <i>analogic</i> or <i>digital</i>. At software level, these output requires a different type of management, from initialization to the real use.
+
+<h4>Analogic</h4>
+
+In this project, the analogic sensors are the air module and the thermistor. Their initialization requeres:
+
+- <code>esp_adc_cal_characterize()</code>, function that characterizes the attenuation of an ADC;
+- <code>adc1_config_width()</code>, it configures the width of a ADC capture;
+- <code>adc1_config_channel_atten()</code>, that sets the attenuation of particular channel.
+
+An ADC value can be taken with <code>esp_adc_cal_raw_to_voltage()</code>, that gives millivolts value. This function is called on the code a specifc number of times (<code>SAMPLE</code>), with a specifc distance (<code>DELAY</code>, millisecond value). <code>SAMPLE*DELAY</code> it's the <b>sampling window</b> of the analogic sensors.
+
+<h4>Digital</h4>
+
+The digital sensor of the project is the microphone. Leds can be considered as digital component. The digital initialization is done with the function <code>gpio_set_direction()</code>, where specify if the element is an input element or an output one. Microphone is an input sensor, its value can be taken with the function <code>gpio_set_level()</code>(it follows the same <b>sampling window</b> of analogic sensors). Leds are output component, which value can be set with <code>gpio_set_level()</code>
+
+<h3>ESP-NOW communication</h3>
+
+Esp-now is a communication protocol that permits a message exchangement between the esp microcontroller. It works with the Wifi module, over a specific channel that has to be setted (<code>esp_wifi_set_channel()</code>). The main elements of this communication is the MAC address of the receiver, with which sender creates the peer to use with esp-now (<code>esp_now_add_peer()</code>).
+
+The management of message trasmission and recption is given to <i>callback fucntion</i>. The function <code>sender_cb</code> gives the result of the trasmission, otherwise <code>receiver_cb</code> takes the message received and puts it on a queue (<code>xQueueSend()</code>), from which the device will take and analyze the message.  This function have be setted with <code>esp_now_register_recv_cb()</code> and <code>esp_now_register_send_cb()</code>.
+
+The function that sends the message is <code>esp_now_tx()</code>, where the message is setted and trasmitted with <code>esp_now_send()</code>. When receiver has to analyse the message it calls <code>esp_now_rx()</code>, that takes the message with <code>xQueueReceive()</code> and start its analysis.
+
+<h3>Mqtt trasmission</h3>
+
+The broker used for mqtt trasmission is <i>HiveMQ</i>. To communicate with it, the main element is the structure <code>esp_mqtt_client_config_t</code> that stores the values:
+
+- <b>broker uri</b>, the endpoint to reach;
+- <b>certificate</b>, generated from a termianal;
+- <b>credentials</b> of a user that can access to the broker (username and password).
+
+The message is sent to the broker with the function <code>esp_mqtt_client_publish()</code>.
+
+Mqtt trnasmission is added to simulate a internet connection of this little network.
