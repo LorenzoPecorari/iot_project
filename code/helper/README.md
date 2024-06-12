@@ -59,7 +59,7 @@ For each component is reported the pin to connect with, input tension and a shor
 
 ### Hardware configuration ###
 
-<img src = "./helper_hw_configuration.jpeg">
+<img src = "./images/helper_hw_configuration.jpeg">
 
 #### MQ-2 ####
 This is the air-quality detection sensor used for monitoring how stale the air is inside the room. For this component it is adopted a sampling of the analog output provided as output in different situations for estabilishing a which level is needed to interact with the environment. Even if it provides also a digital output, it is preferred to use the analog one for threshold compatibilities.
@@ -71,10 +71,28 @@ The fan is controlled through the previously described component and its capable
 
 #### NTC Thermistor ####
 Component that belongs to family of semiconductors that changes its internal resistance with different values of temperature. For this project, it covers a relevant role because of it allows to detecte if is needed to activate the conditioner for restoring the temperature of the room to acceptable level. Also for this sensor, it is used an analog signal for getting data.
+The formulas for getting the value of temperature are the following:
+
+<img src="./images/thermistor_resistence.png">
+
+<img src="./images/thermistor_formula.png">
+
+- <code>T</code> is the tempreature to get;
+- <code>t<sub>s</sub></code> is the nominal temperature;
+- <code>R<sub>t</sub></code> is the thermistor resistence;
+- <code>Ω</code> is the value of the external resistence;
+- <code>β</code> is the thermistor sensivuty;
+- <code>V<sub>cc</sub></code> is the input tension;
+- <code>V<sub>in</sub></code> is the tension coming from thermistor;
 
 #### Servomotor ####
 Actuator capable to interact with something movable that can improve the quality of the air. Its functioning is based on the usage of PWM signals generated through the ESP32 by modifing a value that represent the position and changing the period of the signal itself.
 
+In particular, by using three different values for periods of the signal to send to it, it is possible to manage its position. Starting from a period of 20000 microseconds, the minimum, the medium and the maximum positions are defined as 1000, 1500 and 2000 microseconds. These values are used to generate the period the value needs to be up during its send to the actuator. This period can be found through the formula:
+
+<img src="./images/servo_pwm.png">
+</br>
+This is used inside a for cycle that manages the current position of the servomotor and it also uses it to reduce or increase the period to take up the signal. However, it depends on what the servo should be used for: <code>position</code> has to be increased if it is needed to open the window, decreased otherwhise.
 
 
 ## Software ##
@@ -131,6 +149,15 @@ After receiving information from central with an average of collected data from 
 #### Sleep mode time ####
 For reducing energy consumption of the this node, the system is developed for using a light sleep mode: it consists of a low-consume condition for the processor that cuts off a lot of power to components, reducing availability of functionalities while maintaing a restricted set of information in memory. After receiving a packet with no need to compute the sampling phase or terminated the actions to do with actuators, the mcu will go to sleep for 10 minutes.
 
+## Thresholds and their determination ##
+Values sampled has a specific meaning and they have to be recognized by the device. For this node of the project only values coming from the air sensor and the thermistor are needed.
+
+Warning: the following thresholds are in common with the central device.
+
+### Thermistor thresholds ###
+
+/// WATCH OUT ! ///
+
 ## Energy consumption ##
 The analysis about the energy consumption of the device with all the sensor connected with, shows some interesting details. Setting a too short period of sleep leads to a very high consumption of resources. 
 
@@ -139,20 +166,20 @@ For the following graphs is needed to underline the fact that power values has m
 ### High sleep/awake ratio ###
 The importance of chosing a good trade-off between between period of sleep and period of activity is fundamental for obtaining a reasonable energy consumption. Applying a sleep of only 30s, with respect of an average up time of 180s, leads to this situation:
 
-<img src= "./consumption_high_freq.jpg"></br>
+<img src= "./images/consumption_high_freq.jpg"></br>
 
 As can be observed by the plot, even if the light sleep reduces the energy consumption for a factor approximatively equal to 2.5, the average, there are an quite high spike of energy needed for functioning. As the practice allows to observe, the device will be for more or less 3 minutes in activity and am average of half a minute in a sleepy state. It is interesting to observe that it is required an average of 1900 mW of power for maintaining in activity the device while is executing the code abaout interaction and communication and an average of 800 mW for the sleep mode phase. Knowing that the mcu is powered via USB, the nominal tension used by it is about 5V. Assuming to use a battery of 10000 mAh, it is possible to achieve the time that this battery can be up:
 <br>
-<img src = "./high_freq.png">
+<img src = "./images/high_freq.png">
 
 ### Low sleep/awake ratio ###
 Instead of a short period of sleep of 30s, it can be quite better to use a longer interval of 600s (10 min) that allows to obtain something like that:
 
-<img src= "./consumption_low_freq.jpg"></br>
+<img src= "./images/consumption_low_freq.jpg"></br>
 
 The reduction of the power needed between awake and sleep states is the same, alway arounf 2.5 times better for the second one. By applying the longer sleep time, it can be reached an higher lifetime of the battery:
 <br>
-<img src = "./low_freq.png">
+<img src = "./images/low_freq.png">
 
 ### Observations ###
 As can be appreciated by the graphs and the numerical results, appying a longer sleep period time benefits the efficiency of the battery duration. However, this value can be also enough unsufficient due to different possible applications of the project. 
