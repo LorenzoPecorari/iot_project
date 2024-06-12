@@ -135,3 +135,25 @@ The broker used for mqtt trasmission is <i>HiveMQ</i>. To communicate with it, t
 The message is sent to the broker with the function <code>esp_mqtt_client_publish()</code>.
 
 Mqtt trnasmission is added to simulate a internet connection of this little network.
+
+<h3></h3>
+
+The devices work several sensors, that give back data sampled. This data have to be analyzed, but not randomically. To get good quality of analysis, there are some tests to do that give the <b>threshold</b> if the data.
+
+<h4>Microphone</h4>
+
+The limit 
+
+<h3>Energy consumption</h3>
+
+In this system, the devices are connected to multiple elements and they use the Wifi module, that requires a big quantity of energy. Therefore, find a way that permits to save energy in death moment is a crucial thing. This is the reason for which the devices, after the execution of multiple missions, enter in a <i>sleep mode</i> status. This <b>duty cycle</b> greatly reduces the enrgy consumption.
+
+The following graphs has been created with a script python, it takes as input the energy detection of an Arduino module that analizes the consumption of ESP32S3 during the execution of central device.
+
+ <img src="README_pictures/long_sleep_mode.jpg">
+
+As you can see, there are multiple level of energy consumption. The first (more or less at 1300 mW) has been detected when central device start to initializate its elements. The next higher point is reached when the device starts to make the data sampling. When data average is communicated to the broker, there is the first spike (communication to internet consumes a lot of energy). After the communication, device goes to sleep and consumptions goes to 800 mW, saving more less the 40% of energy. The highest point after sleep mode is required to wake up the systems, but it is isolated. Device after waking up goes back consume 1400 mW as in the previous sampling phase.
+
+<img src="README_pictures/10_minutes_execution.jpg">
+
+This second pictures shows how this pattern of energy consumption is reapeted during a long time execution, with multiple execution of the endless loop.
