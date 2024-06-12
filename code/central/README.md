@@ -124,6 +124,8 @@ The management of message trasmission and recption is given to <i>callback fucnt
 
 The function that sends the message is <code>esp_now_tx()</code>, where the message is setted and trasmitted with <code>esp_now_send()</code>. When receiver has to analyse the message it calls <code>esp_now_rx()</code>, that takes the message with <code>xQueueReceive()</code> and start its analysis.
 
+//WRITE HERE LOLLO
+
 <h3>Mqtt trasmission</h3>
 
 The broker used for mqtt trasmission is <i>HiveMQ</i>. To communicate with it, the main element is the structure <code>esp_mqtt_client_config_t</code> that stores the values:
