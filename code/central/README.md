@@ -61,13 +61,13 @@ Central has sensors and leds. It hasn't actuators because only the helpers inter
 - <b>an air module</b>, the hardware used to get air data;
 - <b>a thermistor</b>, a resistence that changes its value with room temperature.
 
-More informations of these sensors are on <code>README.md</code> of repository homepage.
+More details of these sensors are on <code>README.md</code> of repository homepage.
 
 Microphone value is taken on it's <i>digital output</i>, that will give an <i>high value</i>(1) if it detects a noise over a specific decibel value, otherwise it will give a <i>lower value</i> (0).
 
 Air module has to give values on air quality, with an high range of values. For this reason, the output is taken on <i>analogic output</i> of the module.
 
-//THERMISTOR, WAIT LOLLO
+Thermistor is a resistence with a value that changes with of little temperature changement of the place where is located. To detect this changement, thermistor has of its pin connect tho ESP pin.
 
 The leds report a visual average of data sampled. They are four, two for air values and two for temperature:
 
