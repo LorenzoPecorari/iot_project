@@ -158,11 +158,11 @@ Warning: the following thresholds are in common with the central device.
 
 The air module gives in millivolts. As in the previousm experiment are done with specific code to find which is the level value that defines when air can be considered as "good quality" or "bad quality".
 
-<img src="">
+<img src="./images/few_fresh_open.png">
 
 The environment of this picture is a big classroom with open windows. Data sampling starts with sensor turned on a side, then it's setted in right position (face up). When this changement occurs, a real value is sampled (more or less 300 mV). From that point, avoiding the peaks, there is a little improvement thanks to the open window.
 
-<img src="">
+<img src="./images/open_after_bad.png">
 
 This other envirinoment is a smallest room starting with a closed window at beginning that it's opened few moment later. It's more clear how opening a window can improve the quality of the air.
 
