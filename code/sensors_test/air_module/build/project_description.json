@@ -1,7 +1,11 @@
 {
     "version":            "1.1",
     "project_name":       "air",
+<<<<<<< HEAD
     "project_version":    "1b199b0a-dirty",
+=======
+    "project_version":    "826a4dc0-dirty",
+>>>>>>> helper
     "project_path":       "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/air_module",
     "idf_path":           "/home/utente/esp/esp-idf",
     "build_dir":          "/home/utente/Scrivania/univ/iot_as/progetto/iot_project/code/sensors_test/air_module/build",
