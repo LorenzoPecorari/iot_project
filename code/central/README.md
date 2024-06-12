@@ -124,7 +124,51 @@ The management of message trasmission and recption is given to <i>callback fucnt
 
 The function that sends the message is <code>esp_now_tx()</code>, where the message is setted and trasmitted with <code>esp_now_send()</code>. When receiver has to analyse the message it calls <code>esp_now_rx()</code>, that takes the message with <code>xQueueReceive()</code> and start its analysis.
 
-//WRITE HERE LOLLO
+<h4>Packets</h4>
+
+For exchanging informations, nodes provides an ad-hoc packet that is composed by two fields:
+<ul>
+    <li><code>type</code> : an integer identifying the type of packet to send/receive</li>
+    <li><code>payload</code> : an array of chars identifying the specific content of packet</li>
+</ul>
+
+Since data can be send only as <code>uint8_t</code> variables, it is needed the usage of this structure for sending different types of informations while remaining under the limit dimension of 250B. There are different types of packets and they are summarizable as:
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>CENTRAL_MAC</td>
+        <td>1</td>
+        <td>Used for sending a packet containing the MAC address of the central device
+        </td>
+    </tr>
+    <tr>
+        <td>CENTRAL_WAKE</td>
+        <td>2</td>
+        <td>Notifies to the helper node if it has to start sampling data or go back to sleep, the payload contains "0" or "1" on the basis of what the microphone detected<td>
+    </tr>    
+    <tr>
+        <td>CENTRAL_VALUE</td>
+        <td>3</td>
+        <td>Packet with this type contains a payload with informations about the average values of temperature and air quality after the receiving those coming from the helper<td>
+    </tr>
+    <tr>
+        <td>HELPERL_MAC</td>
+        <td>4</td>
+        <td>Used for sending a packet containing the MAC address of the helper device; it follows the reception of the CENTRAL_MAC packet</td>
+    </tr>
+    <tr>
+        <td>HELPERL_VALUE</td>
+        <td>5</td>
+        <td>Type for enlighting a packet with a payload representing the tuple of values with voltage detected from air sensor and the temperature obtained with thermistor; it is subsequent to CENTRAL_WAKE</td>
+    </tr>
+</table>
+
+For types with values 3 and 5 the separator of the tuple containing air quality and temperature values is equal to the charcater "$".
 
 <h3>Mqtt trasmission</h3>
 

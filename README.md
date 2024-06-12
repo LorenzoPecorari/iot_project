@@ -9,7 +9,7 @@
 - Lorenzo Pecorari
 	- student id: 1885161
  	- email: pecorari.1885161@studenti.unirioma1.it
-  	- LinkedIn profile: www.linkedin.com/in/lorenzo-pecorari-683900302
+  	- LinkedIn profile: https://www.linkedin.com/in/lorenzo-pecorari-683900302
 
 # Description of project
 An IoT project for monitoring air and temperature inside a classroom. There will be two types of smart objects as:
