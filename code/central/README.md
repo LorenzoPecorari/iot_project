@@ -136,13 +136,35 @@ The message is sent to the broker with the function <code>esp_mqtt_client_publis
 
 Mqtt trnasmission is added to simulate a internet connection of this little network.
 
-<h3></h3>
+<h3>Threshold definition</h3>
 
 The devices work several sensors, that give back data sampled. This data have to be analyzed, but not randomically. To get good quality of analysis, there are some tests to do that give the <b>threshold</b> if the data.
 
 <h4>Microphone</h4>
 
-The limit 
+The limit to find for the microphone the noise level: values above that level mean "lecture in progess", values below mean "no lecture in progress". Level value has to consider also the environment noises, then it has to be little bit high. The experiements taken have the goal to find this value, that requires the use of a specific code that print on terminal 1 if detect an important noise, 0 otherwise.
+
+<img src="README_pictures/low_dB.jpeg">
+
+Noises detected when nobody is speaking inside the room, there is only the environment sounds.
+
+<img src="README_pictures/high_dB.jpeg">
+
+Noises when someone is speaking inside the room.
+
+As you can see from the images, the level value is more or less 60 decibel. This level is set on the "adjustable switching contact" of microphone with a screwdriver.
+
+<h4>Air module</h4>
+
+The air module gives in millivolts. As in the previousm experiment are done with specific code to find which is the level value that defines when air can be considered as "good quality" or "bad quality".
+
+//FIND THE PICTURES OF AIR DATA GRAPHS
+
+<h4>Thermistor</h4>
+
+Thermistor is a resistence that change its value with the envrinment temperature. This value is taken from a pin of the thermistor brought in the esp as millivolts value. This last one has to be evaluted to give it a real sense (to give it the corrisponding temperature value). The formula that makes this opreation is:
+
+//INSERT FORMULA
 
 <h3>Energy consumption</h3>
 
