@@ -189,7 +189,7 @@ The devices work with several sensors, that give back data sampled. This data ha
 
 <h4>Microphone</h4>
 
-The limit to find for the microphone the noise level: values above that level mean "lecture in progess", values below mean "no lecture in progress". Level value has to consider also the environment noises, then it has to be little bit high. The experiements taken have the goal to find this value, that requires the use of a specific code that print on terminal 1 if detect an important noise, 0 otherwise.
+The limit to find for the microphone is the noise level: values above that level mean "lecture in progess", values below mean "no lecture in progress". Level value has to consider also the environment noises, then it has to be little bit high. The experiements taken have the goal to find this value, that requires the use of a specific code that print on terminal 1 if detect an important noise, 0 otherwise.
 
 <img src="README_pictures/low_dB.jpeg">
 
