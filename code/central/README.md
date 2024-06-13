@@ -239,7 +239,7 @@ The following graphs has been created with a script python, it takes as input th
 
  <img src="README_pictures/long_sleep_mode.jpg">
 
-As you can see, there are multiple level of energy consumption. The first (more or less at 1300 mW) has been detected when central device start to initializate its elements. The next higher point is reached when the device starts to make the data sampling. When data average is communicated to the broker, there is the first spike (communication to internet consumes a lot of energy). After the communication, device goes to sleep and consumptions goes to 800 mW, saving more less the 40% of energy. The highest point after sleep mode is required to wake up the systems, but it is isolated. Device after waking up goes back consume 1400 mW as in the previous sampling phase.
+As you can see, there are multiple level of energy consumption. The first (more or less at 1300 mW) has been detected when central device start to initializate its elements. The next higher point is reached when the device starts to make the data sampling. When data average is communicated to the broker, there is the first spike (communication to internet consumes a lot of energy). After the communication, device goes to sleep and consumptions goes to 800 mW, saving more or less the 40% of energy. The highest point after sleep mode is required to wake up the systems, but it is isolated. Device after waking up goes back consume 1400 mW as in the previous sampling phase.
 
 <img src="README_pictures/10_minutes_execution.jpg">
 
