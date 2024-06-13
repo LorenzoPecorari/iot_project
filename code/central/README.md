@@ -233,7 +233,7 @@ Thermistor is a resistence that change its value with the environment temperatur
 
 <h3>Energy consumption</h3>
 
-In this system, the devices are connected to multiple elements and they use the Wifi module, that requires a big quantity of energy. Therefore, find a way that permits to save energy in death moment is a crucial thing. This is the reason for which the devices, after the execution of multiple missions, enter in a <i>sleep mode</i> status. This <b>duty cycle</b> greatly reduces the enrgy consumption.
+In this system, the devices are connected to multiple elements and they use the Wifi module, that requires a big quantity of energy. Therefore, find a way that permits to save energy in death moments is a crucial thing. This is the reason for which the devices, after the execution of multiple missions, enter in a <i>sleep mode</i> status. This <b>duty cycle</b> greatly reduces the enrgy consumption.
 
 The following graphs has been created with a script python, it takes as input the energy detection of an Arduino module that analizes the consumption of ESP32S3 during the execution of central device.
 
