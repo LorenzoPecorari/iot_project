@@ -203,7 +203,7 @@ As you can see from the images, the level value is more or less 60 decibel. This
 
 <h4>Air module</h4>
 
-The air module gives values in millivolts. As in the previousm experiment are done with specific code to find which is the level value that defines when air can be considered as "good quality" or "bad quality".
+The air module gives values in millivolts. As in the previous, experiments are done with specific code to find which is the level value that defines when air can be considered as "good quality" or "bad quality".
 
 <img src="README_pictures/few_fresh_open.png">
 
