@@ -227,7 +227,7 @@ Thermistor is a resistence that change its value with the environment temperatur
 - <code>t<sub>s</sub></code> is the nominal temperature;
 - <code>R<sub>t</sub></code> is the thermistor resistence;
 - <code>Ω</code> is the value of the external resistence;
-- <code>β</code> is the thermistor sensivuty;
+- <code>β</code> is the thermistor sensivity;
 - <code>V<sub>cc</sub></code> is the input tension;
 - <code>V<sub>in</sub></code> is the tension coming from thermistor;
 
