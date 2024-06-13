@@ -10,7 +10,7 @@ Hardware element required for the central device implementation are:
 - <b>AZDelivery KY-038 module</b>, the microphone
 - <b>Thermistor</b>
 - <b>4 leds</b>, one green, one yellow, one red and one blue
-- <b>5 resistence</b>, on 10Ω, three 1kΩ and one 100kΩ
+- <b>5 resistence</b>, one 10Ω, three 1kΩ and one 100kΩ
 - <b>cables</b>, at least 17
 
 The first step is to set the ESP on the top of breadboard and connect the 5V pin to the <i>left red line</i> of the breadboard, the left ESP ground to the <i>left blue line</i>, the 3V pin to <i>right red line</i> and the right ESP ground to the <i>right blue line</i>.
