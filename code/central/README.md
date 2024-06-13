@@ -13,11 +13,11 @@ Hardware element required for the central device implementation are:
 - <b>5 resistence</b>, one 10Ω, three 1kΩ and one 100kΩ
 - <b>cables</b>, at least 17
 
-The first step is to set the ESP on the top of breadboard and connect the 5V pin to the <i>left red line</i> of the breadboard, the left ESP ground to the <i>left blue line</i>, the 3V pin to <i>right red line</i> and the right ESP ground to the <i>right blue line</i>.
+The first step is to set the ESP on the top of breadboard and connect the 5V pin to the <i>left red line</i> of the breadboard, the left ESP ground to the <i>left blue line</i>, the 3.3V pin to <i>right red line</i> and the right ESP ground to the <i>right blue line</i>.
 
 Set the microphone on the breadboard, connect its <i>positive pin</i> to the 5V line and <i>GND pin</i> one of ground lines. Connect <i>digital output (DO)</i> to the <i>GPIO1</i> of the ESP. Do the same for the air module, but for the sensor output use the <i>analog output (AO)</i> instead of the digital one. Connect this pin to the <i>GPIO2</i> of the ESP.
 
-For the thermistor, set it on the breadboard and connect one of its leg to 3V line. On the orizzontal line of the other leg, insert the cable that connects the sensor to the ESP <i>GPIO3</i> pin and one of the leg 100kΩ resistence. The other part of the resistence is connected to a ground line.
+For the thermistor, set it on the breadboard and connect one of its leg to 3.3V line. On the orizzontal line of the other leg, insert the cable that connects the sensor to the ESP <i>GPIO3</i> pin and one of the leg 100kΩ resistence. The other part of the resistence is connected to a ground line.
 
 Leds have the same configuration: the shortest led pin is connected to a ground line, the longest one is connected to a resistence that has also a connection to a <i>GPIO</i> pin of ESP. Each led has its resistence and its ESP pin, as shown in the following table.
 
