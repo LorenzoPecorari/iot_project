@@ -181,7 +181,7 @@ The broker used for mqtt trasmission is <i>HiveMQ</i>. To communicate with it, t
 
 The message is sent to the broker with the function <code>esp_mqtt_client_publish()</code>.
 
-Mqtt trnasmission is added to simulate a internet connection of this little network.
+Mqtt trasmission is added to simulate a internet connection of this little network.
 
 <h3>Threshold definition</h3>
 
