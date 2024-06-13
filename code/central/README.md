@@ -193,7 +193,7 @@ The limit to find for the microphone is the noise level: values above that level
 
 <img src="README_pictures/low_dB.jpeg">
 
-Noises detected when nobody is speaking inside the room, there is only the environment sounds.
+Noises detected when nobody is speaking inside the room, there are only the environment sounds.
 
 <img src="README_pictures/high_dB.jpeg">
 
