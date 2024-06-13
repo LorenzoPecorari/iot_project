@@ -211,7 +211,7 @@ The environment of this picture is a big classroom with open windows. Data sampl
 
 <img src="README_pictures/open_after_bad.png">
 
-This other envirinoment is a smallest room starting with a closed window at beginning that it's opened few moment later. It's more clear how opening a window can improve the quality of the air.
+This other envirinoment is a smallest room with a closed window at beginning that it's opened few moment later. It's more clear how opening a window can improve the quality of the air.
 
 This two examples gives the good (300 mV) and the bad (400 mV) values of the air. Taking an average of the these two values, the level value of the air can be easily computed (more or less 350 mV).
 
