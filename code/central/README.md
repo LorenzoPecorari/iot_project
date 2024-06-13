@@ -114,7 +114,7 @@ An ADC value can be taken with <code>esp_adc_cal_raw_to_voltage()</code>, that g
 
 <h4>Digital</h4>
 
-The digital sensor of the project is the microphone. Leds can be considered as digital component. The digital initialization is done with the function <code>gpio_set_direction()</code>, where specify if the element is an input element or an output one. Microphone is an input sensor, its value can be taken with the function <code>gpio_set_level()</code>(it follows the same <b>sampling window</b> of analogic sensors). Leds are output component, which value can be set with <code>gpio_set_level()</code>
+The digital sensor of the project is the microphone. Leds can be considered as digital component. The digital initialization is done with the function <code>gpio_set_direction()</code>, where specify if the element is an input element or an output one. Microphone is an input sensor, its value can be taken with the function <code>gpio_get_level()</code>(it follows the same <b>sampling window</b> of analogic sensors). Leds are output component, which value can be set with <code>gpio_set_level()</code>
 
 <h3>ESP-NOW communication</h3>
 
