@@ -185,7 +185,7 @@ Mqtt trasmission is added to simulate a internet connection of this little netwo
 
 <h3>Threshold definition</h3>
 
-The devices work several sensors, that give back data sampled. This data have to be analyzed, but not randomically. To get good quality of analysis, there are some tests to do that give the <b>threshold</b> if the data.
+The devices work with several sensors, that give back data sampled. This data have to be analyzed, but not randomically. To get good quality of analysis, there are some tests to do that give the <b>threshold</b> if the data.
 
 <h4>Microphone</h4>
 
