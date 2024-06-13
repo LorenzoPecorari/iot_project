@@ -67,7 +67,7 @@ Microphone value is taken on it's <i>digital output</i>, that will give an <i>hi
 
 Air module has to give values on air quality, with an high range of values. For this reason, the output is taken on <i>analogic output</i> of the module.
 
-Thermistor is a resistence with a value that changes with of little temperature changement of the place where is located. To detect this changement, thermistor has of its pin connect tho ESP pin.
+Thermistor is a resistence with a value that changes with little temperature changement of the place where is located. To detect this changement, thermistor has of its pin connect tho ESP pin.
 
 The leds report a visual average of data sampled. They are four, two for air values and two for temperature:
 
