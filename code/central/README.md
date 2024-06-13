@@ -207,7 +207,7 @@ The air module gives values in millivolts. As in the previous, experiments are d
 
 <img src="README_pictures/few_fresh_open.png">
 
-The environment of this picture is a big classroom with open windows. Data sampling starts with sensor turned on a side, then it's setted in right position (face up). When this changement occurs, a real value is sampled (more or less 300 mV). From that point, avoiding the peaks, there is a little improvement thanks to the open window.
+The environment of this picture is a big classroom with open windows. Data sampling starts with sensor turned on a side, then it's setted in right position (face up). When this changement occurs, a real value is sampled (more or less 300 mV). From that point, avoiding the peaks, there is a little improvement of the air quality thanks to the open window.
 
 <img src="README_pictures/open_after_bad.png">
 
